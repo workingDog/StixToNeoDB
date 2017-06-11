@@ -1,0 +1,3725 @@
+{
+  "type": "bundle",
+  "spec_version": "2.1",
+  "id": "bundle--0fe33f18-9717-4329-9179-429d7304ef73",
+  "objects": [
+
+    {
+      "type": "marking-definition",
+      "id": "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da",
+      "created": "2016-05-12T08:17:27.000Z",
+      "definition_type": "tlp",
+      "definition": {
+        "tlp": "green"
+      }
+    },
+
+    {
+      "type": "language-content",
+      "id": "language-content--b86bd89f-98bb-4fa9-8cb2-9ad421da981d",
+      "created": "2017-02-08T21:31:22.007Z",
+      "modified": "2017-02-08T21:31:22.007Z",
+      "object_ref": "campaign--12a111f0-b824-4baf-a224-83b80237a094",
+      "object_modified": "2017-02-08T21:31:22.007Z",
+      "contents":
+      {
+        "de": {
+          "name": "Bank Angriff 1",
+          "description": "Weitere Informationen über Banküberfall"
+        },
+        "fr": {
+          "name": "Attaque Bank 1",
+          "description": "Plus d'informations sur la crise bancaire"
+        }
+      }
+    }
+,
+    {
+      "type": "indicator",
+      "id": "indicator--3tgverxfryjnujnu",
+      "created": "2014-05-08T09:00:00.000000Z",
+      "modified": "2014-05-08T09:00:00.000000Z",
+      "pattern": "[ ipv4addr:value = '10.0.0.0' ]",
+      "valid_from": "2014-05-08T09:00:00.000000Z",
+      "name": "IP Address for known C2 channel",
+      "labels": [
+        "malicious-activity"
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--d81f86b9-975b-bc0b-775e-810c5ad45a4f",
+      "created": "2014-06-29T13:49:37.079000Z",
+      "modified": "2014-06-29T13:49:37.079000Z",
+      "pattern": "[url:value = 'http://x4z9arb.cn/4712/']",
+      "valid_from": "2014-06-29T13:49:37.079000Z",
+      "name": "Malicious site hosting downloader",
+      "labels": [
+        "malicious-activity"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--162d917e-766f-4611-b5d6-652791454fca",
+      "created": "2014-06-30T09:15:17.182Z",
+      "modified": "2014-06-30T09:15:17.182Z",
+      "name": "x4z9arb backdoor",
+      "description": "This malware attempts to download remote files after establishing a foothold as a backdoor.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "establish-foothold"
+        }
+      ],
+      "labels": [
+        "backdoor",
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--6ce78886-1027-4800-9301-40c274fd472f",
+      "created": "2014-06-30T09:15:17.182Z",
+      "modified": "2014-06-30T09:15:17.182Z",
+      "source_ref": "indicator--d81f86b9-975b-bc0b-775e-810c5ad45a4f",
+      "relationship_type": "indicates",
+      "target_ref": "malware--162d917e-766f-4611-b5d6-652791454fca"
+    },
+    {
+      "type": "identity",
+      "id": "identity--f690c992-8e7d-4b9a-9303-3312616c0220",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "name": "The MITRE Corporation - DHS Support Team",
+      "identity_class": "organization",
+      "object_marking_refs": [
+        "marking-definition--34098fcexxxxsxs41da"
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--d7b066aa-4091-4276-a142-29d5d81c3484",
+      "created": "2014-10-31T15:52:13.126Z",
+      "modified": "2014-10-31T15:52:13.126Z",
+      "name": "Phishing",
+      "external_references": [
+        {
+          "source_name": "capec",
+          "external_id": "CAPEC-98"
+        }
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--8cf9236f-1b96-493d-98be-0c1c1e8b62d7",
+      "created": "2014-10-31T15:52:13.127Z",
+      "modified": "2014-10-31T15:52:13.127Z",
+      "pattern": "[email-message:subject MATCHES '^[IMPORTANT] Please Review Before']",
+      "valid_from": "2014-10-31T15:52:13.127931Z",
+      "name": "Malicious E-mail",
+      "labels": [
+        "malicious-activity"
+      ],
+      "description": "",
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--2e17f6fe-3a4d-438a-911a-e509ba1b9933",
+      "created": "2014-10-31T15:52:13.127Z",
+      "modified": "2014-10-31T15:52:13.127Z",
+      "pattern": "[email-message:body_multipart[*].body_raw_ref.name MATCHES '^Final Report.+\\\\.exe$']",
+      "valid_from": "2014-10-31T15:52:13.127931Z",
+      "name": "Malicious Email Attachment",
+      "labels": [
+        "malicious-activity"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--c3fa00e6-1d31-4137-98f5-32a1ec0d0e92",
+      "created": "2014-10-31T15:52:13.127Z",
+      "modified": "2014-10-31T15:52:13.127Z",
+      "source_ref": "indicator--8cf9236f-1b96-493d-98be-0c1c1e8b62d7",
+      "relationship_type": "indicates",
+      "target_ref": "attack-pattern--d7b066aa-4091-4276-a142-29d5d81c3484",
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--8e231463-6b3e-4be6-9c44-56999d8c1d80",
+      "created": "2014-10-31T15:52:13.127Z",
+      "modified": "2014-10-31T15:52:13.127Z",
+      "source_ref": "indicator--2e17f6fe-3a4d-438a-911a-e509ba1b9933",
+      "relationship_type": "indicates",
+      "target_ref": "attack-pattern--d7b066aa-4091-4276-a142-29d5d81c3484",
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "identity",
+      "id": "identity--tyhbyuhcwferfbyh",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "name": "The MITRE Corporation - DHS Support Team",
+      "identity_class": "organization"
+    },
+    {
+      "type": "malware",
+      "id": "malware--fdfvfgytybyubyu",
+      "created": "2017-01-27T13:49:53.997Z",
+      "modified": "2017-01-27T13:49:53.997Z",
+      "name": "Poison Ivy",
+      "description": "variant",
+      "labels": [
+        "remote-access-trojan"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--53fe3b22-0201-47cf-85d0-97c02164528d",
+      "created": "2014-05-08T09:00:00.000Z",
+      "modified": "2014-05-08T09:00:00.000Z",
+      "pattern": "[ipv4-addr:value = '10.0.0.0']",
+      "valid_from": "2014-05-08T09:00:00.000000Z",
+      "name": "IP Address for known C2 channel",
+      "labels": [
+        "malicious-activity"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--a932fcc6-e032-176c-126f-cb970a5a1ade",
+      "created": "2017-01-27T13:49:53.997Z",
+      "modified": "2017-01-27T13:49:53.997Z",
+      "pattern": "[file:hashes.'SHA-256' = 'ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c']",
+      "valid_from": "2014-05-08T09:00:00.000000Z",
+      "name": "File hash for Poison Ivy variant",
+      "labels": [
+        "malicious-activity"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "course-of-action",
+      "id": "course-of-action--8e2e2d2b-17d4-4cbf-938f-98ee46b3cd3f",
+      "created": "2016-04-06T20:03:48.000Z",
+      "modified": "2016-04-06T20:03:48.000Z",
+      "name": "Add TCP port 80 Filter Rule to the existing Block UDP 1434 Filter",
+      "description": "This is how to add a filter rule to block inbound access to TCP port 80 to the existing UDP 1434 filter ...",
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--44298a74-ba52-4f0c-87a3-1824e67d7fad",
+      "created": "2016-04-06T20:06:37.000Z",
+      "modified": "2016-04-06T20:06:37.000Z",
+      "source_ref": "course-of-action--8e2e2d2b-17d4-4cbf-938f-98ee46b3cd3f",
+      "relationship_type": "mitigates",
+      "target_ref": "malware--fdd60b30-b67c-11e3-b0b9-f01faf20d111",
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--2f9a9aa9-108a-4333-83e2-4fb25add0463",
+      "created": "2017-01-27T13:49:53.997Z",
+      "modified": "2017-01-27T13:49:53.997Z",
+      "source_ref": "indicator--a932fcc6-e032-176c-126f-cb970a5a1ade",
+      "relationship_type": "indicates",
+      "target_ref": "malware--fdd60b30-b67c-11e3-b0b9-f01faf20d111",
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--9606dac3-965a-47d3-b270-8b17431ba0e4",
+      "created": "2014-05-08T09:00:00.000Z",
+      "modified": "2014-05-08T09:00:00.000Z",
+      "source_ref": "indicator--53fe3b22-0201-47cf-85d0-97c02164528d",
+      "relationship_type": "indicates",
+      "target_ref": "malware--fdd60b30-b67c-11e3-b0b9-f01faf20d111",
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "threat-actor",
+      "id": "threat-actor--dfaa8d77-07e2-4e28-b2c8-92e9f7b04428",
+      "created": "2014-11-19T23:39:03.893348Z",
+      "modified": "2014-11-19T23:39:03.893348Z",
+      "name": "Disco Team Threat Actor Group",
+      "labels": [
+        "crime-syndicate"
+      ],
+      "description": "This organized threat actor group operates to create profit from all types of crime.",
+      "aliases": [
+        "Equipo del Discoteca"
+      ],
+      "roles": [
+        "agent"
+      ],
+      "goals": [
+        "Steal Credit Card information"
+      ],
+      "sophistication": "expert",
+      "resource_level": "organization",
+      "primary_motivation": "personal-gain"
+    },
+    {
+      "type": "identity",
+      "id": "identity--733c5838-34d9-4fbf-949c-62aba761184c",
+      "created": "2016-08-23T18:05:49.307000Z",
+      "modified": "2016-08-23T18:05:49.307000Z",
+      "name": "Disco Team",
+      "identity_class": "organization",
+      "contact_information": "disco-team@stealthemail.com",
+      "description": "Disco Team is the name of an organized threat actor crime-syndicate."
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--966c5838-34d9-4fbf-949c-62aba7611837",
+      "created": "2016-08-23T18:05:49.307000Z",
+      "modified": "2016-08-23T18:05:49.307000Z",
+      "source_ref": "threat-actor--dfaa8d77-07e2-4e28-b2c8-92e9f7b04428",
+      "relationship_type": "attributed-to",
+      "target_ref": "identity--733c5838-34d9-4fbf-949c-62aba761184c"
+    },
+    {
+      "type": "campaign",
+      "id": "campaign--b549a58c-afd9-4847-85c3-5be13d56d3cc",
+      "created": "2014-09-09T19:58:39.609000Z",
+      "modified": "2014-09-09T19:58:39.609000Z",
+      "name": "Operation Omega"
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--c43a0a05-e8d2-4f64-ae37-3f3fb153f8d9",
+      "created": "2014-09-09T19:58:39.609000Z",
+      "modified": "2014-09-09T19:58:39.609000Z",
+      "pattern": "[ ipv4-addr:value = '10.0.0.0' ]",
+      "valid_from": "2014-09-09T19:58:39.609000Z",
+      "name": "xxxxxxxxx",
+      "labels": [
+        "malicious-activity"
+      ]
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--eca24e47-2259-4850-9705-fd1065c77236",
+      "created": "2014-09-09T19:58:39.609000Z",
+      "modified": "2014-09-09T19:58:39.609000Z",
+      "source_ref": "indicator--c43a0a05-e8d2-4f64-ae37-3f3fb153f8d9",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--b549a58c-afd9-4847-85c3-5be13d56d3cc"
+    },
+    {
+      "type": "marking-definition",
+      "id": "marking-definition--340yuerfwed5e41da",
+      "created": "2016-08-01T00:00:00.000Z",
+      "definition_type": "statement",
+      "definition": {
+        "statement": "Copyright © OASIS Open 2017. All Rights Reserved."
+      }
+    },
+    {
+      "type": "identity",
+      "id": "identity--fdcktgbtbsefvdsfvewx",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "name": "The MITRE Corporation - DHS Support Team",
+      "identity_class": "organization",
+      "object_marking_refs": [
+        "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+      ]
+    },
+    {
+      "type": "identity",
+      "id": "identity--8c6af861-7b20-41ef-9b59-6344fd872a8f",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "name": "Franistan Intelligence",
+      "identity_class": "organization",
+      "object_marking_refs": [
+        "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "identity",
+      "id": "identity--ddfe7140-2ba4-48e4-b19a-df069432103b",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "name": "Branistan Peoples Party",
+      "identity_class": "organization",
+      "external_references": [
+        {
+          "source_name": "website",
+          "url": "http://www.bpp.bn"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "threat-actor",
+      "id": "threat-actor--56f3f0db-b5d5-431c-ae56-c18f02caf500",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "name": "Fake BPP (Branistan Peoples Party)",
+      "labels": [
+        "nation-state"
+      ],
+      "roles": [
+        "director"
+      ],
+      "goals": [
+        "Influence the election in Branistan"
+      ],
+      "sophistication": "strategic",
+      "resource_level": "government",
+      "primary_motivation": "dominance",
+      "secondary_motivations": [
+        "ideology",
+        "organizational-gain"
+      ],
+      "object_marking_refs": [
+        "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "campaign",
+      "id": "campaign--e5268b6e-4931-42f1-b379-87f48eb41b1e",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "name": "Operation Bran Flakes",
+      "description": "A concerted effort to insert false information into the BPP's web pages",
+      "aliases": [
+        "OBF"
+      ],
+      "first_seen": "2016-01-08T12:50:40.123Z",
+      "objective": "Hack www.bpp.bn",
+      "object_marking_refs": [
+        "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--19da6e1c-71ab-4c2f-886d-d620d09d3b5a",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2017-01-30T21:15:04.127Z",
+      "name": "Content Spoofing",
+      "external_references": [
+        {
+          "source_name": "capec",
+          "external_id": "CAPEC-148"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--3dcf59c3-30e3-4aa5-9c05-2cbffcee5922",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "source_ref": "campaign--e5268b6e-4931-42f1-b379-87f48eb41b1e",
+      "relationship_type": "attributed-to",
+      "target_ref": "threat-actor--56f3f0db-b5d5-431c-ae56-c18f02caf500",
+      "object_marking_refs": [
+        "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--6b6b524f-f115-4eeb-b488-045d62ddfb66",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "source_ref": "campaign--e5268b6e-4931-42f1-b379-87f48eb41b1e",
+      "relationship_type": "targets",
+      "target_ref": "identity--ddfe7140-2ba4-48e4-b19a-df069432103b",
+      "object_marking_refs": [
+        "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--1f820ee7-bb30-4d0c-96c8-08e07e08b0ed",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "source_ref": "campaign--e5268b6e-4931-42f1-b379-87f48eb41b1e",
+      "relationship_type": "uses",
+      "target_ref": "attack-pattern--19da6e1c-71ab-4c2f-886d-d620d09d3b5a",
+      "object_marking_refs": [
+        "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--5b271699-d2ad-468c-903d-304ad7a17d71",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "source_ref": "threat-actor--56f3f0db-b5d5-431c-ae56-c18f02caf500",
+      "relationship_type": "attributed-to",
+      "target_ref": "identity--8c6af861-7b20-41ef-9b59-6344fd872a8f",
+      "object_marking_refs": [
+        "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--f9d2f337-bf47-40d2-8afd-908d4e366572",
+      "created": "2016-08-08T15:50:10.983Z",
+      "modified": "2016-08-08T15:50:10.983Z",
+      "source_ref": "threat-actor--56f3f0db-b5d5-431c-ae56-c18f02caf500",
+      "relationship_type": "impersonates",
+      "target_ref": "identity--ddfe7140-2ba4-48e4-b19a-df069432103b",
+      "object_marking_refs": [
+        "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+      ],
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"
+    },
+    {
+      "type": "malware",
+      "id": "malware--591f0cb7-d66f-4e14-a8e6-5927b597f920",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Poison Ivy",
+      "description": "Poison Ivy is a remote access tool, first released in 2005 but unchanged since 2008. It includes features common to most Windows-based RATs, including key logging, screen capturing, video capturing, file transfers, system administration, password theft, and traffic relaying.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "identity",
+      "id": "identity--81cade27-7df8-4730-836b-62d880e6d9d3",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "FireEye, Inc.",
+      "identity_class": "organization",
+      "sectors": [
+        "technology"
+      ]
+    },
+    {
+      "type": "campaign",
+      "id": "campaign--752c225d-d6f6-4456-9130-d9580fd4007b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "admin@338",
+      "description": "Active since 2008, this campaign mostly targets the financial services industry, though we have also seen activity in the telecom, government, and defense sectors.",
+      "first_seen": "2008-01-07T00:00:00.000000Z"
+    },
+    {
+      "type": "campaign",
+      "id": "campaign--d02a1560-ff69-49f4-ac34-919b8aa4b91e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "th3bug",
+      "description": "This ongoing campaign targets a number of industries but appears to prefer targets in higher education and the healthcare sectors.",
+      "first_seen": "2009-10-26T00:00:00.000000Z"
+    },
+    {
+      "type": "campaign",
+      "id": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "menuPass",
+      "description": "The threat actor behind menuPass prefers to target U.S. and foreign defense contractors.",
+      "first_seen": "2009-12-14T00:00:00.000000Z"
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--19da6e1c-69a8-4c2f-886d-d620d09d3b5a",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Spear Phishing Attack Pattern used by admin@338",
+      "description": "The preferred attack vector used by admin@338 is spear-phishing emails. Using content that is relevant to the target, these emails are designed to entice the target to open an attachment that contains the malicious PIVY server code.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "initial-compromise"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "capec",
+          "description": "spear phishing",
+          "external_id": "CAPEC-163"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--ea2c747d-4aa3-4573-8853-37b7159bc180",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Strategic Web Compromise Attack Pattern used by th3bug",
+      "description": "Attacks attributed to th3bug use a strategic Web compromise to infect targets. This approach is more indiscriminate, which probably accounts for the more disparate range of targets.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "initial-compromise"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--fb6aa549-c94a-4e45-b4fd-7e32602dad85",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Spear Phishing Attack Pattern used by menuPass",
+      "description": "menuPass appears to favor spear phishing to deliver payloads to the intended targets. While the attackers behind menuPass have used other RATs in their campaign, it appears that they use PIVY as their primary persistence mechanism.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "initial-compromise"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "capec",
+          "description": "spear phishing",
+          "external_id": "CAPEC-163"
+        }
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "id": "course-of-action--70b3d5f6-374b-4488-8688-729b6eedac5b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Analyze with FireEye Calamine Toolset",
+      "description": "Calamine is a set of free tools to help organizations detect and examine Poison Ivy infections on their systems. The package includes these components: PIVY callback-decoding tool (ChopShop Module) and PIVY memory-decoding tool (PIVY PyCommand Script).",
+      "external_references": [
+        {
+          "source_name": "Calamine ChopShop Module",
+          "description": "The FireEye Poison Ivy decoder checks the beginning of each TCP session for possible PIVY challengeresponse sequences. If found, the module will try to validate the response using one or more passwords supplied as arguments.",
+          "url": "https://github.com/fireeye/chopshop"
+        },
+        {
+          "source_name": "Calamine PyCommand Script",
+          "description": "Helps locate the PIVY password.",
+          "url": "https://github.com/fireeye/pycommands"
+        }
+      ],
+      "created_by_ref": "identity--81cade27-7df8-4730-836b-62d880e6d9d3"
+    },
+    {
+      "type": "malware",
+      "id": "malware--61a62a6a-9a18-4758-8e52-622431c4b8ae",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (808e21d6efa2884811fbd0adf67fda78)",
+      "description": "The key@123 sample (password for admin@338), 808e21d6efa2884811fbd0adf67fda78, connects directly to 219.76.208.163",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--30ea087f-7d2b-496b-9ed1-5f000c8b7695",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (8010cae3e8431bb11ed6dc9acabb93b7,)",
+      "description": "Two CnC domain names from the admin@338 sample 8010cae3e8431bb11ed6dc9acabb93b7, connect to www.webserver.dynssl.com and www.webserver.freetcp.com and resolve to 219.76.208.163. It also connects to the CnC domain www.webserver.fartit.com.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--4de25c38-5826-4ee7-b84d-878064de87ad",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (0323de551aa10ca6221368c4a73732e6,)",
+      "description": "The gwx@123 sample 0323de551aa10ca6221368c4a73732e6 connects to the CnC domain names microsofta.byinter.net, microsoftb.byinter.net, microsoftc.byinter. net, and microsofte.byinter.net.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--dc669921-4a1a-470d-bfae-694e740ce181",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (8002debc47e04d534b45f7bb7dfcab4d)",
+      "description": "The sample 8002debc47e04d534b45f7bb7dfcab4d connected to kr.iphone.qpoe.com with the PIVY password admin.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--f86febd3-609b-4d2e-9fec-aa805cb498bf",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (55a3b2656ceac2ba6257b6e39f4a5b5a)",
+      "description": "The sample 55a3b2656ceac2ba6257b6e39f4a5b5a connected to ct.toh.info domain with the PIVY password th3bug.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--80c260d9-a075-4148-9301-ebe4af27f449",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (b08694e14a9b966d8033b42b58ab727d)",
+      "description": "This sample (b08694e14a9b966d8033b42b58ab727d) for menuPass connected to a control server at js001.3322.org with a password xiaoxiaohuli (Chinese translation: 'little little fox')",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--3ed0364f-62c8-4ebc-b136-deaf6966880b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (d8c00fed6625e5f8d0b8188a5caac115)",
+      "description": "The sample d8c00fed6625e5f8d0b8188a5caac115 connected to apple.cmdnetview.com with the password XGstone.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--17099f03-5ec8-456d-a2de-968aebaafc78",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (b1deff736b6d12b8d98b485e20d318ea)",
+      "description": "The sample b1deff736b6d12b8d98b485e20d318ea connected to autuo.xicp.net with the password keaidestone.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--e14b6476-40b5-4b0b-bde7-0e856ab00b6c",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (08709f35581e0958d1ca4e50b7d86dba)",
+      "description": "The sample 08709f35581e0958d1ca4e50b7d86dba has a compile time of July 20. 2012 and connected to tw.2012yearleft.com with the password keaidestone. This sample also used the CBricksDoc launcher.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--feaf146d-ea67-4eb1-946a-6f352ff79a81",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (e84853c0484b02b7518dd683787d04f)",
+      "description": "The sample e84853c0484b02b7518dd6837 87d04fc connected to dedydns.ns01.us with the password smallfish and used the CBricksDoc launcher.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--13791e02-6621-45fb-8c10-f6b72e1bf553",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (cf8094c07c15aa394dddd4eca4aa8c8b)",
+      "description": "The sample cf8094c07c15aa394dddd4eca4aa8c8b connected to maofajapa.3322.org with the password happyyongzi.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--703a15a7-eb85-475d-a27a-77d8fcf8f7b9",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (410eeaa18dbec01a27c5b41753b3c7ed )",
+      "description": "The sample 410eeaa18dbec01a27c5b41753b3c7ed connected to send.have8000.com with the password of suzuki.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--fade08cb-fa57-485e-97f8-fab5a1bd4460",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (b2dc98caa647e64a2a8105c298218462)",
+      "description": "The sample b2dc98caa647e64a2a8105c298218462 connected to apple.cmdnetview.com with the password XGstone.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--3050937d-6330-44c7-83ba-8821e1f7e7bd",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (68fec995a13762184a2616bda86757f8)",
+      "description": "68fec995a13762184a2616bda86757f8 had a compile time of March 25, 2012 and connected to fbi.zyns.com with the password menuPass. This sample also used the CBricksDoc launcher.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--9d995717-edc3-4bd8-8554-aecf773bdecc",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (39a59411e7b12236c0b4351168fb47ce)",
+      "description": "The sample 39a59411e7b12236c0b4351168fb47ce had a compile time of April 2, 2010 and connected to weile3322b.3322.org with the password keaidestone. This sample used a launcher of CPiShellPutDoc.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--40e15fa5-df8d-4771-a682-21dab0a024fd",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (f5315fb4a654087d30c69c768d80f826)",
+      "description": "The sample f5315fb4a654087d30c69c768d80f826 had a compile time of May 21, 2010 and connected to ngcc.8800.org with the password menuPass. This sample also used a launcher of CPiShellPutDoc.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--69101c2f-da92-47af-b402-7c60a39a982f",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (e6ca06e9b000933567a8604300094a85)",
+      "description": "The sample e6ca06e9b000933567a8604300094a85 connected to the domain sh.chromeenter.com with the password happyyongzi.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--1601b8c2-5e6f-4a18-a413-10527e5d90b7",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (56cff0d0e0ce486aa0b9e4bc0bf2a141)",
+      "description": "The sample 56cff0d0e0ce486aa0b9e4bc0bf2a141 was compiled on 2011-08-31 and connected to mf.ddns.info with the password menuPass.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--626badcc-4257-4222-946c-6d6e889836ea",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (60963553335fa5877bd5f9be9d8b23a6 )",
+      "description": "The sample 60963553335fa5877bd5f9be9d8b23a6 was compiled on June 9, 2012 and connected to av.ddns.us with the password of admin",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--3b275ed1-9c2e-4443-b1dd-5cfb51eaef2e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (6d989302166ba1709d66f90066c2fd59)",
+      "description": "A number of menuPass and admin samples also shared the same CBricksDoc launcher including but not limited to 6d989302166ba1709d66f90066c2fd59.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--f138b6e0-9a7d-4cd9-a904-08a7df2eabb1",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (4bc6cab128f623f34bb97194da21d7b6)",
+      "description": "A number of menuPass and admin samples also shared the same CBricksDoc launcher including but not limited to 4bc6cab128f623f34bb97194da21d7b6.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--302ac5b5-486c-4c99-8cad-4426aeaf47b6",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (4e84b1448cf96fabe88c623b222057c4)",
+      "description": "The sample 4e84b1448cf96fabe88c623b222057c4 connected to jj.mysecondarydns.com with the password menuPass",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--e1c02dca-d3fe-48f1-bb4b-3cacd2bc3619",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (494e65cf21ad559fccf3dacdd69acc94)",
+      "description": "The sample 494e65cf21ad559fccf3dacdd69acc94 connected to mongoles.3322.org with the password fishplay. It also connects to CBricksDoc.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--a4f315bd-e159-4bfb-8439-0d5a8330fc70",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "PIVY Variant (a5965b750997dbecec61358d41ac93c7)",
+      "description": "The sample a5965b750997dbecec61358d41ac93c7 connected to 3q.wubangtu.info with the password menuPass. It also connects to CBricksDoc.",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--e8094b09-7df4-4b13-b207-1e27af3c4bde",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[ipv4-addr:value = '219.76.208.163']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "IP address: 219.76.208.163",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "IP address for key@123 sample 808e21d6efa2884811fbd0adf67fda78"
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--329ae6e9-25bd-49e8-89d1-aae4ca52e4a7",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'www.webserver.dynssl.com' OR ipv4-addr:value = '113.10.246.30' OR ipv4-addr:value = '219.90.112.203' OR ipv4-addr:value = '75.126.95.138' OR ipv4-addr:value = '219.90.112.197' OR ipv4-addr:value = '202.65.222.45']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "www.webserver.dynssl.com",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "www.webserver.dynssl.com resolved to 113.10.246.30, 219.90.112.203, 219.90.112.203, 75.126.95.138, 219.90.112.197, and 202.65.222.45, which overlap with the gwx@123 IP addresses."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--54e1e351-fec0-41a4-b62c-d7f86101e241",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'www.webserver.freetcp.com' OR ipv4-addr:value = '113.10.246.30' OR ipv4-addr:value = '219.90.112.203' OR ipv4-addr:value = '202.65.220.64' OR ipv4-addr:value = '75.126.95.138' OR ipv4-addr:value = '219.90.112.197' OR ipv4-addr:value = '202.65.222.45']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "www.webserver.freetcp.com",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "www.webserver.freetcp.com resolved to 113.10.246.30, 219.90.112.203, 202.65.220.64, 75.126.95.138, 219.90.112.197, and 202.65.222.45, which overlap with the gwx@123 IP addresses."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--2e59f00b-0986-437e-9ebd-e0d61900d688",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'www.webserver.fartit.com' OR ipv4-addr:value = '113.10.246.30' OR ipv4-addr:value = '219.90.112.203' OR ipv4-addr:value = '202.65.220.64' OR ipv4-addr:value = '75.126.95.138']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "www.webserver.fartit.com",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "www.webserver.fartit.com resolved to 113.10.246.30, 219.90.112.203, 202.65.220.64, and 75.126.95.138, which overlap with the gwx@123 IP addresses."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--8da68996-f175-4ae0-bd74-aad4913873b8",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'microsofta.byinter.net' OR domain-name:value = 'microsoftb.byinter.net' OR domain-name:value = 'microsoftc.byinter.net' OR domain-name:value = 'microsofte.byinter.net' OR ipv4-addr:value = '113.10.246.30' OR ipv4-addr:value = '219.90.112.203' OR ipv4-addr:value = '202.65.220.64' OR ipv4-addr:value = '75.126.95.138' OR ipv4-addr:value = '219.90.112.197' OR ipv4-addr:value = '202.65.222.45' OR ipv4-addr:value = '98.126.148.114']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "microsoft.byinter.net",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The gwx@123 sample 0323de551aa10ca6221368c4a73732e6 connects to the CnC domain names microsofta.byinter.net, microsoftb.byinter.net, microsoftc.byinter.net, and microsofte.byinter.net. These domain names resolved to 113.10.246.30, 219.90.112.203, 202.65.220.64, 75.126.95.138, 219.90.112.197, 202.65.222.45, and 98.126.148.114."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--4e11b23f-732b-418e-b786-4dbf65459d50",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'nkr.iphone.qpoe.com' OR ipv4-addr:value = '180.210.206.96' OR ipv4-addr:value = '101.78.151.179']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "nkr.iphone.qpoe.com",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "th3bug used domain name: nkr.iphone.qpoe.com. The domain nkr.iphone.qpoe.com resolved to 180.210.206.96 on January 12, 2012 and also 101.78.151.179 on December 23, 2011."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--b7fa7e73-e645-4813-9723-161bbd8dda62",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'e.ct.toh.info' OR ipv4-addr:value = '101.78.151.179']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "e.ct.toh.info",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "th3bug used domain name: e.ct.toh.info. The domain e.ct.toh.info resolved to 101.78.151.179 on June 12, 2012. The sample 55a3b2656ceac2ba6257b6e39f4a5b5a connected to ct.toh.info domain with the PIVY password th3bug."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--b2f09ce0-2db4-480f-bd2f-073ddb3a0c87",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'js001.3322.org' OR ipv4-addr:value = '101.78.151.179']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "js001.3322.org",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "menuPass used control server: js001.3322.org. The sample (b08694e14a9b966d8033b42b58ab727d) connected to a control server at js001.3322.org with a password xiaoxiaohuli (Chinese translation: 'little little fox')"
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--9842a3b9-fc5b-44c4-bb48-578cf6f728d9",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'apple.cmdnetview.com' OR ipv4-addr:value = '60.10.1.120']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "apple.cmdnetview.com",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "menuPass used domain: apple.cmdnetview.com. The sample d8c00fed6625e5f8d0b8188a5caac115 connected to apple.cmdnetview.com with the password XGstone. IP 60.10.1.120 hosted this domain."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--4e4c4ad7-4909-456a-b6fa-e24a6f682a40",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'domain autuo.xicp.net' OR ipv4-addr:value = '60.10.1.115']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "autuo.xicp.net",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "menuPass used domain: autuo.xicp.net. The sample b1deff736b6d12b8d98b485e20d318ea connected to autuo.xicp.net with the password keaidestone. IP 60.10.1.115 hosted this domain."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--137acf67-cedc-4a07-8719-72759174de3a",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[file:name = 'CBricksDoc']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "CBricksDoc",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "menuPass uses Microsoft Foundation Class Library class name CBricksDoc as a launcher for PIVY."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--9695dc2f-d92a-4f2b-8b16-b0e21d7c631d",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'tw.2012yearleft.com' OR ipv4-addr:value = '60.10.1.114' OR ipv4-addr:value = '60.1.1.114']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "tw.2012yearleft.com",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "08709f35581e0958d1ca4e50b7d86dba has a compile time of July 20. 2012 and connected to tw.2012yearleft.com with the password keaidestone. 2012yearleft.com was registered on February 13, 2012 by zhengyanbin8@gmail.com."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--7fd865ed-93e9-481f-953b-82ab386190ae",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'dedydns.ns01.us' OR ipv4-addr:value = '60.10.1.121']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "dedydns.ns01.us",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The domain dedydns.ns01.us resolved to 60.10.1.121. The sample e84853c0484b02b7518dd6837 87d04fc connected to dedydns.ns01.us with the password smallfish and used the CBricksDoc launcher."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--e5bc6507-d052-447f-93c7-db7ef32211da",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'maofajapa.3322.org' OR ipv4-addr:value = '60.10.1.121']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "maofajapa.3322.org",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The domain maofajapa.3322.org resolved to 60.10.1.121. The sample cf8094c07c15aa394dddd4eca4aa8c8b connected to maofajapa.3322.org with the password happyyongzi."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--fead5c52-9533-405c-b822-a034092a1ba8",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'send.have8000.com']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "send.have8000.com",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The sample 410eeaa18dbec01a27c5b41753b3c7ed connected to send.have8000.com with the password of suzuki. The domain have8000.com was registered on 2012-02-13 via the email zhengyanbin8@ gmail.com."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--405ff732-2c35-4f46-9f78-2a632ce36e03",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'fbi.zyns.com' OR ipv4-addr:value = '60.10.1.118']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "fbi.zyns.com",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The domain fbi.zyns.com resolved to 60.10.1.118 on August 21, 2012. 68fec995a13762184a2616bda86757f8 had a compile time of March 25, 2012 and connected to fbi.zyns.com with the password menuPass."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--4d58096e-b5c9-47d8-af9a-1af5f4762d6b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'weile3322b.3322.org']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "weile3322b.3322.org",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The sample 39a59411e7b12236c0b4351168fb47ce had a compile time of April 2, 2010 and connected to weile3322b.3322.org with the password keaidestone."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--9c725598-a160-4e91-8b93-ed0956709892",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'ngcc.8800.org']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "ngcc.8800.org",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The sample f5315fb4a654087d30c69c768d80f826 had a compile time of May 21, 2010 and connected to ngcc.8800.org with the password menuPass"
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--2efe7c62-1b96-4568-81ee-c85b840bde39",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'sh.chromeenter.com' OR ipv4-addr:value = '60.2.148.167']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "sh.chromeenter.com",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The sample e6ca06e9b000933567a8604300094a85 connected to the domain sh.chromeenter.com with the password happyyongzi. The domain sh.chromeenter.com previously resolved to the IP 60.2.148.167."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--b8322c9b-8031-4fb3-9cbc-8a1ea0fe3cfa",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'mf.ddns.info' OR ipv4-addr:value = '60.2.148.167']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "mf.ddns.info",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The sample 56cff0d0e0ce486aa0b9e4bc0bf2a141 was compiled on 2011-08-31 and connected to mf.ddns.info with the password menuPass. The domain mf.ddns.info resolved to 54.241.8.84 on November 22, 2012. This same IP also hosted the domain av.ddns.us on the same date."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--b08f9631-dd94-4d99-a96c-32b42af2ea81",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'av.ddns.us' OR ipv4-addr:value = '60.2.148.167']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "av.ddns.us",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The sample 60963553335fa5877bd5f9be9d8b23a6 was compiled on June 9, 2012 and connected to av.ddns.us with the password of admin."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--950c01b8-c647-4cc8-b0c1-3612fa780108",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'jj.mysecondarydns.com' OR ipv4-addr:value = '60.2.148.167']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "jj.mysecondarydns.com",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The sample 4e84b1448cf96fabe88c623b222057c4 connected to jj.mysecondarydns.com with the password menuPass. The domain jj.mysecondarydns.com also resolved to 60.2.148.167."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--ae29faa6-5f70-4eb8-981b-30818433a52e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'mongoles.3322.org' OR ipv4-addr:value = '123.183.210.28']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "mongoles.3322.org",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The sample 494e65cf21ad559fccf3dacdd69acc94 connected to mongoles.3322.org with the password fishplay."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--b6cc482d-89db-4e6b-a592-723070f6d22d",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = '3q.wubangtu.info' OR ipv4-addr:value = '123.183.210.28']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "3q.wubangtu.info",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "The sample a5965b750997dbecec61358d41ac93c7 connected to 3q.wubangtu.info with the password menuPass. The domain wubangtu.info also resolved to 123.183.210.28."
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--0b71628d-31dd-4eb8-baee-39f19c0a14b0",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[file:name = 'CPiShellPutDoc']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "CPiShellPutDoc",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "menuPass uses CPiShellPutDoc as a launcher for PIVY."
+    },
+    {
+      "type": "vulnerability",
+      "id": "vulnerability--c7cab3fb-0822-43a5-b1ba-c9bab34361a2",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "CVE-2012-0158",
+      "description": "Weaponized Microsoft Word document used by admin@338",
+      "external_references": [
+        {
+          "source_name": "cve",
+          "external_id": "CVE-2012-0158"
+        }
+      ]
+    },
+    {
+      "type": "vulnerability",
+      "id": "vulnerability--6a2eab9c-9789-4437-812b-d74323fa3bca",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "CVE-2009-4324",
+      "description": "Adobe acrobat PDF's used by admin@338",
+      "external_references": [
+        {
+          "source_name": "cve",
+          "external_id": "CVE-2009-4324"
+        }
+      ]
+    },
+    {
+      "type": "vulnerability",
+      "id": "vulnerability--2b7f00d8-b133-4a92-9118-46ce5f8b2531",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "CVE-2013-0422",
+      "description": "Java 7 vulnerability exploited by th3bug",
+      "external_references": [
+        {
+          "source_name": "cve",
+          "external_id": "CVE-2013-0422"
+        }
+      ]
+    },
+    {
+      "type": "vulnerability",
+      "id": "vulnerability--4d7dc9cb-983f-40b4-b597-d7a38b2d9a4b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "CVE-2013-1347",
+      "description": "Microsoft Internet Explorer 8 vulnerability exploited by th3bug",
+      "external_references": [
+        {
+          "source_name": "cve",
+          "external_id": "CVE-2013-1347"
+        }
+      ]
+    },
+    {
+      "type": "vulnerability",
+      "id": "vulnerability--8323404c-1fdd-4272-822b-829f85556c53",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "CVE-2011-3544",
+      "description": "JRE vulnerability exploited by th3bug",
+      "external_references": [
+        {
+          "source_name": "cve",
+          "external_id": "CVE-2011-3544"
+        }
+      ]
+    },
+    {
+      "type": "vulnerability",
+      "id": "vulnerability--717cb1c9-eab3-4330-8340-e4858055aa80",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "CVE-2010-3333",
+      "description": "menuPass campaign using weaponized Microsoft Word documents, exploiting this vulnerability",
+      "external_references": [
+        {
+          "source_name": "cve",
+          "external_id": "CVE-2010-3333"
+        }
+      ]
+    },
+    {
+      "type": "report",
+      "id": "report--f2b63e80-b523-4747-a069-35c002c690db",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Poison Ivy: Assessing Damage and Extracting Intelligence",
+      "published": "2013-08-21T00:00:00.000000Z",
+      "object_refs": [
+        "malware--591f0cb7-d66f-4e14-a8e6-5927b597f920",
+        "malware--61a62a6a-9a18-4758-8e52-622431c4b8ae",
+        "malware--30ea087f-7d2b-496b-9ed1-5f000c8b7695",
+        "malware--4de25c38-5826-4ee7-b84d-878064de87ad",
+        "malware--dc669921-4a1a-470d-bfae-694e740ce181",
+        "malware--f86febd3-609b-4d2e-9fec-aa805cb498bf",
+        "malware--80c260d9-a075-4148-9301-ebe4af27f449",
+        "malware--3ed0364f-62c8-4ebc-b136-deaf6966880b",
+        "malware--17099f03-5ec8-456d-a2de-968aebaafc78",
+        "malware--feaf146d-ea67-4eb1-946a-6f352ff79a81",
+        "malware--13791e02-6621-45fb-8c10-f6b72e1bf553",
+        "malware--703a15a7-eb85-475d-a27a-77d8fcf8f7b9",
+        "malware--fade08cb-fa57-485e-97f8-fab5a1bd4460",
+        "malware--3050937d-6330-44c7-83ba-8821e1f7e7bd",
+        "malware--9d995717-edc3-4bd8-8554-aecf773bdecc",
+        "malware--40e15fa5-df8d-4771-a682-21dab0a024fd",
+        "malware--69101c2f-da92-47af-b402-7c60a39a982f",
+        "malware--1601b8c2-5e6f-4a18-a413-10527e5d90b7",
+        "malware--626badcc-4257-4222-946c-6d6e889836ea",
+        "malware--3b275ed1-9c2e-4443-b1dd-5cfb51eaef2e",
+        "malware--f138b6e0-9a7d-4cd9-a904-08a7df2eabb1",
+        "malware--302ac5b5-486c-4c99-8cad-4426aeaf47b6",
+        "malware--e1c02dca-d3fe-48f1-bb4b-3cacd2bc3619",
+        "malware--a4f315bd-e159-4bfb-8439-0d5a8330fc70",
+        "identity--81cade27-7df8-4730-836b-62d880e6d9d3",
+        "campaign--752c225d-d6f6-4456-9130-d9580fd4007b",
+        "campaign--d02a1560-ff69-49f4-ac34-919b8aa4b91e",
+        "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+        "attack-pattern--19da6e1c-69a8-4c2f-886d-d620d09d3b5a",
+        "attack-pattern--ea2c747d-4aa3-4573-8853-37b7159bc180",
+        "attack-pattern--fb6aa549-c94a-4e45-b4fd-7e32602dad85",
+        "course-of-action--70b3d5f6-374b-4488-8688-729b6eedac5b",
+        "indicator--e8094b09-7df4-4b13-b207-1e27af3c4bde",
+        "indicator--329ae6e9-25bd-49e8-89d1-aae4ca52e4a7",
+        "indicator--54e1e351-fec0-41a4-b62c-d7f86101e241",
+        "indicator--2e59f00b-0986-437e-9ebd-e0d61900d688",
+        "indicator--8da68996-f175-4ae0-bd74-aad4913873b8",
+        "indicator--4e11b23f-732b-418e-b786-4dbf65459d50",
+        "indicator--b7fa7e73-e645-4813-9723-161bbd8dda62",
+        "indicator--b2f09ce0-2db4-480f-bd2f-073ddb3a0c87",
+        "indicator--9842a3b9-fc5b-44c4-bb48-578cf6f728d9",
+        "indicator--4e4c4ad7-4909-456a-b6fa-e24a6f682a40",
+        "indicator--137acf67-cedc-4a07-8719-72759174de3a",
+        "indicator--9695dc2f-d92a-4f2b-8b16-b0e21d7c631d",
+        "indicator--7fd865ed-93e9-481f-953b-82ab386190ae",
+        "indicator--e5bc6507-d052-447f-93c7-db7ef32211da",
+        "indicator--fead5c52-9533-405c-b822-a034092a1ba8",
+        "indicator--405ff732-2c35-4f46-9f78-2a632ce36e03",
+        "indicator--4d58096e-b5c9-47d8-af9a-1af5f4762d6b",
+        "indicator--9c725598-a160-4e91-8b93-ed0956709892",
+        "indicator--2efe7c62-1b96-4568-81ee-c85b840bde39",
+        "indicator--b8322c9b-8031-4fb3-9cbc-8a1ea0fe3cfa",
+        "indicator--b08f9631-dd94-4d99-a96c-32b42af2ea81",
+        "indicator--950c01b8-c647-4cc8-b0c1-3612fa780108",
+        "indicator--ae29faa6-5f70-4eb8-981b-30818433a52e",
+        "indicator--b6cc482d-89db-4e6b-a592-723070f6d22d",
+        "indicator--0b71628d-31dd-4eb8-baee-39f19c0a14b0",
+        "vulnerability--c7cab3fb-0822-43a5-b1ba-c9bab34361a2",
+        "vulnerability--6a2eab9c-9789-4437-812b-d74323fa3bca",
+        "vulnerability--2b7f00d8-b133-4a92-9118-46ce5f8b2531",
+        "vulnerability--4d7dc9cb-983f-40b4-b597-d7a38b2d9a4b",
+        "vulnerability--8323404c-1fdd-4272-822b-829f85556c53",
+        "vulnerability--717cb1c9-eab3-4330-8340-e4858055aa80",
+        "relationship--26c5311c-9d9b-4b9b-b3b5-bac10e16a7a3",
+        "relationship--e794befc-3270-4050-b560-b6b080ab0418",
+        "relationship--77a4c40e-3c33-43dc-8c78-04992ebcabf2",
+        "relationship--a91f3d5c-ceac-44cf-b92b-efb819241606",
+        "relationship--134c393e-cbe0-433c-9a7a-95263ed8578f",
+        "relationship--900b11dc-bfa7-4dea-adb6-0e8d726b4ded",
+        "relationship--8076ec7c-f6f6-4dca-a239-8bb6b5ad0c10",
+        "relationship--0dd66a71-c45b-4786-bd7b-92cf952afdc1",
+        "relationship--dc37f2bb-1a45-48b1-864e-c34dcde75d1d",
+        "relationship--670ae011-1649-44e2-a63e-ead0b4a4cffd",
+        "relationship--1a2a3630-5764-4d6e-a3c3-cb4ca27ff5f5",
+        "relationship--b5046891-d2c0-4497-a167-594f778517f8",
+        "relationship--253dbb93-c6f9-4839-8ce9-026c7b0a81e1",
+        "relationship--d70ebcc3-5640-423d-b9b0-7158c532c040",
+        "relationship--3bb540a4-c3be-478e-85e2-2a6c294c3dbd",
+        "relationship--4e726ced-0207-4196-8a14-4400c09b039e",
+        "relationship--b9736cd3-9482-4094-9178-1cde2b273aff",
+        "relationship--70205e3e-195d-4bd5-a208-ada6cdf143e3",
+        "relationship--6bb5a995-b874-4e17-88eb-38e00c8e5740",
+        "relationship--d4247377-5302-4ede-a0f2-579f7db67bb6",
+        "relationship--b8617e55-00c0-4066-8222-927846edcafe",
+        "relationship--f34d9e2e-715f-4baf-8226-40abfcb91012",
+        "relationship--937f310a-396a-403f-bb6f-400ad8920018",
+        "relationship--14a06709-3c0b-4e72-ad49-dd0f6d775e65",
+        "relationship--5f6c6509-ca0c-43db-8c0e-8e138f6d913c",
+        "relationship--ca99fa83-0d1b-4ddd-88c8-0dee38856a88",
+        "relationship--38a52125-130f-4ce7-9b38-f234553ba83d",
+        "relationship--e13b17d0-1fef-4f98-a4a8-895c3e4cf1e2",
+        "relationship--262a8234-d7e2-477a-baeb-ed65b639e33a",
+        "relationship--f4ceabc6-9302-4dc5-9cc1-4d40ef43503c",
+        "relationship--56b1023c-9e28-4449-8b4f-bc2adde45e1a",
+        "relationship--8997440e-00f5-48e1-8b56-69d3b6f9f1fd",
+        "relationship--80ac0601-0660-4057-b3b0-dca0fe35a6b4",
+        "relationship--2583921a-2f02-42c5-bd25-0f37eb2e6ef9",
+        "relationship--7231e729-42e3-4f29-ae6f-6d80192c4bd1",
+        "relationship--201ee2d5-74f4-4beb-b13a-34d948854655",
+        "relationship--afee4dc4-7d0e-450d-9164-4429649ab386",
+        "relationship--ed403d0d-b55d-4e78-94d3-4e035a045c39",
+        "relationship--4303ebf2-9590-4ec0-a702-e7bfff64bc5f",
+        "relationship--54f845bb-0967-4c0f-ac8a-8ad4785cbbe6",
+        "relationship--0bd19ca0-2bbb-4df0-92ec-59a4e9169c64",
+        "relationship--89ddeb74-ea26-44f9-bb6d-3f17c9d4efaa",
+        "relationship--eb400750-c866-47c3-89a2-fa6d1a90e9e7",
+        "relationship--7450856e-051f-4d49-953c-ad24f170af0e",
+        "relationship--1d6b0425-603d-4217-948a-fabb2a398450",
+        "relationship--1895dd86-dc46-4505-ba62-5724a1df2362",
+        "relationship--a4e0751d-8d59-4447-96ea-3799fecf66d7",
+        "relationship--258796f6-e46a-421a-b3f5-7db6114fb2bc",
+        "relationship--9431d9f9-6d8b-4373-b42c-172a663391b3",
+        "relationship--07d2f213-1794-483e-b95b-03761826c052",
+        "relationship--aa430e5b-0519-4e94-bc2c-8836d196acd7",
+        "relationship--c0786bd4-9c15-48ee-a19e-a9d6aba25d67",
+        "relationship--498b9f3b-488b-40d5-aaaf-e67b93c1d92b",
+        "relationship--d875538e-cc47-4353-a572-2dae27ef0a44",
+        "relationship--313d56c4-eef9-417e-952d-073690c20ee4",
+        "relationship--6b091c0f-a700-4f3e-9d98-0b8abf9a306b",
+        "relationship--5aff864a-1789-4df2-87fa-03ec43cf4fdd",
+        "relationship--325ebcb6-723c-4f50-8a32-aca18809e6eb",
+        "relationship--0cb9c725-3d55-4165-b2a9-9414d7933987",
+        "relationship--640a0454-57eb-408f-aa13-b5732b4d0b6f",
+        "relationship--41550302-6e95-4cf6-8d7c-d417a99d98dc",
+        "relationship--911dcbb0-96f4-4995-9961-5ea4b2fa7ce2",
+        "relationship--7b6ba584-fa87-4a6f-8c21-8123fa88db74",
+        "relationship--69101c2f-da92-47af-b402-7c60a39a982f",
+        "relationship--25055108-a2ae-4855-bd5f-6ab396aacbc5",
+        "relationship--44c80cab-73ce-4b17-a4cb-9a36e2585403",
+        "relationship--32655cb3-7455-4761-b1f2-0b82153a0540",
+        "relationship--fe963c8c-65a4-49ea-910b-e1cf3c80f1b4",
+        "relationship--4b0abf75-6f05-4bd5-8ac5-19778b245274",
+        "relationship--154049a5-731d-4e50-af13-f0f2c9b71f91",
+        "relationship--db55db06-499d-4867-9ab9-3ed4331eedb2",
+        "relationship--cc802697-7677-4bd7-a8b9-e728788ac783",
+        "relationship--a371be18-8ca5-4453-80f5-ae52d982c21b",
+        "relationship--9a3bd620-01b5-4764-beb0-f085417ed8f3",
+        "relationship--48906405-9980-4583-8559-2085c111bf89",
+        "relationship--13222c71-d8fa-4688-adae-c3f8ca43a41b",
+        "relationship--73c4529e-560e-4831-8497-a0db72f7dfd8",
+        "relationship--8d3e1ed6-7d9c-4aa5-b121-f4eb193312cf",
+        "relationship--2c11dcc0-7968-4c07-bdde-791a8f5e2e37",
+        "relationship--fd97d0ef-370e-4b6f-b2d3-8fb881aadc3f",
+        "relationship--c05d2410-848c-47e5-a94f-c64510e2b08d",
+        "relationship--92a21b52-2961-42aa-8b01-54ea294d9d73",
+        "relationship--76a9283a-b844-47a5-a5d0-b31859115f88",
+        "relationship--bbd3ba5c-2a75-4902-bd42-1215a2bc320e",
+        "relationship--4f784f2f-7d8e-4f12-9ddd-b685055f8076",
+        "relationship--263e38f4-8ecb-414f-b3c4-0f045d1be5ed",
+        "relationship--a56e8582-fc6e-4be8-bf35-7e939269d65e",
+        "relationship--d7d9952c-4443-4711-a48c-7009a0f0f8ea",
+        "relationship--78f110e6-2cd6-442e-971f-a2ff40c3b843",
+        "relationship--b2fb88f2-5ad7-4c07-b4b2-61986decb477"
+      ],
+      "description": "This report spotlights Poison Ivy (PIVY), a RAT that remains popular and effective a full eight years after its release, despite its age and familiarity in IT security circles. Poison Ivy is a remote access tool that is freely available for download from its official web site at www.poisonivy-rat.com. First released in 2005, the tool has gone unchanged since 2008 with version 2.3.2. Poison Ivy includes features common to most Windows-based RATs, including key logging, screen capturing, video capturing, file transfers, system administration, password theft, and traffic relaying. Poison Ivy's wide availability and easy-to-use features make it a popular choice for all kinds of criminals. But it is probably most notable for its role in many high profile, targeted APT attacks. These APTs pursue specific targets, using RATs to maintain a persistent presence within the target's network. They move laterally and escalate system privileges to extract sensitive information-whenever the attacker wants to do so. Because some RATs used in targeted attacks are widely available, determining whether an attack is part of a broader APT campaign can be difficult. Equally challenging is identifying malicious traffic to determine the attacker's post-compromise activities and assess overall damage - these RATs often encrypt their network communications after the initial exploit. In 2011, three years after the most recent release of PIVY, attackers used the RAT to compromise security firm RSA and steal data about its SecureID authentication system. That data was subsequently used in other attacks. The RSA attack was linked to Chinese threat actors and described at the time as extremely sophisticated. Exploiting a zero-day vulnerability, the attack delivered PIVY as the payload. It was not an isolated incident. The campaign appears to have started in 2010, with many other companies compromised. PIVY also played a key role in the 2011 campaign known as Nitro that targeted chemical makers, government agencies, defense contractors, and human rights groups. Still active a year later, the Nitro attackers used a zero-day vulnerability in Java to deploy PIVY in 2012. Just recently, PIVY  was the payload of a zero-day exploit in Internet Explorer used in what is known as a 'strategic web compromise' attack against visitors to a U.S. government website and a variety of others. RATs require live, direct, real-time human interaction by the APT attacker. This characteristic is distinctly different from crimeware (malware focused on cybercrime), where the criminal can issue commands to their botnet of compromised endpoints whenever they please and set them to work on a common goal such as a spam relay. In contrast, RATs are much more personal and may indicate that you are dealing with a dedicated threat actor that is interested in your organization specifically.",
+      "labels": [
+        "threat-report",
+        "malware"
+      ],
+      "created_by_ref": "identity--81cade27-7df8-4730-836b-62d880e6d9d3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--26c5311c-9d9b-4b9b-b3b5-bac10e16a7a3",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--752c225d-d6f6-4456-9130-d9580fd4007b",
+      "relationship_type": "uses",
+      "target_ref": "attack-pattern--19da6e1c-69a8-4c2f-886d-d620d09d3b5a"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--e794befc-3270-4050-b560-b6b080ab0418",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--d02a1560-ff69-49f4-ac34-919b8aa4b91e",
+      "relationship_type": "uses",
+      "target_ref": "attack-pattern--ea2c747d-4aa3-4573-8853-37b7159bc180"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--77a4c40e-3c33-43dc-8c78-04992ebcabf2",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "attack-pattern--fb6aa549-c94a-4e45-b4fd-7e32602dad85"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--134c393e-cbe0-433c-9a7a-95263ed8578f",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "course-of-action--70b3d5f6-374b-4488-8688-729b6eedac5b",
+      "relationship_type": "mitigates",
+      "target_ref": "malware--591f0cb7-d66f-4e14-a8e6-5927b597f920"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--a91f3d5c-ceac-44cf-b92b-efb819241606",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--752c225d-d6f6-4456-9130-d9580fd4007b",
+      "relationship_type": "uses",
+      "target_ref": "malware--61a62a6a-9a18-4758-8e52-622431c4b8ae"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--900b11dc-bfa7-4dea-adb6-0e8d726b4ded",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--e8094b09-7df4-4b13-b207-1e27af3c4bde",
+      "relationship_type": "indicates",
+      "target_ref": "malware--61a62a6a-9a18-4758-8e52-622431c4b8ae"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--8076ec7c-f6f6-4dca-a239-8bb6b5ad0c10",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--e8094b09-7df4-4b13-b207-1e27af3c4bde",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--752c225d-d6f6-4456-9130-d9580fd4007b"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--0dd66a71-c45b-4786-bd7b-92cf952afdc1",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--329ae6e9-25bd-49e8-89d1-aae4ca52e4a7",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--752c225d-d6f6-4456-9130-d9580fd4007b"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--dc37f2bb-1a45-48b1-864e-c34dcde75d1d",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--329ae6e9-25bd-49e8-89d1-aae4ca52e4a7",
+      "relationship_type": "indicates",
+      "target_ref": "malware--30ea087f-7d2b-496b-9ed1-5f000c8b7695"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--670ae011-1649-44e2-a63e-ead0b4a4cffd",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--8da68996-f175-4ae0-bd74-aad4913873b8",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--752c225d-d6f6-4456-9130-d9580fd4007b"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--1a2a3630-5764-4d6e-a3c3-cb4ca27ff5f5",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--8da68996-f175-4ae0-bd74-aad4913873b8",
+      "relationship_type": "indicates",
+      "target_ref": "malware--4de25c38-5826-4ee7-b84d-878064de87ad"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--b5046891-d2c0-4497-a167-594f778517f8",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--2e59f00b-0986-437e-9ebd-e0d61900d688",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--752c225d-d6f6-4456-9130-d9580fd4007b"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--253dbb93-c6f9-4839-8ce9-026c7b0a81e1",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--2e59f00b-0986-437e-9ebd-e0d61900d688",
+      "relationship_type": "indicates",
+      "target_ref": "malware--30ea087f-7d2b-496b-9ed1-5f000c8b7695"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--d70ebcc3-5640-423d-b9b0-7158c532c040",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--752c225d-d6f6-4456-9130-d9580fd4007b",
+      "relationship_type": "targets",
+      "target_ref": "vulnerability--c7cab3fb-0822-43a5-b1ba-c9bab34361a2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--3bb540a4-c3be-478e-85e2-2a6c294c3dbd",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--752c225d-d6f6-4456-9130-d9580fd4007b",
+      "relationship_type": "targets",
+      "target_ref": "vulnerability--6a2eab9c-9789-4437-812b-d74323fa3bca"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--4e726ced-0207-4196-8a14-4400c09b039e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--19da6e1c-69a8-4c2f-886d-d620d09d3b5a",
+      "relationship_type": "targets",
+      "target_ref": "vulnerability--c7cab3fb-0822-43a5-b1ba-c9bab34361a2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--b9736cd3-9482-4094-9178-1cde2b273aff",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--19da6e1c-69a8-4c2f-886d-d620d09d3b5a",
+      "relationship_type": "targets",
+      "target_ref": "vulnerability--6a2eab9c-9789-4437-812b-d74323fa3bca"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--70205e3e-195d-4bd5-a208-ada6cdf143e3",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--d02a1560-ff69-49f4-ac34-919b8aa4b91e",
+      "relationship_type": "targets",
+      "target_ref": "vulnerability--2b7f00d8-b133-4a92-9118-46ce5f8b2531"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--6bb5a995-b874-4e17-88eb-38e00c8e5740",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--d02a1560-ff69-49f4-ac34-919b8aa4b91e",
+      "relationship_type": "targets",
+      "target_ref": "vulnerability--4d7dc9cb-983f-40b4-b597-d7a38b2d9a4b"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--d4247377-5302-4ede-a0f2-579f7db67bb6",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--d02a1560-ff69-49f4-ac34-919b8aa4b91e",
+      "relationship_type": "targets",
+      "target_ref": "vulnerability--8323404c-1fdd-4272-822b-829f85556c53"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--b8617e55-00c0-4066-8222-927846edcafe",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--d02a1560-ff69-49f4-ac34-919b8aa4b91e",
+      "relationship_type": "uses",
+      "target_ref": "malware--dc669921-4a1a-470d-bfae-694e740ce181"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--f34d9e2e-715f-4baf-8226-40abfcb91012",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--d02a1560-ff69-49f4-ac34-919b8aa4b91e",
+      "relationship_type": "uses",
+      "target_ref": "malware--f86febd3-609b-4d2e-9fec-aa805cb498bf"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--937f310a-396a-403f-bb6f-400ad8920018",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--4e11b23f-732b-418e-b786-4dbf65459d50",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--d02a1560-ff69-49f4-ac34-919b8aa4b91e"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--14a06709-3c0b-4e72-ad49-dd0f6d775e65",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--4e11b23f-732b-418e-b786-4dbf65459d50",
+      "relationship_type": "indicates",
+      "target_ref": "malware--dc669921-4a1a-470d-bfae-694e740ce181"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--5f6c6509-ca0c-43db-8c0e-8e138f6d913c",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--b7fa7e73-e645-4813-9723-161bbd8dda62",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--d02a1560-ff69-49f4-ac34-919b8aa4b91e"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--ca99fa83-0d1b-4ddd-88c8-0dee38856a88",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--b7fa7e73-e645-4813-9723-161bbd8dda62",
+      "relationship_type": "indicates",
+      "target_ref": "malware--f86febd3-609b-4d2e-9fec-aa805cb498bf"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--38a52125-130f-4ce7-9b38-f234553ba83d",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--80c260d9-a075-4148-9301-ebe4af27f449"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--e13b17d0-1fef-4f98-a4a8-895c3e4cf1e2",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--b2f09ce0-2db4-480f-bd2f-073ddb3a0c87",
+      "relationship_type": "indicates",
+      "target_ref": "malware--80c260d9-a075-4148-9301-ebe4af27f449"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--262a8234-d7e2-477a-baeb-ed65b639e33a",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--b2f09ce0-2db4-480f-bd2f-073ddb3a0c87",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--f4ceabc6-9302-4dc5-9cc1-4d40ef43503c",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "targets",
+      "target_ref": "vulnerability--717cb1c9-eab3-4330-8340-e4858055aa80"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--56b1023c-9e28-4449-8b4f-bc2adde45e1a",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--fb6aa549-c94a-4e45-b4fd-7e32602dad85",
+      "relationship_type": "targets",
+      "target_ref": "vulnerability--717cb1c9-eab3-4330-8340-e4858055aa80"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--8997440e-00f5-48e1-8b56-69d3b6f9f1fd",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--9842a3b9-fc5b-44c4-bb48-578cf6f728d9",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--80ac0601-0660-4057-b3b0-dca0fe35a6b4",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--9842a3b9-fc5b-44c4-bb48-578cf6f728d9",
+      "relationship_type": "indicates",
+      "target_ref": "malware--3ed0364f-62c8-4ebc-b136-deaf6966880b"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--2583921a-2f02-42c5-bd25-0f37eb2e6ef9",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--3ed0364f-62c8-4ebc-b136-deaf6966880b"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--7231e729-42e3-4f29-ae6f-6d80192c4bd1",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--4e4c4ad7-4909-456a-b6fa-e24a6f682a40",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--201ee2d5-74f4-4beb-b13a-34d948854655",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--9842a3b9-fc5b-44c4-bb48-578cf6f728d9",
+      "relationship_type": "indicates",
+      "target_ref": "malware--17099f03-5ec8-456d-a2de-968aebaafc78"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--afee4dc4-7d0e-450d-9164-4429649ab386",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--17099f03-5ec8-456d-a2de-968aebaafc78"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--ed403d0d-b55d-4e78-94d3-4e035a045c39",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--137acf67-cedc-4a07-8719-72759174de3a",
+      "relationship_type": "indicates",
+      "target_ref": "malware--17099f03-5ec8-456d-a2de-968aebaafc78"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--4303ebf2-9590-4ec0-a702-e7bfff64bc5f",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--137acf67-cedc-4a07-8719-72759174de3a",
+      "relationship_type": "indicates",
+      "target_ref": "malware--3ed0364f-62c8-4ebc-b136-deaf6966880b"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--54f845bb-0967-4c0f-ac8a-8ad4785cbbe6",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--137acf67-cedc-4a07-8719-72759174de3a",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--0bd19ca0-2bbb-4df0-92ec-59a4e9169c64",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--137acf67-cedc-4a07-8719-72759174de3a",
+      "relationship_type": "indicates",
+      "target_ref": "malware--e14b6476-40b5-4b0b-bde7-0e856ab00b6c"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--89ddeb74-ea26-44f9-bb6d-3f17c9d4efaa",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--9695dc2f-d92a-4f2b-8b16-b0e21d7c631d",
+      "relationship_type": "indicates",
+      "target_ref": "malware--e14b6476-40b5-4b0b-bde7-0e856ab00b6c"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--eb400750-c866-47c3-89a2-fa6d1a90e9e7",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--9695dc2f-d92a-4f2b-8b16-b0e21d7c631d",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--7450856e-051f-4d49-953c-ad24f170af0e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--e14b6476-40b5-4b0b-bde7-0e856ab00b6c"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--1d6b0425-603d-4217-948a-fabb2a398450",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--7fd865ed-93e9-481f-953b-82ab386190ae",
+      "relationship_type": "indicates",
+      "target_ref": "malware--feaf146d-ea67-4eb1-946a-6f352ff79a81"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--1895dd86-dc46-4505-ba62-5724a1df2362",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--7fd865ed-93e9-481f-953b-82ab386190ae",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--a4e0751d-8d59-4447-96ea-3799fecf66d7",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--feaf146d-ea67-4eb1-946a-6f352ff79a81"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--258796f6-e46a-421a-b3f5-7db6114fb2bc",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--e5bc6507-d052-447f-93c7-db7ef32211da",
+      "relationship_type": "indicates",
+      "target_ref": "malware--13791e02-6621-45fb-8c10-f6b72e1bf553"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--9431d9f9-6d8b-4373-b42c-172a663391b3",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--e5bc6507-d052-447f-93c7-db7ef32211da",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--07d2f213-1794-483e-b95b-03761826c052",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--13791e02-6621-45fb-8c10-f6b72e1bf553"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--aa430e5b-0519-4e94-bc2c-8836d196acd7",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--fead5c52-9533-405c-b822-a034092a1ba8",
+      "relationship_type": "indicates",
+      "target_ref": "malware--703a15a7-eb85-475d-a27a-77d8fcf8f7b9"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--c0786bd4-9c15-48ee-a19e-a9d6aba25d67",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--fead5c52-9533-405c-b822-a034092a1ba8",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--498b9f3b-488b-40d5-aaaf-e67b93c1d92b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--703a15a7-eb85-475d-a27a-77d8fcf8f7b9"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--d875538e-cc47-4353-a572-2dae27ef0a44",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--9842a3b9-fc5b-44c4-bb48-578cf6f728d9",
+      "relationship_type": "indicates",
+      "target_ref": "malware--fade08cb-fa57-485e-97f8-fab5a1bd4460"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--313d56c4-eef9-417e-952d-073690c20ee4",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--fade08cb-fa57-485e-97f8-fab5a1bd4460"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--6b091c0f-a700-4f3e-9d98-0b8abf9a306b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--405ff732-2c35-4f46-9f78-2a632ce36e03",
+      "relationship_type": "indicates",
+      "target_ref": "malware--3050937d-6330-44c7-83ba-8821e1f7e7bd"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--5aff864a-1789-4df2-87fa-03ec43cf4fdd",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--405ff732-2c35-4f46-9f78-2a632ce36e03",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--325ebcb6-723c-4f50-8a32-aca18809e6eb",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--3050937d-6330-44c7-83ba-8821e1f7e7bd"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--0cb9c725-3d55-4165-b2a9-9414d7933987",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--4d58096e-b5c9-47d8-af9a-1af5f4762d6b",
+      "relationship_type": "indicates",
+      "target_ref": "malware--9d995717-edc3-4bd8-8554-aecf773bdecc"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--640a0454-57eb-408f-aa13-b5732b4d0b6f",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--4d58096e-b5c9-47d8-af9a-1af5f4762d6b",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--41550302-6e95-4cf6-8d7c-d417a99d98dc",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--9d995717-edc3-4bd8-8554-aecf773bdecc"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--911dcbb0-96f4-4995-9961-5ea4b2fa7ce2",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--9c725598-a160-4e91-8b93-ed0956709892",
+      "relationship_type": "indicates",
+      "target_ref": "malware--40e15fa5-df8d-4771-a682-21dab0a024fd"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--7b6ba584-fa87-4a6f-8c21-8123fa88db74",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--9c725598-a160-4e91-8b93-ed0956709892",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--69101c2f-da92-47af-b402-7c60a39a982f",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--40e15fa5-df8d-4771-a682-21dab0a024fd"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--25055108-a2ae-4855-bd5f-6ab396aacbc5",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--2efe7c62-1b96-4568-81ee-c85b840bde39",
+      "relationship_type": "indicates",
+      "target_ref": "malware--69101c2f-da92-47af-b402-7c60a39a982f"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--44c80cab-73ce-4b17-a4cb-9a36e2585403",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--2efe7c62-1b96-4568-81ee-c85b840bde39",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--32655cb3-7455-4761-b1f2-0b82153a0540",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--69101c2f-da92-47af-b402-7c60a39a982f"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--fe963c8c-65a4-49ea-910b-e1cf3c80f1b4",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--b8322c9b-8031-4fb3-9cbc-8a1ea0fe3cfa",
+      "relationship_type": "indicates",
+      "target_ref": "malware--1601b8c2-5e6f-4a18-a413-10527e5d90b7"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--4b0abf75-6f05-4bd5-8ac5-19778b245274",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--b8322c9b-8031-4fb3-9cbc-8a1ea0fe3cfa",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--154049a5-731d-4e50-af13-f0f2c9b71f91",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--1601b8c2-5e6f-4a18-a413-10527e5d90b7"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--db55db06-499d-4867-9ab9-3ed4331eedb2",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--b08f9631-dd94-4d99-a96c-32b42af2ea81",
+      "relationship_type": "indicates",
+      "target_ref": "malware--626badcc-4257-4222-946c-6d6e889836ea"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cc802697-7677-4bd7-a8b9-e728788ac783",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--b08f9631-dd94-4d99-a96c-32b42af2ea81",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--a371be18-8ca5-4453-80f5-ae52d982c21b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--626badcc-4257-4222-946c-6d6e889836ea"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--9a3bd620-01b5-4764-beb0-f085417ed8f3",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--137acf67-cedc-4a07-8719-72759174de3a",
+      "relationship_type": "indicates",
+      "target_ref": "malware--3b275ed1-9c2e-4443-b1dd-5cfb51eaef2e"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--48906405-9980-4583-8559-2085c111bf89",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--3b275ed1-9c2e-4443-b1dd-5cfb51eaef2e"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--13222c71-d8fa-4688-adae-c3f8ca43a41b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--137acf67-cedc-4a07-8719-72759174de3a",
+      "relationship_type": "indicates",
+      "target_ref": "malware--f138b6e0-9a7d-4cd9-a904-08a7df2eabb1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--73c4529e-560e-4831-8497-a0db72f7dfd8",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--f138b6e0-9a7d-4cd9-a904-08a7df2eabb1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--8d3e1ed6-7d9c-4aa5-b121-f4eb193312cf",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--950c01b8-c647-4cc8-b0c1-3612fa780108",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--2c11dcc0-7968-4c07-bdde-791a8f5e2e37",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--302ac5b5-486c-4c99-8cad-4426aeaf47b6"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--fd97d0ef-370e-4b6f-b2d3-8fb881aadc3f",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--950c01b8-c647-4cc8-b0c1-3612fa780108",
+      "relationship_type": "indicates",
+      "target_ref": "malware--302ac5b5-486c-4c99-8cad-4426aeaf47b6"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--c05d2410-848c-47e5-a94f-c64510e2b08d",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--ae29faa6-5f70-4eb8-981b-30818433a52e",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--92a21b52-2961-42aa-8b01-54ea294d9d73",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--e1c02dca-d3fe-48f1-bb4b-3cacd2bc3619"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--76a9283a-b844-47a5-a5d0-b31859115f88",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--ae29faa6-5f70-4eb8-981b-30818433a52e",
+      "relationship_type": "indicates",
+      "target_ref": "malware--e1c02dca-d3fe-48f1-bb4b-3cacd2bc3619"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--bbd3ba5c-2a75-4902-bd42-1215a2bc320e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--137acf67-cedc-4a07-8719-72759174de3a",
+      "relationship_type": "indicates",
+      "target_ref": "malware--e1c02dca-d3fe-48f1-bb4b-3cacd2bc3619"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--4f784f2f-7d8e-4f12-9ddd-b685055f8076",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--b6cc482d-89db-4e6b-a592-723070f6d22d",
+      "relationship_type": "indicates",
+      "target_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--263e38f4-8ecb-414f-b3c4-0f045d1be5ed",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "campaign--721976f9-56d7-4749-8c69-b3ac7c315f05",
+      "relationship_type": "uses",
+      "target_ref": "malware--a4f315bd-e159-4bfb-8439-0d5a8330fc70"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--a56e8582-fc6e-4be8-bf35-7e939269d65e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--b6cc482d-89db-4e6b-a592-723070f6d22d",
+      "relationship_type": "indicates",
+      "target_ref": "malware--a4f315bd-e159-4bfb-8439-0d5a8330fc70"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--d7d9952c-4443-4711-a48c-7009a0f0f8ea",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--137acf67-cedc-4a07-8719-72759174de3a",
+      "relationship_type": "indicates",
+      "target_ref": "malware--a4f315bd-e159-4bfb-8439-0d5a8330fc70"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--78f110e6-2cd6-442e-971f-a2ff40c3b843",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--0b71628d-31dd-4eb8-baee-39f19c0a14b0",
+      "relationship_type": "indicates",
+      "target_ref": "malware--40e15fa5-df8d-4771-a682-21dab0a024fd"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--b2fb88f2-5ad7-4c07-b4b2-61986decb477",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--0b71628d-31dd-4eb8-baee-39f19c0a14b0",
+      "relationship_type": "indicates",
+      "target_ref": "malware--69101c2f-da92-47af-b402-7c60a39a982f"
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--atgvtgtyhyt",
+      "created": "2014-02-20T09:16:08.989000Z",
+      "modified": "2014-02-20T09:16:08.989000Z",
+      "pattern": "[file:hashes.'SHA-256' = 'ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c']",
+      "valid_from": "2014-02-20T09:00:00.000000Z",
+      "name": "File hash for Poison Ivy variant",
+      "labels": [
+        "malicious-activity"
+      ],
+      "description": "This file hash indicates that a sample of Poison Ivy is present."
+    },
+    {
+      "type": "malware",
+      "id": "malware--fdd60b30-b67c-11e3-b0b9-f01faf20d111",
+      "created": "2014-02-20T09:16:08.989000Z",
+      "modified": "2014-02-20T09:16:08.989000Z",
+      "name": "Poison Ivy",
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--f191e70e-1736-47c3-b0f9-fdfe01387eb1",
+      "created": "2014-02-20T09:16:08.989000Z",
+      "modified": "2014-02-20T09:16:08.989000Z",
+      "source_ref": "indicator--a932fcc6-e032-176c-126f-cb970a5a1ade",
+      "relationship_type": "indicates",
+      "target_ref": "malware--fdd60b30-b67c-11e3-b0b9-f01faf20d111"
+    },
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--da1065ce-972c-4605-8755-9cd1074e3b5a",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "APT1",
+      "description": "APT1 is a single organization of operators that has conducted a cyber espionage campaign against a broad range of victims since at least 2006.",
+      "aliases": [
+        "Comment Crew",
+        "Comment Group",
+        "Shady Rat"
+      ],
+      "first_seen": "2006-06-01T18:13:15.684Z",
+      "resource_level": "government",
+      "primary_motivation": "organizational-gain"
+    },
+    {
+      "type": "threat-actor",
+      "id": "threat-actor--6d179234-61fc-40c4-ae86-3d53308d8e65",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Ugly Gorilla",
+      "labels": [
+        "nation-state",
+        "spy"
+      ],
+      "aliases": [
+        "Greenfield",
+        "JackWang",
+        "Wang Dong"
+      ],
+      "roles": [
+        "malware-author",
+        "agent",
+        "infrastructure-operator"
+      ],
+      "resource_level": "government",
+      "primary_motivation": "organizational-gain"
+    },
+    {
+      "type": "threat-actor",
+      "id": "threat-actor--d84cf283-93be-4ca7-890d-76c63eff3636",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "DOTA",
+      "labels": [
+        "nation-state",
+        "spy"
+      ],
+      "aliases": [
+        "dota",
+        "Rodney",
+        "Raith"
+      ],
+      "roles": [
+        "agent",
+        "infrastructure-operator"
+      ],
+      "resource_level": "government",
+      "primary_motivation": "organizational-gain"
+    },
+    {
+      "type": "threat-actor",
+      "id": "threat-actor--02e7c48f-0301-4c23-b3e4-02e5a0114c21",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "SuperHard",
+      "labels": [
+        "nation-state"
+      ],
+      "aliases": [
+        "dota",
+        "Rodney",
+        "Raith"
+      ],
+      "roles": [
+        "malware-author"
+      ],
+      "sophistication": "expert",
+      "resource_level": "government",
+      "primary_motivation": "organizational-gain"
+    },
+    {
+      "type": "threat-actor",
+      "id": "threat-actor--d5b62b58-df7c-46b1-a435-4d01945fe21d",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Communist Party of China",
+      "labels": [
+        "nation-state"
+      ],
+      "description": " The CPC is the ultimate authority in Mainland China and tasks the PLA to commit cyber espionage and data theft against organizations around the world.",
+      "aliases": [
+        "CPC"
+      ],
+      "roles": [
+        "sponsor",
+        "director"
+      ],
+      "resource_level": "government",
+      "primary_motivation": "organizational-gain"
+    },
+    {
+      "type": "threat-actor",
+      "id": "threat-actor--94624865-2709-443f-9b4c-2891985fd69b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Unit 61398",
+      "labels": [
+        "nation-state"
+      ],
+      "description": "Unit 61398 functions as the Third Department's premier entity targeting the United States and Canada, most likely focusing on political, economic, and military-related intelligence.",
+      "aliases": [
+        "PLA GSD's 3rd Department, 2nd Bureau",
+        "Military Unit Cover Designator (MUCD) 61398"
+      ],
+      "roles": [
+        "agent"
+      ],
+      "resource_level": "government",
+      "primary_motivation": "organizational-gain"
+    },
+    {
+      "type": "identity",
+      "id": "identity--a9119a87-6576-46af-bfd7-4fbe55926671",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "JackWang",
+      "identity_class": "individual",
+      "sectors": [
+        "government-national"
+      ],
+      "contact_information": "uglygorilla@163.com"
+    },
+    {
+      "type": "identity",
+      "id": "identity--e88ab115-7768-4630-baa3-3d49a7d946ea",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Wang Dong",
+      "identity_class": "individual",
+      "sectors": [
+        "government-national"
+      ],
+      "contact_information": "uglygorilla@163.com"
+    },
+    {
+      "type": "identity",
+      "id": "identity--0e9d20d9-fb11-42e3-94bc-b89fb5b007ca",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "dota",
+      "identity_class": "individual",
+      "sectors": [
+        "government-national"
+      ],
+      "contact_information": "dota.d013@gmail.com"
+    },
+    {
+      "type": "identity",
+      "id": "identity--ecf1c7de-d96c-41c6-a510-b9c65cdc9e3b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Mei Qiang",
+      "identity_class": "individual",
+      "sectors": [
+        "government-national"
+      ],
+      "contact_information": "mei_qiang_82@sohu.com"
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--031778a4-057f-48e6-9db9-c8d72b81ccd5",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[ipv4-addr:value = '223.166.0.0/15']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "HTRAN Hop Point Accessor",
+      "labels": [
+        "malicious-activity"
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "establish-foothold"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--da1d061b-2bc9-467a-b16f-8d14f468e1f0",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[ipv4-addr:value = '58.246.0.0/15']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "HTRAN Hop Point Accessor",
+      "labels": [
+        "malicious-activity"
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "establish-foothold"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--2173d108-5714-42fd-8213-4f3790259fda",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[ipv4-addr:value = '112.64.0.0/15']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "HTRAN Hop Point Accessor",
+      "labels": [
+        "malicious-activity"
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "establish-foothold"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--8ce03314-dfea-4498-ac9b-136e41ab00e4",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[ipv4-addr:value = '139.226.0.0/15']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "HTRAN Hop Point Accessor",
+      "labels": [
+        "malicious-activity"
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "establish-foothold"
+        }
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--3f3ff9f1-bb4e-4392-89e5-1991179042ba",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'hugesoft.org']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "FQDN hugesoft.org",
+      "labels": [
+        "malicious-activity"
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--8390fd29-24ed-45d4-84d7-c5e5feaf195d",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'arrowservice.net']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "FQDN arrowservice.net",
+      "labels": [
+        "malicious-activity"
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--1002c58e-cbde-4930-b5ee-490037fd4f7e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[domain-name:value = 'msnhome.org']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "FQDN msnhome.org",
+      "labels": [
+        "malicious-activity"
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--8d12f44f-8ac0-4b12-8b4a-3699ca8c9691",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[file:hashes.md5 = '001dd76872d80801692ff942308c64e6']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "Appendix E MD5 hash '001dd76872d80801692ff942308c64e6'",
+      "labels": [
+        "malicious-activity"
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--745e1537-b4f3-49da-9f64-df6b1b5df190",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[file:hashes.md5 = '002325a0a67fded0381b5648d7fe9b8e']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "Appendix E MD5 hash '002325a0a67fded0381b5648d7fe9b8e'",
+      "labels": [
+        "malicious-activity"
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--1dbe6ed0-c305-458f-9cce-f83c678f5afd",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[file:hashes.md5 = '00dbb9e1c09dbdafb360f3163ba5a3de']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "Appendix E MD5 hash '00dbb9e1c09dbdafb360f3163ba5a3de'",
+      "labels": [
+        "malicious-activity"
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--b3b6b540-d838-11e2-853b-005056c00008",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[x509-certificate:issuer = 'CN=WEBMAIL' AND x509-certificate:serial_number = '4c:0b:1d:19:74:86:a7:66:b4:1a:bf:40:27:21:76:28']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "Appendix F SSL Certificate for serial number '(Negative)4c:0b:1d:19:74:86:a7:66:b4:1a:bf:40:27:21:76:28'",
+      "labels": [
+        "malicious-activity"
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--b3b7035e-d838-11e2-8d38-005056c00008",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "pattern": "[x509-certificate:issuer = 'CN=LM-68AB71FBD8F5' AND x509-certificate:serial_number = '0e:97:88:1c:6c:a1:37:96:42:03:bc:45:42:24:75:6c']",
+      "valid_from": "2015-05-15T09:12:16.432678Z",
+      "name": "Appendix F SSL Certificate for serial number '0e:97:88:1c:6c:a1:37:96:42:03:bc:45:42:24:75:6c'",
+      "labels": [
+        "malicious-activity"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--2485b844-4efe-4343-84c8-eb33312dd56f",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "MANITSME",
+      "description": "This malware will beacon out at random intervals to the remote attacker. The attacker can run programs, execute arbitrary commands, and easily upload and download files.",
+      "labels": [
+        "backdoor",
+        "dropper",
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--c0217091-9d3d-42a1-8952-ccc12d4ad8d0",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "WEBC2-UGX",
+      "description": "A WEBC2 backdoor is designed to retrieve a Web page from a C2 server. It expects the page to contain special HTML tags; the backdoor will attempt to interpret the data between the tags as commands.",
+      "labels": [
+        "backdoor",
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--0f01c5a3-f516-4450-9381-4dd9f2279411",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "WEBC2 Backdoor",
+      "description": "A WEBC2 backdoor is designed to retrieve a Web page from a C2 server. It expects the page to contain special HTML tags; the backdoor will attempt to interpret the data between the tags as commands.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "establish-foothold"
+        }
+      ],
+      "labels": [
+        "backdoor",
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--33159b98-3264-4e10-a968-d67975b6272f",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "HUC Packet Transmit Tool (HTRAN)",
+      "description": "When APT1 attackers are not using WEBC2, they require a “command and control” (C2) user interface so they can issue commands to the backdoor. This interface sometimes runs on their personal attack system, which is typically in Shanghai. In these instances, when a victim backdoor makes contact with a hop, the communications need to be forwarded from the hop to the intruder’s Shanghai system so the backdoor can talk to the C2 server software. We have observed 767 separate instances in which APT1 intruders used the publicly available “HUC Packet Transmit Tool” or HTRAN on a hopThe HTRAN utility is merely a middle-man, facilitating connections between the victim and the attacker who is using the hop point.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "establish-foothold"
+        }
+      ],
+      "labels": [
+        "backdoor",
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--fb490cdb-6760-41eb-a79b-0b930a50c017",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "AURIGA",
+      "description": "Malware family that contains functionality for keystroke logging, creating and killing processes, performing file system and registry modifications, etc.",
+      "labels": [
+        "backdoor",
+        "keylogger"
+      ]
+    },
+    {
+      "type": "malware",
+      "id": "malware--ea50ecb7-2cd4-4895-bd08-31cd591ed0ca",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "BANGAT",
+      "description": "Malware family that contains functionality for keylogging, creating and killing processes, performing filesystem and registry modifications, etc.",
+      "labels": [
+        "backdoor",
+        "keylogger"
+      ]
+    },
+    {
+      "type": "tool",
+      "id": "tool--ce45f721-af14-4fc0-938c-000c16186418",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "cachedump",
+      "labels": [
+        "credential-exploitation"
+      ],
+      "description": "This program extracts cached password hashes from a system’s registry.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "escalate-privileges"
+        }
+      ]
+    },
+    {
+      "type": "tool",
+      "id": "tool--e9778c42-bc2f-4eda-9fb4-6a931834f68c",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "fgdump",
+      "labels": [
+        "credential-exploitation"
+      ],
+      "description": "Windows password hash dumper",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "escalate-privileges"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "fgdump",
+          "url": "http://www.foofus.net/fizzgig/fgdump/"
+        }
+      ]
+    },
+    {
+      "type": "tool",
+      "id": "tool--1cf6a3b8-be43-4c1a-b042-546a890c31b2",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "gsecdump",
+      "labels": [
+        "credential-exploitation"
+      ],
+      "description": "Obtains password hashes from the Windows registry, including the SAM file, cached domain credentials, and LSA secrets",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "escalate-privileges"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "gsecdump",
+          "url": "http://www.truesec.se"
+        }
+      ]
+    },
+    {
+      "type": "tool",
+      "id": "tool--4d82bd3e-24a3-4f9d-b8f3-b57267fe06a9",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "lslsass",
+      "labels": [
+        "credential-exploitation"
+      ],
+      "description": "Dump active logon session password hashes from the lsass process",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "escalate-privileges"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "lslsass",
+          "url": "http://www.truesec.se"
+        }
+      ]
+    },
+    {
+      "type": "tool",
+      "id": "tool--7de5dfcc-6809-4772-9f11-cf26c2be53aa",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "mimikatz",
+      "labels": [
+        "credential-exploitation"
+      ],
+      "description": "A utility primarily used for dumping password hashes",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "escalate-privileges"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "mimikatz",
+          "url": "http://blog.gentilkiwi.com/mimikatz"
+        }
+      ]
+    },
+    {
+      "type": "tool",
+      "id": "tool--266b12f2-aa16-4607-809e-f2d33eebb52e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "pass-the-hash toolkit",
+      "labels": [
+        "credential-exploitation"
+      ],
+      "description": "Allows an intruder to “pass” a password hash (without knowing the original password) to log in to systems",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "escalate-privileges"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "pass-the-hash toolkit",
+          "url": "http://oss.coresecurity.com/projects/pshtoolkit.htm"
+        }
+      ]
+    },
+    {
+      "type": "tool",
+      "id": "tool--98fd8dc1-6cc7-4908-899f-07473f55149a",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "pwdump7",
+      "labels": [
+        "credential-exploitation"
+      ],
+      "description": "Dumps password hashes from the Windows registry",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "escalate-privileges"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "pwdump7",
+          "url": "http://www.tarasco.org/security/pwdump_7/"
+        }
+      ]
+    },
+    {
+      "type": "tool",
+      "id": "tool--4215b0e5-928e-4b2a-9b5f-64819f287f48",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "pwdumpX",
+      "labels": [
+        "credential-exploitation"
+      ],
+      "description": "Dumps password hashes from the Windows registry",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "escalate-privileges"
+        }
+      ]
+    },
+    {
+      "type": "tool",
+      "id": "tool--a6dd62d0-9683-48bf-a9cd-61e7eceae57e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "GETMAIL",
+      "labels": [
+        "information-gathering"
+      ],
+      "description": "GETMAIL was designed specifically to extract email messages, attachments, and folders from within Microsoft Outlook archive (“PST”) files.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "complete-mission"
+        }
+      ]
+    },
+    {
+      "type": "tool",
+      "id": "tool--806a8f83-4913-4216-bb19-02b48ae25da5",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "MAPIGET",
+      "labels": [
+        "information-gathering"
+      ],
+      "description": "MAPIGET was designed specifically to steal email that has not yet been archived and still resides on a Microsoft Exchange Server.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "complete-mission"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--3098c57b-d623-4c11-92f4-5905da66658b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Initial Compromise",
+      "description": "As with most other APT groups, spear phishing is APT1’s most commonly used technique. The spear phishing emails contain either a malicious attachment or a hyperlink to a malicious file. The subject line and the text in the email body are usually relevant to the recipient. APT1 also creates webmail accounts using real peoples’ names — names that are familiar to the recipient, such as a colleague, a company executive, an IT department employee, or company counsel. The files they use contain malicious executables that install a custom APT1 backdoor that we call WEBC2-TABLE.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "initial-compromise"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "capec",
+          "description": "spear phishing",
+          "external_id": "CAPEC-163"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--1e2c4237-d469-4144-9c0b-9e5c0c513c49",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Establishing a Foothold",
+      "description": "APT1 establishes a foothold once email recipients open a malicious file and a backdoor is subsequently installed.  In almost every case, APT backdoors initiate outbound connections to the intruder’s 'command and control' (C2) server. While APT1 intruders occasionally use publicly available backdoors such as Poison Ivy and Gh0st RAT, the vast majority of the time they use what appear to be their own custom backdoors. APT1’s backdoors are in two categories: 'Beachhead Backdoors' and 'Standard Backdoors.' Beachhead Backdoors offer the attacker a toe-hold to perform simple tasks like retrieve files, gather basic system information and trigger the execution of other more significant capabilities such as a standard backdoor. APT1’s beachhead backdoors are usually what we call WEBC2 backdoors. WEBC2 backdoors are probably the most well-known kind of APT1 backdoor, and are the reason why some security companies refer to APT1 as the Comment Crew. A WEBC2 backdoor is designed to retrieve a webpage from a C2 server. It expects the webpage to contain special HTML tags; the backdoor will attempt to interpret the data between the tags as commands. WEBC2 backdoors are often packaged with spear phishing emails. Once installed, APT1 intruders have the option to tell victim systems to download and execute additional malicious software of their choice. The standard, non-WEBC2 APT1 backdoor typically communicates using the HTTP protocol (to blend in with legitimate web traffic) or a custom protocol that the malware authors designed themselves. The BISCUIT backdoor (so named for the command “bdkzt”) is an illustrative example of the range of commands that APT1 has built into its “standard” backdoors. APT1 has used and steadily modified BISCUIT since as early as 2007 and continues to use it presently. Some APT backdoors attempt to mimic legitimate Internet traffic other than the HTTP protocol. When network defenders see the communications between these backdoors and their C2 servers, they might easily dismiss them as legitimate network traffic. Additionally, many of APT1’s backdoors use SSL encryption so that communications are hidden in an encrypted SSL tunnel.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "establish-foothold"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--e13f3e6d-4f9c-4265-b1cf-f997a1bf7827",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Privilege Escalation",
+      "description": "Escalating privileges involves acquiring items (most often usernames and passwords) that will allow access to more resources within the network. APT1 predominantly uses publicly available tools to dump password hashes from victim systems in order to obtain legitimate user credentials.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "escalate-privileges"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--5728f45b-2eca-4942-a7f6-bc4267c1ab8d",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Internal Reconnaisance",
+      "description": "In the Internal Reconnaissance stage, the intruder collects information about the victim environment. Like most APT (and non-APT) intruders, APT1 primarily uses built-in operating system commands to explore a compromised system and its networked environment. Although they usually simply type these commands into a command shell, sometimes intruders may use batch scripts to speed up the process.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "internal-recon"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--0bea2358-c244-4905-a664-a5cdce7bb767",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Lateral Movement",
+      "description": "Once an APT intruder has a foothold inside the network and a set of legitimate credentials, it is simple for the intruder to move around the network undetected. They can connect to shared resources on other systems. They can execute commands on other systems using the publicly available 'psexec' tool from Microsoft Sysinternals or the built-in Windows Task Scheduler ('at.exe').",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "move-laterally"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--7151c6d0-7e97-47ce-9290-087315ea3db7",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Maintain Presence",
+      "description": "In this stage, the intruder takes actions to ensure continued, long-term control over key systems in the network environment from outside of the network. APT1 does this in three ways: Install new backdoors on multiple systems, use legitimate VPN credentials, and log in to web portals.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "maintain-presence"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--0781fe70-4c94-4300-8865-4b08b98611b4",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "Completing the Mission",
+      "description": "Similar to other APT groups we track, once APT1 finds files of interest they pack them into archive files before stealing them. APT intruders most commonly use the RAR archiving utility for this task and ensure that the archives are password protected. Sometimes APT1 intruders use batch scripts to assist them in the process. After creating files compressed via RAR, the APT1 attackers will transfer files out of the network in ways that are consistent with other APT groups, including using the File Transfer Protocol (FTP) or their existing backdoors. Many times their RAR files are so large that the attacker splits them into chunks before transferring them. Unlike most other APT groups we track, APT1 uses two email-stealing utilities that we believe are unique to APT1. The first, GETMAIL, was designed specifically to extract email messages, attachments, and folders from within Microsoft Outlook archive ('PST') files. The GETMAIL utility allows APT1 intruders the flexibility to take only the emails between dates of their choice. In one case, we observed an APT1 intruder return to a compromised system once a week for four weeks in a row to steal only the past week’s emails. Whereas GETMAIL steals email in Outlook archive files, the second utility, MAPIGET, was designed specifically to steal email that has not yet been archived and still resides on a Microsoft Exchange Server. In order to operate successfully, MAPIGET requires username/password combinations that the Exchange server will accept. MAPIGET extracts email from specified accounts into text files (for the email body) and separate attachments, if there are any.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "complete-mission"
+        }
+      ]
+    },
+    {
+      "type": "report",
+      "id": "report--e33ffe07-2f4c-48d8-b0af-ee2619d765cf",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "name": "APT1: Exposing One of China's Cyber Espionage Units",
+      "published": "2013-02-19T00:00:00.000000Z",
+      "object_refs": [
+        "attack-pattern--3098c57b-d623-4c11-92f4-5905da66658b",
+        "attack-pattern--1e2c4237-d469-4144-9c0b-9e5c0c513c49",
+        "attack-pattern--e13f3e6d-4f9c-4265-b1cf-f997a1bf7827",
+        "attack-pattern--5728f45b-2eca-4942-a7f6-bc4267c1ab8d",
+        "attack-pattern--0bea2358-c244-4905-a664-a5cdce7bb767",
+        "attack-pattern--7151c6d0-7e97-47ce-9290-087315ea3db7",
+        "attack-pattern--0781fe70-4c94-4300-8865-4b08b98611b4",
+        "identity--a9119a87-6576-46af-bfd7-4fbe55926671",
+        "identity--e88ab115-7768-4630-baa3-3d49a7d946ea",
+        "identity--0e9d20d9-fb11-42e3-94bc-b89fb5b007ca",
+        "identity--ecf1c7de-d96c-41c6-a510-b9c65cdc9e3b",
+        "indicator--031778a4-057f-48e6-9db9-c8d72b81ccd5",
+        "indicator--da1d061b-2bc9-467a-b16f-8d14f468e1f0",
+        "indicator--2173d108-5714-42fd-8213-4f3790259fda",
+        "indicator--8ce03314-dfea-4498-ac9b-136e41ab00e4",
+        "indicator--3f3ff9f1-bb4e-4392-89e5-1991179042ba",
+        "indicator--8390fd29-24ed-45d4-84d7-c5e5feaf195d",
+        "indicator--1002c58e-cbde-4930-b5ee-490037fd4f7e",
+        "indicator--8d12f44f-8ac0-4b12-8b4a-3699ca8c9691",
+        "indicator--745e1537-b4f3-49da-9f64-df6b1b5df190",
+        "indicator--1dbe6ed0-c305-458f-9cce-f83c678f5afd",
+        "indicator--b3b6b540-d838-11e2-853b-005056c00008",
+        "indicator--b3b7035e-d838-11e2-8d38-005056c00008",
+        "intrusion-set--da1065ce-972c-4605-8755-9cd1074e3b5a",
+        "malware--2485b844-4efe-4343-84c8-eb33312dd56f",
+        "malware--c0217091-9d3d-42a1-8952-ccc12d4ad8d0",
+        "malware--0f01c5a3-f516-4450-9381-4dd9f2279411",
+        "malware--33159b98-3264-4e10-a968-d67975b6272f",
+        "malware--fb490cdb-6760-41eb-a79b-0b930a50c017",
+        "malware--ea50ecb7-2cd4-4895-bd08-31cd591ed0ca",
+        "threat-actor--6d179234-61fc-40c4-ae86-3d53308d8e65",
+        "threat-actor--d84cf283-93be-4ca7-890d-76c63eff3636",
+        "threat-actor--02e7c48f-0301-4c23-b3e4-02e5a0114c21",
+        "threat-actor--d5b62b58-df7c-46b1-a435-4d01945fe21d",
+        "threat-actor--94624865-2709-443f-9b4c-2891985fd69b",
+        "tool--ce45f721-af14-4fc0-938c-000c16186418",
+        "tool--e9778c42-bc2f-4eda-9fb4-6a931834f68c",
+        "tool--1cf6a3b8-be43-4c1a-b042-546a890c31b2",
+        "tool--4d82bd3e-24a3-4f9d-b8f3-b57267fe06a9",
+        "tool--7de5dfcc-6809-4772-9f11-cf26c2be53aa",
+        "tool--266b12f2-aa16-4607-809e-f2d33eebb52e",
+        "tool--4215b0e5-928e-4b2a-9b5f-64819f287f48",
+        "tool--a6dd62d0-9683-48bf-a9cd-61e7eceae57e",
+        "tool--806a8f83-4913-4216-bb19-02b48ae25da5",
+        "tool--98fd8dc1-6cc7-4908-899f-07473f55149a",
+        "relationship--6598bf44-1c10-4218-af9f-75b5b71c23a7",
+        "relationship--35f7a2bb-e4e2-4e56-8693-665bbb64162c",
+        "relationship--fd5cda8b-f45f-43bd-a9da-e521ddd7126e",
+        "relationship--a20b8626-a15e-41f0-bcb1-c05321e126f0",
+        "relationship--d84cf283-93be-4ca7-890d-76c63eff3636",
+        "relationship--71e6832f-17ee-42fd-938d-c7f881be2028",
+        "relationship--9dd881a7-6e9b-4c35-bef5-7a777bca65d3",
+        "relationship--306ce398-f708-47f9-88a1-38aa5b9985fc",
+        "relationship--8668d82a-1c97-4bea-a367-e391b025e00e",
+        "relationship--e0ca2caa-7fa0-4f36-ad19-96f107eb6023",
+        "relationship--765815fb-d993-4a1d-959f-7f7bcc4a5eb3",
+        "relationship--85b2a834-e4b5-4299-9a6b-bf2ac26dde7b",
+        "relationship--61f4fd3b-f581-4497-9149-e624c317287b",
+        "relationship--7cede760-b866-490e-ad5b-1df34bc14f8d",
+        "relationship--b2806dec-6f20-4a0d-ae9a-d4b1f7be71e3",
+        "relationship--3921b161-5872-4c21-8ab0-b5b84233f3dc",
+        "relationship--81827b05-8c20-4247-b5d8-674295a1c611",
+        "relationship--066593e1-49a4-4a3d-a5bb-2e0b4ce1a63c",
+        "relationship--b385d984-ba8a-4180-8e0e-af7b9987bcb8",
+        "relationship--6ffbec81-fa01-4b98-8726-c9d9fb2ef6b6",
+        "relationship--25586f60-bc27-47d6-9a8e-d1c6456c2f28",
+        "relationship--d080c1ea-1dd7-4da9-b64b-e68bb1c5887e",
+        "relationship--c9c66478-c9cf-49cd-bca2-66ce34a9c56d",
+        "relationship--44686fda-311c-4cdb-abef-80e922e7a3fb",
+        "relationship--340cb676-79ff-49e9-b6ba-cd27e06772c4",
+        "relationship--9908520f-b25d-44a8-900b-d4e0825dcd0d",
+        "relationship--1fbd9a8d-4c14-431c-9520-3ccc50b748c1",
+        "relationship--389a8dcd-8663-4f18-8584-d69a77bd71aa",
+        "relationship--b345f1d0-09c5-4a71-bfc6-a52bd5923a01",
+        "relationship--912b31d0-09c5-4a71-bfc6-a52bd5989a1b"
+      ],
+      "description": "Since 2004, Mandiant has investigated computer security breaches at hundreds of organizations around the world. The majority of these security breaches are attributed to advanced threat actors referred to as the 'Advanced Persistent Threat' (APT). We first published details about the APT in our January 2010 M-Trends report. As we stated in the report, our position was that 'The Chinese government may authorize this activity, but theres no way to determine the\textent of its involvement.' Now, three years later, we have the evidence required to change our assessment. The details\twe have analyzed during hundreds of investigations convince us that the groups conducting these activities are based primarily in China and that the Chinese Government is aware of them. Mandiant continues to track dozens of APT groups around the world; however, this report is focused on the most prolific of these groups. We refer to this group as 'APT1' and it is one of more than 20 APT groups with origins in China. APT1 is a single organization of operators that has conducted a cyber espionage campaign against a broad range of victims since at least 2006. From our observations, it is one of the most prolific cyber espionage groups in terms of the sheer quantity of information stolen. The scale and impact of APT1's operations compelled us to write this report. The activity we have directly observed likely represents only a small fraction of the cyber espionage that APT1 has conducted. Though our visibility of APT1's activities is incomplete, we have analyzed the group's intrusions against nearly 150 victims over seven years. From our unique vantage point responding to victims, we tracked APT1 back to four large networks in Shanghai, two of which are allocated directly to the Pudong New Area. We uncovered a substantial amount of APT1's attack infrastructure, command and control, and modus operandi (tools, tactics, and procedures). In an effort to underscore there are actual individuals behind the keyboard, Mandiant is revealing three personas we have attributed to APT1. These operators, like soldiers, may merely be following orders given to them by others. Our analysis has led us to conclude that APT1 is likely government-sponsored and one of the most persistent of China's cyber threat actors. We believe that APT1 is able to wage such a long-running and extensive cyber espionage campaign in large part because it receives direct government support. In seeking to identify the organization behind this activity, our research found that People's Liberation Army (PLA's) Unit 61398 is similar to APT1 in its mission, capabilities, and resources. PLA Unit 61398 is also located in precisely the same area from which APT1 activity appears to originate.",
+      "labels": [
+        "threat-report",
+        "threat-actor"
+      ]
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--6598bf44-1c10-4218-af9f-75b5b71c23a7",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "threat-actor--6d179234-61fc-40c4-ae86-3d53308d8e65",
+      "relationship_type": "uses",
+      "target_ref": "malware--2485b844-4efe-4343-84c8-eb33312dd56f"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--35f7a2bb-e4e2-4e56-8693-665bbb64162c",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "threat-actor--6d179234-61fc-40c4-ae86-3d53308d8e65",
+      "relationship_type": "uses",
+      "target_ref": "malware--c0217091-9d3d-42a1-8952-ccc12d4ad8d0"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--fd5cda8b-f45f-43bd-a9da-e521ddd7126e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "threat-actor--6d179234-61fc-40c4-ae86-3d53308d8e65",
+      "relationship_type": "attributed-to",
+      "target_ref": "identity--a9119a87-6576-46af-bfd7-4fbe55926671"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--a20b8626-a15e-41f0-bcb1-c05321e126f0",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "threat-actor--6d179234-61fc-40c4-ae86-3d53308d8e65",
+      "relationship_type": "attributed-to",
+      "target_ref": "identity--e88ab115-7768-4630-baa3-3d49a7d946ea"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--d84cf283-93be-4ca7-890d-76c63eff3636",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "threat-actor--d84cf283-93be-4ca7-890d-76c63eff3636",
+      "relationship_type": "attributed-to",
+      "target_ref": "identity--0e9d20d9-fb11-42e3-94bc-b89fb5b007ca"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--71e6832f-17ee-42fd-938d-c7f881be2028",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "threat-actor--02e7c48f-0301-4c23-b3e4-02e5a0114c21",
+      "relationship_type": "attributed-to",
+      "target_ref": "identity--ecf1c7de-d96c-41c6-a510-b9c65cdc9e3b"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--9dd881a7-6e9b-4c35-bef5-7a777bca65d3",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "threat-actor--02e7c48f-0301-4c23-b3e4-02e5a0114c21",
+      "relationship_type": "uses",
+      "target_ref": "malware--fb490cdb-6760-41eb-a79b-0b930a50c017"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--306ce398-f708-47f9-88a1-38aa5b9985fc",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "threat-actor--02e7c48f-0301-4c23-b3e4-02e5a0114c21",
+      "relationship_type": "uses",
+      "target_ref": "malware--ea50ecb7-2cd4-4895-bd08-31cd591ed0ca"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--8668d82a-1c97-4bea-a367-e391b025e00e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "intrusion-set--da1065ce-972c-4605-8755-9cd1074e3b5a",
+      "relationship_type": "attributed-to",
+      "target_ref": "threat-actor--94624865-2709-443f-9b4c-2891985fd69b"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--e0ca2caa-7fa0-4f36-ad19-96f107eb6023",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "intrusion-set--da1065ce-972c-4605-8755-9cd1074e3b5a",
+      "relationship_type": "attributed-to",
+      "target_ref": "threat-actor--d5b62b58-df7c-46b1-a435-4d01945fe21d"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--765815fb-d993-4a1d-959f-7f7bcc4a5eb3",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "intrusion-set--da1065ce-972c-4605-8755-9cd1074e3b5a",
+      "relationship_type": "attributed-to",
+      "target_ref": "threat-actor--6d179234-61fc-40c4-ae86-3d53308d8e65"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--85b2a834-e4b5-4299-9a6b-bf2ac26dde7b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--1e2c4237-d469-4144-9c0b-9e5c0c513c49",
+      "relationship_type": "uses",
+      "target_ref": "malware--0f01c5a3-f516-4450-9381-4dd9f2279411"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--61f4fd3b-f581-4497-9149-e624c317287b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--1e2c4237-d469-4144-9c0b-9e5c0c513c49",
+      "relationship_type": "uses",
+      "target_ref": "malware--33159b98-3264-4e10-a968-d67975b6272f"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--7cede760-b866-490e-ad5b-1df34bc14f8d",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--031778a4-057f-48e6-9db9-c8d72b81ccd5",
+      "relationship_type": "indicates",
+      "target_ref": "malware--33159b98-3264-4e10-a968-d67975b6272f"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--b2806dec-6f20-4a0d-ae9a-d4b1f7be71e3",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--da1d061b-2bc9-467a-b16f-8d14f468e1f0",
+      "relationship_type": "indicates",
+      "target_ref": "malware--33159b98-3264-4e10-a968-d67975b6272f"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--3921b161-5872-4c21-8ab0-b5b84233f3dc",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--2173d108-5714-42fd-8213-4f3790259fda",
+      "relationship_type": "indicates",
+      "target_ref": "malware--33159b98-3264-4e10-a968-d67975b6272f"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--81827b05-8c20-4247-b5d8-674295a1c611",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--8ce03314-dfea-4498-ac9b-136e41ab00e4",
+      "relationship_type": "indicates",
+      "target_ref": "malware--33159b98-3264-4e10-a968-d67975b6272f"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--066593e1-49a4-4a3d-a5bb-2e0b4ce1a63c",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--e13f3e6d-4f9c-4265-b1cf-f997a1bf7827",
+      "relationship_type": "uses",
+      "target_ref": "tool--ce45f721-af14-4fc0-938c-000c16186418"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--b385d984-ba8a-4180-8e0e-af7b9987bcb8",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--e13f3e6d-4f9c-4265-b1cf-f997a1bf7827",
+      "relationship_type": "uses",
+      "target_ref": "tool--e9778c42-bc2f-4eda-9fb4-6a931834f68c"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--6ffbec81-fa01-4b98-8726-c9d9fb2ef6b6",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--e13f3e6d-4f9c-4265-b1cf-f997a1bf7827",
+      "relationship_type": "uses",
+      "target_ref": "tool--1cf6a3b8-be43-4c1a-b042-546a890c31b2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--25586f60-bc27-47d6-9a8e-d1c6456c2f28",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--e13f3e6d-4f9c-4265-b1cf-f997a1bf7827",
+      "relationship_type": "uses",
+      "target_ref": "tool--4d82bd3e-24a3-4f9d-b8f3-b57267fe06a9"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--d080c1ea-1dd7-4da9-b64b-e68bb1c5887e",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--e13f3e6d-4f9c-4265-b1cf-f997a1bf7827",
+      "relationship_type": "uses",
+      "target_ref": "tool--7de5dfcc-6809-4772-9f11-cf26c2be53aa"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--c9c66478-c9cf-49cd-bca2-66ce34a9c56d",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--e13f3e6d-4f9c-4265-b1cf-f997a1bf7827",
+      "relationship_type": "uses",
+      "target_ref": "tool--266b12f2-aa16-4607-809e-f2d33eebb52e"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--44686fda-311c-4cdb-abef-80e922e7a3fb",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--e13f3e6d-4f9c-4265-b1cf-f997a1bf7827",
+      "relationship_type": "uses",
+      "target_ref": "tool--98fd8dc1-6cc7-4908-899f-07473f55149a"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--340cb676-79ff-49e9-b6ba-cd27e06772c4",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--e13f3e6d-4f9c-4265-b1cf-f997a1bf7827",
+      "relationship_type": "uses",
+      "target_ref": "tool--4215b0e5-928e-4b2a-9b5f-64819f287f48"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--9908520f-b25d-44a8-900b-d4e0825dcd0d",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--0781fe70-4c94-4300-8865-4b08b98611b4",
+      "relationship_type": "uses",
+      "target_ref": "tool--a6dd62d0-9683-48bf-a9cd-61e7eceae57e"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--1fbd9a8d-4c14-431c-9520-3ccc50b748c1",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "attack-pattern--0781fe70-4c94-4300-8865-4b08b98611b4",
+      "relationship_type": "uses",
+      "target_ref": "tool--806a8f83-4913-4216-bb19-02b48ae25da5"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--389a8dcd-8663-4f18-8584-d69a77bd71aa",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--3f3ff9f1-bb4e-4392-89e5-1991179042ba",
+      "relationship_type": "indicates",
+      "target_ref": "threat-actor--6d179234-61fc-40c4-ae86-3d53308d8e65"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--b345f1d0-09c5-4a71-bfc6-a52bd5923a01",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--8390fd29-24ed-45d4-84d7-c5e5feaf195d",
+      "relationship_type": "indicates",
+      "target_ref": "threat-actor--6d179234-61fc-40c4-ae86-3d53308d8e65"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--912b31d0-09c5-4a71-bfc6-a52bd5989a1b",
+      "created": "2015-05-15T09:12:16.432678Z",
+      "modified": "2015-05-15T09:12:16.432678Z",
+      "source_ref": "indicator--1002c58e-cbde-4930-b5ee-490037fd4f7e",
+      "relationship_type": "indicates",
+      "target_ref": "threat-actor--6d179234-61fc-40c4-ae86-3d53308d8e65"
+    },
+    {
+      "type": "identity",
+      "id": "identity--b38dfe21-7477-40d1-aa90-5c8671ce51ca",
+      "created": "2017-04-27T16:18:24.318Z",
+      "modified": "2017-04-27T16:18:24.318Z",
+      "name": "Gotham National Bank",
+      "identity_class": "organization",
+      "sectors": [
+        "financial-services"
+      ],
+      "contact_information": "contact@gothamnational.com"
+    },
+    {
+      "type": "threat-actor",
+      "id": "threat-actor--8b6297fe-cae7-47c6-9256-5584b417849c",
+      "created": "2017-04-27T16:18:24.318Z",
+      "modified": "2017-04-27T16:18:24.318Z",
+      "name": "The Joker",
+      "labels": [
+        "criminal",
+        "terrorist"
+      ],
+      "aliases": [
+        "Joe Kerr",
+        "The Clown Prince of Crime"
+      ],
+      "roles": [
+        "director"
+      ],
+      "resource_level": "team",
+      "primary_motivation": "personal-satisfaction",
+      "object_marking_refs": [
+        "marking-definition--5e57c739-391a-4eb3-b6be-7d15ca92d5ed"
+      ],
+      "created_by_ref": "identity--b38dfe21-7477-40d1-aa90-5c8671ce51ca"
+    },
+    {
+      "type": "marking-definition",
+      "id": "marking-definition--340wqsxwsxwxwa",
+      "created": "2017-01-20T00:00:00.000Z",
+      "definition_type": "tlp",
+      "definition": {
+        "tlp": "green"
+      }
+    },
+    {
+      "type": "marking-definition",
+      "id": "marking-definition--f88d31f6-486f-44da-b317-01333bde0b82",
+      "created": "2017-01-20T00:00:00.000Z",
+      "definition_type": "tlp",
+      "definition": {
+        "tlp": "amber"
+      }
+    },
+    {
+      "type": "marking-definition",
+      "id": "marking-definition--5e57c739-391a-4eb3-b6be-7d15ca92d5ed",
+      "created": "2017-01-20T00:00:00.000Z",
+      "definition_type": "tlp",
+      "definition": {
+        "tlp": "red"
+      }
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--1ed8caa7-a708-4706-b651-f1186ede6ca1",
+      "created": "2017-04-27T16:18:24.318Z",
+      "modified": "2017-04-27T16:18:24.318Z",
+      "pattern": "[email-message:from_ref.value MATCHES '.+\\\\banking@g0thamnatl\\\\.com$']",
+      "valid_from": "2017-04-27T16:18:24.318Z",
+      "name": "Fake email address",
+      "labels": [
+        "malicious-activity",
+        "attribution"
+      ],
+      "description": "Known to be used by The Joker.",
+      "granular_markings": [
+        {
+          "selectors": [
+            "description"
+          ],
+          "marking_ref": "marking-definition--5e57c739-391a-4eb3-b6be-7d15ca92d5ed"
+        },
+        {
+          "selectors": [
+            "labels.[1]"
+          ],
+          "marking_ref": "marking-definition--f88d31f6-486f-44da-b317-01333bde0b82"
+        },
+        {
+          "selectors": [
+            "labels.[0]",
+            "name",
+            "pattern"
+          ],
+          "marking_ref": "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da"
+        }
+      ],
+      "created_by_ref": "identity--b38dfe21-7477-40d1-aa90-5c8671ce51ca"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--3d1dd3cc-eb47-4704-9c77-ceff2971b95c",
+      "created": "2017-04-27T16:18:24.318Z",
+      "modified": "2017-04-27T16:18:24.318Z",
+      "source_ref": "indicator--1ed8caa7-a708-4706-b651-f1186ede6ca1",
+      "relationship_type": "indicates",
+      "target_ref": "threat-actor--8b6297fe-cae7-47c6-9256-5584b417849c",
+      "object_marking_refs": [
+        "marking-definition--5e57c739-391a-4eb3-b6be-7d15ca92d5ed"
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--8ac90ff3-ecf8-4835-95b8-6aea6a623df5",
+      "created": "2015-05-07T14:22:14.760144Z",
+      "modified": "2015-05-07T14:22:14.760144Z",
+      "name": "Phishing",
+      "description": "Spear phishing used as a delivery mechanism for malware.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "initial-compromise"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "capec",
+          "description": "phishing",
+          "url": "https://capec.mitre.org/data/definitions/98.html",
+          "external_id": "CAPEC-98"
+        }
+      ]
+    },
+    {
+      "type": "identity",
+      "id": "identity--1621d4d4-b67d-11e3-9670-f01faf20d111",
+      "created": "2015-05-10T16:27:17.760123Z",
+      "modified": "2015-05-10T16:27:17.760123Z",
+      "name": "Adversary Bravo",
+      "identity_class": "unknown",
+      "description": "Adversary Bravo is a threat actor that utilizes phishing attacks"
+    },
+    {
+      "type": "threat-actor",
+      "id": "threat-actor--9a8a0d25-7636-429b-a99e-b2a73cd0f11f",
+      "created": "2015-05-07T14:22:14.760144Z",
+      "modified": "2015-05-07T14:22:14.760144Z",
+      "name": "Adversary Bravo",
+      "labels": [
+        "spy",
+        "criminal"
+      ],
+      "description": "Adversary Bravo is known to use phishing attacks to deliver remote access malware to the targets."
+    },
+    {
+      "type": "malware",
+      "id": "malware--d1c612bc-146f-4b65-b7b0-9a54a14150a4",
+      "created": "2015-04-23T11:12:34.760122Z",
+      "modified": "2015-04-23T11:12:34.760122Z",
+      "name": "Poison Ivy Variant d1c6",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mandiant-attack-lifecycle-model",
+          "phase_name": "initial-compromise"
+        }
+      ],
+      "labels": [
+        "remote-access-trojan"
+      ]
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--ad4bccee-1ed3-44f5-9a56-8085584d3360",
+      "created": "2015-05-07T14:22:14.760144Z",
+      "modified": "2015-05-07T14:22:14.760144Z",
+      "source_ref": "threat-actor--9a8a0d25-7636-429b-a99e-b2a73cd0f11f",
+      "relationship_type": "uses",
+      "target_ref": "malware--d1c612bc-146f-4b65-b7b0-9a54a14150a4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--e05a50c3-a557-4d5f-ac19-e3f0859171cc",
+      "created": "2015-05-07T14:22:14.760144Z",
+      "modified": "2015-05-07T14:22:14.760144Z",
+      "source_ref": "threat-actor--9a8a0d25-7636-429b-a99e-b2a73cd0f11f",
+      "relationship_type": "uses",
+      "target_ref": "attack-pattern--8ac90ff3-ecf8-4835-95b8-6aea6a623df5"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--bdcef81d-9dfa-4f5d-a7e5-7ab13b695495",
+      "created": "2015-05-07T14:22:14.760144Z",
+      "modified": "2015-05-07T14:22:14.760144Z",
+      "source_ref": "threat-actor--9a8a0d25-7636-429b-a99e-b2a73cd0f11f",
+      "relationship_type": "attributed-to",
+      "target_ref": "identity--1621d4d4-b67d-11e3-9670-f01faf20d111"
+    },
+    {
+      "type": "identity",
+      "id": "identity--611d9d41-dba5-4e13-9b29-e22488058ffc",
+      "created": "2017-04-14T13:07:49.812Z",
+      "modified": "2017-04-14T13:07:49.812Z",
+      "name": "Stark Industries",
+      "identity_class": "organization",
+      "sectors": [
+        "defence"
+      ],
+      "contact_information": "info@stark.com"
+    },
+    {
+      "type": "marking-definition",
+      "id": "marking-definition--dfddfdffdfd82",
+      "created": "2017-01-20T00:00:00.000Z",
+      "definition_type": "tlp",
+      "definition": {
+        "tlp": "amber"
+      }
+    },
+    {
+      "type": "marking-definition",
+      "id": "marking-definition--d771aceb-3148-4315-b4b4-130b888533d0",
+      "created": "2017-04-14T13:07:49.812Z",
+      "definition_type": "statement",
+      "definition": {
+        "statement": "Copyright © Stark Industries 2017."
+      },
+      "created_by_ref": "identity--611d9d41-dba5-4e13-9b29-e22488058ffc"
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--33fe3b22-0201-47cf-85d0-97c02164528d",
+      "created": "2017-04-14T13:07:49.812Z",
+      "modified": "2017-04-14T13:07:49.812Z",
+      "pattern": "[ipv4addr:value = '10.0.0.0']",
+      "valid_from": "2017-04-14T13:07:49.812Z",
+      "name": "Known malicious IP Address",
+      "labels": [
+        "malicious-activity"
+      ],
+      "object_marking_refs": [
+        "marking-definition--f88d31f6-486f-44da-b317-01333bde0b82",
+        "marking-definition--d771aceb-3148-4315-b4b4-130b888533d0"
+      ],
+      "created_by_ref": "identity--611d9d41-dba5-4e13-9b29-e22488058ffc"
+    },
+    {
+      "type": "identity",
+      "id": "identity--39012926-a052-44c4-ae48-caaf4a10ee6e",
+      "created": "2017-02-24T15:50:10.564Z",
+      "modified": "2017-08-24T15:50:10.564Z",
+      "name": "Alpha Threat Analysis Org.",
+      "identity_class": "organization",
+      "sectors": [
+        "technology"
+      ],
+      "contact_information": "info@alpha.org",
+      "labels": [
+        "Cyber Security"
+      ]
+    },
+    {
+      "type": "identity",
+      "id": "identity--5206ba14-478f-4b0b-9a48-395f690c20a2",
+      "created": "2017-02-26T17:55:10.442Z",
+      "modified": "2017-02-26T17:55:10.442Z",
+      "name": "Beta Cyber Intelligence Company",
+      "identity_class": "organization",
+      "sectors": [
+        "technology"
+      ],
+      "contact_information": "info@beta.com",
+      "labels": [
+        "Cyber Security"
+      ]
+    },
+    {
+      "type": "indicator",
+      "id": "indicator--9299f726-ce06-492e-8472-2b52ccb53191",
+      "created": "2017-02-27T13:57:10.515Z",
+      "modified": "2017-02-27T13:57:10.515Z",
+      "pattern": "[url:value = 'http://paypa1.banking.com']",
+      "valid_from": "2015-06-29T09:10:15.915Z",
+      "name": "Malicious URL",
+      "labels": [
+        "malicious-activity"
+      ],
+      "description": "This URL is potentially associated with malicious activity and is listed on several blacklist sites.",
+      "created_by_ref": "identity--39012926-a052-44c4-ae48-caaf4a10ee6e"
+    },
+    {
+      "type": "sighting",
+      "id": "sighting--8356e820-8080-4692-aa91-ecbe94006833",
+      "created": "2017-02-28T19:37:11.213Z",
+      "modified": "2017-02-28T19:37:11.213Z",
+      "sighting_of_ref": "indicator--9299f726-ce06-492e-8472-2b52ccb53191",
+      "first_seen": "2017-02-27T21:37:11.213Z",
+      "last_seen": "2017-02-27T21:37:11.213Z",
+      "count": 1,
+      "where_sighted_refs": [
+        "identity--5206ba14-478f-4b0b-9a48-395f690c20a2"
+      ],
+      "created_by_ref": "identity--5206ba14-478f-4b0b-9a48-395f690c20a2"
+    }
+  ]
+}
