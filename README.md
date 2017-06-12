@@ -42,7 +42,7 @@ To assemble the application and all its dependencies into a single jar file type
 
     sbt assembly
 
-This will produce "stixtoneodb-1.0.jar" in the "./target/scala-2.11" directory.
+This will produce "stixtoneodb-1.0.jar" in the "./target/scala-2.12" directory.
 
 For convenience a **"stixtoneodb-1.0.jar"** file is in the "distrib" directory ready for use.
 
@@ -79,13 +79,6 @@ in each.
 
 not finished, 
 
-only works if using:
-
-      sbt  
-      > run --csv ./stix-files/testfull.json
- 
-using sbt assembly does not work
-
-Using Scala 2.11, Java 8 and SBT-0.13.15 for Neo4j-3.2.1.
+Using Scala 2.12, Java 8, SBT-0.13.15 and Neo4j-3.2.1.
 
 

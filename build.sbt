@@ -5,38 +5,23 @@ name := "stixtoneodb"
 
 version := (version in ThisBuild).value
 
-scalaVersion := "2.11.11"
+scalaVersion := "2.12.2"
 
-crossScalaVersions := Seq("2.11.11")
-
-//libraryDependencies ++= Seq(
-//  "com.typesafe" % "config" % "1.3.1",
-//  "org.neo4j.driver" % "neo4j-java-driver" % "1.4.0-rc1",
-//  "org.neo4j" % "neo4j-kernel" % "3.2.1",
-//  "org.neo4j" % "neo4j-lucene-index" % "3.2.1",
-//  "org.neo4j" % "neo4j-logging" % "3.2.1" % "test",
-//  "org.neo4j" % "neo4j-common" % "3.2.1" % "test",
-//  "org.neo4j" % "neo4j-cypher" % "3.2.1",
-//  "org.neo4j" % "neo4j-io" % "3.2.1" % "test",
-//  "org.neo4j" % "neo4j-graph-algo" % "3.2.1",
-//  "org.neo4j" % "neo4j-management" % "3.2.1" % "provided",
-//  "org.neo4j" % "neo4j" % "3.2.1"
-//)
-//
-//assemblyMergeStrategy in assembly := {
-//  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
-//  case x => MergeStrategy.first
-//}
+crossScalaVersions := Seq("2.11.11", "2.12.2")
 
 libraryDependencies ++= Seq(
-  "com.typesafe" % "config" % "1.3.1",
-  "org.neo4j" % "neo4j-lucene-index" % "3.2.1",
-  "org.neo4j" % "neo4j-cypher" % "3.2.1",
+//  "org.neo4j" % "neo4j-lucene-index" % "3.2.1",
+//  "org.neo4j" % "neo4j-index" % "3.2.1",
+//  "org.neo4j" % "neo4j-kernel" % "3.2.1",
+//  "org.neo4j" % "neo4j-cypher" % "3.2.1",
   "org.neo4j" % "neo4j" % "3.2.1"
 )
 
 assemblyMergeStrategy in assembly := {
-  case PathList("META-INF", xs@_*) => MergeStrategy.discard
+  case PathList(xs @_*) if xs.last.toLowerCase endsWith ".dsa" => MergeStrategy.discard
+  case PathList(xs @_*) if xs.last.toLowerCase endsWith ".sf" => MergeStrategy.discard
+  case PathList(xs @_*) if xs.last.toLowerCase endsWith ".des" => MergeStrategy.discard
+  case PathList(xs @_*) if xs.last endsWith "LICENSES.txt"=> MergeStrategy.discard
   case x => val oldStrategy = (assemblyMergeStrategy in assembly).value
     oldStrategy(x)
 }
