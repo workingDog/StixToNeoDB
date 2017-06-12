@@ -20,11 +20,9 @@ using the Java Neo4j 3.2.1 API. This allows for creating a new database or for a
  
 1) [Neo4j](https://neo4j.com/)
 
-2) [Cypher](https://neo4j.com/developer/cypher-query-language/) 
+2) [ScalaStix](https://github.com/workingDog/scalastix)
 
-3) [ScalaStix](https://github.com/workingDog/scalastix)
-
-4) [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit)
+3) [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit)
 
 ### Dependencies and requirements
 
