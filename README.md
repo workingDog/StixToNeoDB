@@ -14,15 +14,17 @@ and their relationships.
  
 **StixToNeoDB** converts [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit#) 
 domain objects (SDO) and relationships (SRO) to [Neo4j](https://neo4j.com/) nodes and relations 
-using the Java Neo4j 3.2.1 API. This allows for creating a new database or for adding new nodes and relations to an existing Neo4j graph database.
+using the [Java Neo4j API](https://neo4j.com/docs/java-reference/current/javadocs/). This allows for creating a new database or for adding new nodes and relations to an existing Neo4j graph database.
               
 ### References
  
 1) [Neo4j](https://neo4j.com/)
 
-2) [ScalaStix](https://github.com/workingDog/scalastix)
+2) [Java Neo4j API](https://neo4j.com/docs/java-reference/current/javadocs/)
 
-3) [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit)
+3) [ScalaStix](https://github.com/workingDog/scalastix)
+
+4) [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit)
 
 ### Dependencies and requirements
 
