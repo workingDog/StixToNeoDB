@@ -9,13 +9,7 @@ scalaVersion := "2.12.2"
 
 crossScalaVersions := Seq("2.11.11", "2.12.2")
 
-libraryDependencies ++= Seq(
-//  "org.neo4j" % "neo4j-lucene-index" % "3.2.1",
-//  "org.neo4j" % "neo4j-index" % "3.2.1",
-//  "org.neo4j" % "neo4j-kernel" % "3.2.1",
-//  "org.neo4j" % "neo4j-cypher" % "3.2.1",
-  "org.neo4j" % "neo4j" % "3.2.1"
-)
+libraryDependencies += "org.neo4j" % "neo4j" % "3.2.1"
 
 assemblyMergeStrategy in assembly := {
   case PathList(xs @_*) if xs.last.toLowerCase endsWith ".dsa" => MergeStrategy.discard

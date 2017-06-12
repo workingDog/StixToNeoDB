@@ -32,6 +32,7 @@ object Neo4jLoader {
   def apply(inFile: String, dbDir: String) = new Neo4jLoader(inFile, dbDir)
 
   // general transaction support
+  // see: http://sandrasi-sw.blogspot.jp/2012/02/neo4j-transactions-in-scala.html
   def transaction[A <: Any](db: GraphDatabaseService)(dbOp: => A): A = {
     val tx = db.beginTx()
     try {

@@ -5,8 +5,8 @@ import scala.language.implicitConversions
 import scala.language.postfixOps
 
 /**
-  * loads a Stix json file containing STIX objects, or
-  * a Stix zip file containing one or more of entry files,
+  * loads a file containing STIX (json) objects, or
+  * a zip file containing one or more of entry files,
   * into a neo4j graph database
   *
   * @author R. Wathelet June 2017
@@ -31,7 +31,7 @@ object StixToNeoDB {
     if (args.isEmpty)
       println(usage)
     else {
-      val dbf: String = if (args.length == 3) args(2).trim else ""
+      val dbf = if (args.length == 3) args(2).trim else ""
       val dbFile = if (dbf.isEmpty) new java.io.File(".").getCanonicalPath + "/stixdb" else dbf
       println("database location: " + dbFile)
       args(0) match {

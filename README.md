@@ -60,7 +60,8 @@ If "db_dir" is absent, the default output directory will be in the current direc
 
 With the option **--zip** the input file must be a zip file with one or more entry files containing a single bundle of Stix objects 
 in each.
- 
+  
+If the database already exists, the data will be added to it, otherwise a new neo4j database will be created.  
  #### For very large files
  
  To process very large files use the following options:
@@ -77,7 +78,7 @@ in each.
  
 ### Status
 
-not finished, 
+no testing done.
 
 Using Scala 2.12, Java 8, SBT-0.13.15 and Neo4j-3.2.1.
 
