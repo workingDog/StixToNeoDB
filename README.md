@@ -73,8 +73,7 @@ If the database already exists, the data will be added to it, otherwise a new ne
  With the **--csvx** option the input file must contain a Stix object on one line 
  ending with a new line. Similarly when using the **--zipx** option, each input zip file entries must 
  contain a Stix object on one line ending with a new line. When using these options 
- the processing is done one line at a time and the file structure must list 
- the SDO first followed the SRO.
+ the processing is done one line at a time.
  
 ### Status
 
