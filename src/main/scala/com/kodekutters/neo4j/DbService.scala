@@ -12,7 +12,7 @@ import org.neo4j.graphdb.index.Index
   */
 class DbService(dbDir: String) {
 
-  import NodesMaker._
+  import Util._
 
   var idIndex: Index[Node] = _
   var marking_idIndex: Index[Node] = _

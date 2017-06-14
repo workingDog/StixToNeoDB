@@ -21,26 +21,8 @@ import scala.collection.JavaConverters._
   *         ref: https://github.com/workingDog/scalastix
   */
 object Neo4jLoader {
-
   // must use this constructor, class is private
   def apply(inFile: String, dbDir: String) = new Neo4jLoader(inFile, dbDir)
-
-  /**
-    * read a Bundle from the InputStream source
-    *
-    * @param source the input InputStream
-    * @return a Bundle option
-    */
-  def loadBundle(source: InputStream): Option[Bundle] = {
-    // read a STIX bundle from the InputStream
-    val jsondoc = Source.fromInputStream(source).mkString
-    // create a bundle object from it
-    decode[Bundle](jsondoc) match {
-      case Left(failure) => println("-----> ERROR invalid bundle JSON in zip file: \n"); None
-      case Right(bundle) => Option(bundle)
-    }
-  }
-
 }
 
 /**
@@ -51,7 +33,7 @@ object Neo4jLoader {
   */
 class Neo4jLoader private(inFile: String, dbDir: String) {
 
-  import Neo4jLoader._
+  import Util._
 
   // not used
   // val config = ConfigFactory.parseFile(new File("application.conf"))

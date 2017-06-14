@@ -7,21 +7,13 @@ import org.neo4j.graphdb.RelationshipType
 /**
   * create Neo4j relations from a Stix object
   *
-  */
-object RelationsMaker {
-
-  def apply(dbService: DbService) = new RelationsMaker(dbService)
-
-}
-
-/**
-  * create Neo4j relations from a Stix object
-  *
   * @param dbService
   */
 class RelationsMaker(dbService: DbService) {
 
-  import NodesMaker._
+  import Util._
+
+  val util = new Util(dbService)
 
   // create relations from the stix object
   def createRelations(obj: StixObj) = {
@@ -36,16 +28,16 @@ class RelationsMaker(dbService: DbService) {
   // create relations (to other SDO, Marking etc...) for the input SDO
   def createSDORel(x: SDO) = {
     // the object marking relations
-    createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
+    util.createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
     // the created_by relation
-    createdByRel(x.id.toString(), x.created_by_ref)
+    util.createdByRel(x.id.toString(), x.created_by_ref)
 
     x.`type` match {
 
       case Report.`type` =>
         val y = x.asInstanceOf[Report]
         // create relations between the Report id and the list of object_refs SDO id
-        createRelToObjRef(y.id.toString(), y.object_refs, "REFERS_TO")
+        util.createRelToObjRef(y.id.toString(), y.object_refs, "REFERS_TO")
 
       // todo  objects: Map[String, Observable],
       //  case ObservedData.`type` =>
@@ -77,9 +69,9 @@ class RelationsMaker(dbService: DbService) {
         rel.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
       }
       // the object marking relations
-      createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
+      util.createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
       // the created_by relation
-      createdByRel(x.id.toString(), x.created_by_ref)
+      util.createdByRel(x.id.toString(), x.created_by_ref)
       // the relation
       rel
     }
@@ -109,9 +101,9 @@ class RelationsMaker(dbService: DbService) {
         rel.setProperty("description", clean(y.description.getOrElse("")))
       }
       // create relations between the sighting (SightingNode id) and the list of observed_data_refs ObservedData SDO id
-      createRelToObjRef(y.id.toString(), y.observed_data_refs, "SIGHTED_OBSERVED_DATA")
+      util.createRelToObjRef(y.id.toString(), y.observed_data_refs, "SIGHTED_OBSERVED_DATA")
       // create relations between the sighting (SightingNode id) and the list of where_sighted SDO id
-      createRelToObjRef(y.id.toString(), y.where_sighted_refs, "WHERE_SIGHTED")
+      util.createRelToObjRef(y.id.toString(), y.where_sighted_refs, "WHERE_SIGHTED")
     }
   }
 
@@ -120,39 +112,17 @@ class RelationsMaker(dbService: DbService) {
     stixObj match {
       case x: MarkingDefinition =>
         // the object marking relations
-        createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
+        util.createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
         // the created_by relation
-        createdByRel(x.id.toString(), x.created_by_ref)
+        util.createdByRel(x.id.toString(), x.created_by_ref)
 
       // todo <----- contents: Map[String, Map[String, String]]
       case x: LanguageContent =>
         // the object marking relations
-        createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
+        util.createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
         // the created_by relation
-        createdByRel(x.id.toString(), x.created_by_ref)
+        util.createdByRel(x.id.toString(), x.created_by_ref)
     }
-  }
-
-  //--------------------------------------------------------------------------------------------
-
-  // create relations between the idString and the list of object_refs SDO id
-  def createRelToObjRef(idString: String, object_refs: Option[List[Identifier]], relName: String) = {
-    for (s <- object_refs.getOrElse(List.empty)) {
-      transaction(dbService.graphDB) {
-        val sourceNode = dbService.idIndex.get("id", idString).getSingle
-        val targetNode = dbService.idIndex.get("id", s.toString()).getSingle
-        sourceNode.createRelationshipTo(targetNode, RelationshipType.withName(relName))
-      }
-    }
-  }
-
-  def createdByRel(sourceId: String, tgtOpt: Option[Identifier]) = {
-    tgtOpt.map(tgt =>
-      transaction(dbService.graphDB) {
-        val sourceNode = dbService.idIndex.get("id", sourceId).getSingle
-        val targetNode = dbService.idIndex.get("id", tgt.toString()).getSingle
-        sourceNode.createRelationshipTo(targetNode, RelationshipType.withName("CREATED_BY"))
-      })
   }
 
 }
