@@ -30,17 +30,17 @@ object NodesMaker {
   // clean the string, i.e. replace unwanted char, but not "-"
   def clean(s: String) = s.replace(",", " ").replace(":", " ").replace("\'", " ").replace(";", " ").replace("\"", "").replace("\\", "").replace("\n", "").replace("\r", "")
 
-  // make an array ([..]) of unique random id values from the input list
+  // make an array of unique random id values from the input list
   def toIdArray(dataList: Option[List[Any]]): Array[String] = {
     (for (s <- dataList.getOrElse(List.empty)) yield s"${UUID.randomUUID().toString}").toArray[String]
   }
 
-  // make an array ([..]) of cleaned string values from the input list
+  // make an array of cleaned string values from the input list
   def toStringArray(dataList: Option[List[String]]): Array[String] = {
     (for (s <- dataList.getOrElse(List.empty)) yield s"${clean(s)}").toArray[String]
   }
 
-  // make an array ([..]) of id strings from the list of Identifier --> no cleaning done here
+  // make an array of id strings from the list of Identifier --> no cleaning done here
   def toIdStringArray(dataList: Option[List[Identifier]]): Array[String]  = {
     (for (s <- dataList.getOrElse(List.empty)) yield s"${s.toString()}").toArray[String]
   }
@@ -175,12 +175,11 @@ class NodesMaker(dbService: DbService) {
 
       case Report.`type` =>
         val y = x.asInstanceOf[Report]
-        val object_refs_ids = toIdStringArray(y.object_refs)
         val sdoNode = baseNode(nodeLabel)
         transaction(dbService.graphDB) {
           sdoNode.setProperty("name", clean(y.name))
           sdoNode.setProperty("published", y.published.time)
-          sdoNode.setProperty("object_refs_ids", object_refs_ids)
+          sdoNode.setProperty("object_refs_ids", toIdStringArray(y.object_refs))
           sdoNode.setProperty("description", clean(y.description.getOrElse("")))
         }
 
@@ -249,7 +248,7 @@ class NodesMaker(dbService: DbService) {
     }
   }
 
-  // the Relationship and Sighting
+  // create a Relationship and a Sighting node
   def createSRONode(x: SRO) = {
     // the external_references nodes and relations
     createExternRefs(x.id.toString(), x.external_references, toIdArray(x.external_references))
@@ -279,7 +278,7 @@ class NodesMaker(dbService: DbService) {
     }
   }
 
-  // convert MarkingDefinition and LanguageContent
+  // create a MarkingDefinition and LanguageContent node
   def createStixObjNode(stixObj: StixObj) = {
 
     stixObj match {
@@ -355,7 +354,7 @@ class NodesMaker(dbService: DbService) {
     }
     transaction(dbService.graphDB) {
       val sourceNode = dbService.idIndex.get("id", idString).getSingle
-      val rel = sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_MARKING_OBJECT"))
+      sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_MARKING_OBJECT"))
     }
   }
 
@@ -377,7 +376,7 @@ class NodesMaker(dbService: DbService) {
         transaction(dbService.graphDB) {
           val sourceNode = dbService.idIndex.get("id", idString).getSingle
           val targetNode = dbService.kill_chain_phase_idIndex.get("kill_chain_phase_id", k).getSingle
-          val rel = sourceNode.createRelationshipTo(targetNode, RelationshipType.withName("HAS_KILL_CHAIN_PHASE"))
+          sourceNode.createRelationshipTo(targetNode, RelationshipType.withName("HAS_KILL_CHAIN_PHASE"))
         }
       }
     }
@@ -407,7 +406,7 @@ class NodesMaker(dbService: DbService) {
         transaction(dbService.graphDB) {
           val sourceNode = dbService.idIndex.get("id", idString).getSingle
           val targetNode = dbService.external_reference_idIndex.get("external_reference_id", k).getSingle
-          val rel = sourceNode.createRelationshipTo(targetNode, RelationshipType.withName("HAS_EXTERNAL_REF"))
+          sourceNode.createRelationshipTo(targetNode, RelationshipType.withName("HAS_EXTERNAL_REF"))
         }
       }
     }
@@ -436,7 +435,7 @@ class NodesMaker(dbService: DbService) {
         transaction(dbService.graphDB) {
           val sourceNode = dbService.idIndex.get("id", idString).getSingle
           val targetNode = dbService.granular_marking_idIndex.get("granular_marking_id", k).getSingle
-          val rel = sourceNode.createRelationshipTo(targetNode, RelationshipType.withName("HAS_GRANULAR_MARKING"))
+          sourceNode.createRelationshipTo(targetNode, RelationshipType.withName("HAS_GRANULAR_MARKING"))
         }
       }
     }

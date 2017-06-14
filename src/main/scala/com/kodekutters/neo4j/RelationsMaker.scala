@@ -1,7 +1,7 @@
 package com.kodekutters.neo4j
 
 import com.kodekutters.stix._
-import org.neo4j.graphdb.{Node, RelationshipType}
+import org.neo4j.graphdb.RelationshipType
 
 
 /**
@@ -48,19 +48,15 @@ class RelationsMaker(dbService: DbService) {
         createRelToObjRef(y.id.toString(), y.object_refs, "REFERS_TO")
 
       // todo  objects: Map[String, Observable],
-    //  case ObservedData.`type` =>
-    //    val y = x.asInstanceOf[ObservedData]
+      //  case ObservedData.`type` =>
+      //    val y = x.asInstanceOf[ObservedData]
 
       case _ => // do nothing more
     }
   }
 
-  // the Relationship and Sighting
+  // create the Relationship and Sighting
   def createSRORel(x: SRO) = {
-    // common elements
-    val granular_markings_ids = toIdArray(x.granular_markings)
-    val external_references_ids = toIdArray(x.external_references)
-
     def baseRel(sourceId: String, targetId: String, name: String): org.neo4j.graphdb.Relationship = {
       var rel: org.neo4j.graphdb.Relationship = null
       transaction(dbService.graphDB) {
@@ -74,10 +70,10 @@ class RelationsMaker(dbService: DbService) {
         rel.setProperty("revoked", x.revoked.getOrElse(false))
         rel.setProperty("labels", toStringArray(x.labels))
         rel.setProperty("confidence", x.confidence.getOrElse(0))
-        rel.setProperty("external_references", external_references_ids)
+        rel.setProperty("external_references", toIdArray(x.external_references))
         rel.setProperty("lang", clean(x.lang.getOrElse("")))
         rel.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
-        rel.setProperty("granular_markings", granular_markings_ids)
+        rel.setProperty("granular_markings", toIdArray(x.granular_markings))
         rel.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
       }
       // the object marking relations
@@ -121,9 +117,7 @@ class RelationsMaker(dbService: DbService) {
 
   // MarkingDefinition and LanguageContent relations
   def createStixObjRel(stixObj: StixObj) = {
-
     stixObj match {
-
       case x: MarkingDefinition =>
         // the object marking relations
         createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
