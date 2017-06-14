@@ -71,7 +71,7 @@ class RelationsMaker(dbService: DbService) {
         rel.setProperty("type", x.`type`)
         rel.setProperty("created", x.created.time)
         rel.setProperty("modified", x.modified.time)
-        rel.setProperty("revoked", x.revoked.getOrElse("false"))
+        rel.setProperty("revoked", x.revoked.getOrElse(false))
         rel.setProperty("labels", toStringArray(x.labels))
         rel.setProperty("confidence", x.confidence.getOrElse(0))
         rel.setProperty("external_references", external_references_ids)
@@ -127,11 +127,15 @@ class RelationsMaker(dbService: DbService) {
       case x: MarkingDefinition =>
         // the object marking relations
         createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
+        // the created_by relation
+        createdByRel(x.id.toString(), x.created_by_ref)
 
       // todo <----- contents: Map[String, Map[String, String]]
       case x: LanguageContent =>
         // the object marking relations
         createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
+        // the created_by relation
+        createdByRel(x.id.toString(), x.created_by_ref)
     }
   }
 

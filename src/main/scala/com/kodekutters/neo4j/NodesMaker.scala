@@ -31,21 +31,18 @@ object NodesMaker {
   def clean(s: String) = s.replace(",", " ").replace(":", " ").replace("\'", " ").replace(";", " ").replace("\"", "").replace("\\", "").replace("\n", "").replace("\r", "")
 
   // make an array ([..]) of unique random id values from the input list
-  def toIdArray(dataList: Option[List[Any]]) = {
-    val t = for (s <- dataList.getOrElse(List.empty)) yield s"'${UUID.randomUUID().toString}'" + ","
-    if (t.nonEmpty) "[" + t.mkString.reverse.substring(1).reverse + "]" else "[]"
+  def toIdArray(dataList: Option[List[Any]]): Array[String] = {
+    (for (s <- dataList.getOrElse(List.empty)) yield s"${UUID.randomUUID().toString}").toArray[String]
   }
 
   // make an array ([..]) of cleaned string values from the input list
-  def toStringArray(dataList: Option[List[String]]) = {
-    val t = for (s <- dataList.getOrElse(List.empty)) yield s"'${clean(s)}'" + ","
-    if (t.nonEmpty) "[" + t.mkString.reverse.substring(1).reverse + "]" else "[]"
+  def toStringArray(dataList: Option[List[String]]): Array[String] = {
+    (for (s <- dataList.getOrElse(List.empty)) yield s"${clean(s)}").toArray[String]
   }
 
   // make an array ([..]) of id strings from the list of Identifier --> no cleaning done here
-  def toIdStringArray(dataList: Option[List[Identifier]]) = {
-    val t = for (s <- dataList.getOrElse(List.empty)) yield s"'${s.toString()}'" + ","
-    if (t.nonEmpty) "[" + t.mkString.reverse.substring(1).reverse + "]" else "[]"
+  def toIdStringArray(dataList: Option[List[Identifier]]): Array[String]  = {
+    (for (s <- dataList.getOrElse(List.empty)) yield s"${s.toString()}").toArray[String]
   }
 
   // the Neo4j :LABEL and :TYPE cannot deal with "-", so clean and replace with "_"
@@ -88,7 +85,7 @@ class NodesMaker(dbService: DbService) {
         sdoNode.setProperty("type", x.`type`)
         sdoNode.setProperty("created", x.created.time)
         sdoNode.setProperty("modified", x.modified.time)
-        sdoNode.setProperty("revoked", x.revoked.getOrElse("false"))
+        sdoNode.setProperty("revoked", x.revoked.getOrElse(false))
         sdoNode.setProperty("labels", toStringArray(x.labels))
         sdoNode.setProperty("confidence", x.confidence.getOrElse(0))
         sdoNode.setProperty("external_references", external_references_ids)
@@ -326,7 +323,7 @@ class NodesMaker(dbService: DbService) {
           stixNode.setProperty("object_modified", x.object_modified.time)
           stixNode.setProperty("object_ref", x.object_ref.toString())
           stixNode.setProperty("labels", toStringArray(x.labels))
-          stixNode.setProperty("revoked", x.revoked.getOrElse("false"))
+          stixNode.setProperty("revoked", x.revoked.getOrElse(false))
           stixNode.setProperty("external_references", external_references_ids)
           stixNode.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
           stixNode.setProperty("granular_markings", granular_markings_ids)
@@ -363,12 +360,11 @@ class NodesMaker(dbService: DbService) {
   }
 
   // create the kill_chain_phases nodes and relationships
-  def createKillPhases(idString: String, kill_chain_phases: Option[List[KillChainPhase]], kill_chain_phases_ids: String) = {
+  def createKillPhases(idString: String, kill_chain_phases: Option[List[KillChainPhase]], kill_chain_phases_ids: Array[String]) = {
     val killphases = for (s <- kill_chain_phases.getOrElse(List.empty))
       yield (clean(s.kill_chain_name), clean(s.phase_name), asCleanLabel(s.`type`))
     if (killphases.nonEmpty) {
-      val temp = kill_chain_phases_ids.replace("[", "").replace("]", "")
-      val kp = (temp.split(",") zip killphases).foreach({ case (a, (b, c, d)) =>
+      val kp = (kill_chain_phases_ids zip killphases).foreach({ case (a, (b, c, d)) =>
         transaction(dbService.graphDB) {
           val stixNode = dbService.graphDB.createNode(label(d))
           stixNode.setProperty("kill_chain_phase_id", a)
@@ -377,7 +373,7 @@ class NodesMaker(dbService: DbService) {
           dbService.kill_chain_phase_idIndex.add(stixNode, "kill_chain_phase_id", stixNode.getProperty("kill_chain_phase_id"))
         }
       })
-      for (k <- temp.split(",")) {
+      for (k <- kill_chain_phases_ids) {
         transaction(dbService.graphDB) {
           val sourceNode = dbService.idIndex.get("id", idString).getSingle
           val targetNode = dbService.kill_chain_phase_idIndex.get("kill_chain_phase_id", k).getSingle
@@ -388,13 +384,12 @@ class NodesMaker(dbService: DbService) {
   }
 
   // create the external_references nodes and relationships
-  def createExternRefs(idString: String, external_references: Option[List[ExternalReference]], external_references_ids: String) = {
+  def createExternRefs(idString: String, external_references: Option[List[ExternalReference]], external_references_ids: Array[String]) = {
     val externRefs = for (s <- external_references.getOrElse(List.empty))
       yield (clean(s.source_name), clean(s.description.getOrElse("")),
         clean(s.url.getOrElse("")), clean(s.external_id.getOrElse("")), asCleanLabel(s.`type`))
     if (externRefs.nonEmpty) {
-      val temp = external_references_ids.replace("[", "").replace("]", "")
-      val kp = (temp.split(",") zip externRefs).foreach(
+      val kp = (external_references_ids zip externRefs).foreach(
         { case (a, (b, c, d, e, f)) =>
           transaction(dbService.graphDB) {
             val stixNode = dbService.graphDB.createNode(label(f))
@@ -408,7 +403,7 @@ class NodesMaker(dbService: DbService) {
         }
       )
       // the external_reference relationships with the given ids
-      for (k <- temp.split(",")) {
+      for (k <- external_references_ids) {
         transaction(dbService.graphDB) {
           val sourceNode = dbService.idIndex.get("id", idString).getSingle
           val targetNode = dbService.external_reference_idIndex.get("external_reference_id", k).getSingle
@@ -419,13 +414,12 @@ class NodesMaker(dbService: DbService) {
   }
 
   // create the granular_markings nodes and relationships
-  def createGranulars(idString: String, granular_markings: Option[List[GranularMarking]], granular_markings_ids: String) = {
+  def createGranulars(idString: String, granular_markings: Option[List[GranularMarking]], granular_markings_ids: Array[String]) = {
     val granulars = for (s <- granular_markings.getOrElse(List.empty))
       yield (toStringArray(Option(s.selectors)), clean(s.marking_ref.getOrElse("")),
         clean(s.lang.getOrElse("")), asCleanLabel(s.`type`))
     if (granulars.nonEmpty) {
-      val temp = granular_markings_ids.replace("[", "").replace("]", "")
-      val kp = (temp.split(",") zip granulars).foreach(
+      val kp = (granular_markings_ids zip granulars).foreach(
         { case (a, (b, c, d, e)) =>
           transaction(dbService.graphDB) {
             val stixNode = dbService.graphDB.createNode(label(e))
@@ -438,7 +432,7 @@ class NodesMaker(dbService: DbService) {
         }
       )
       // the granular_markings relationships with the given ids
-      for (k <- temp.split(",")) {
+      for (k <- granular_markings_ids) {
         transaction(dbService.graphDB) {
           val sourceNode = dbService.idIndex.get("id", idString).getSingle
           val targetNode = dbService.granular_marking_idIndex.get("granular_marking_id", k).getSingle
