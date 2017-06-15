@@ -62,6 +62,10 @@ With the option **--zip** the input file must be a zip file with one or more ent
 in each.
   
 If the database already exists, the data will be added to it, otherwise a new neo4j database will be created.  
+
+To view the data, launch the Neo4j-3.2.1 app, select your "db_dir" as the database 
+location and click start. Once the status is started, open a browser on "http://localhost:7474". 
+
  #### For very large files
  
  To process very large files use the following options:

@@ -219,7 +219,8 @@ class NodesMaker(dbService: DbService) {
       val y = x.asInstanceOf[Relationship]
       // create a relationshipNode to be the source node in the object marking relations
       transaction(dbService.graphDB) {
-        val relNode = dbService.graphDB.createNode(label("RelationshipNode"))
+        val relNode = dbService.graphDB.createNode(label("SRO"))
+        relNode.addLabel(label("RelationshipNode"))
         relNode.setProperty("id", y.id.toString())
         relNode.setProperty("type", Relationship.`type`)
         dbService.idIndex.add(relNode, "id", relNode.getProperty("id"))
@@ -229,7 +230,8 @@ class NodesMaker(dbService: DbService) {
       val y = x.asInstanceOf[Sighting]
       // create a SightingNode to be the source node in the sighting relationship
       transaction(dbService.graphDB) {
-        val sightingNode = dbService.graphDB.createNode(label("SightingNode"))
+        val sightingNode = dbService.graphDB.createNode(label("SRO"))
+        sightingNode.addLabel(label("SightingNode"))
         sightingNode.setProperty("id", y.id.toString())
         sightingNode.setProperty("type", Sighting.`type`)
         dbService.idIndex.add(sightingNode, "id", sightingNode.getProperty("id"))

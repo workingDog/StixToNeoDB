@@ -88,16 +88,16 @@ class Util(dbService: DbService) {
       case s: TPLMarking => clean(s.tlp.value) + ",tlp"
       case _ => ""
     }
-    var stixNode: Node = null
+    var markObjNode: Node = null
     transaction(dbService.graphDB) {
-      stixNode = dbService.graphDB.createNode(label("marking_object_refs"))
-      stixNode.setProperty("marking_id", definition_id)
-      stixNode.setProperty("marking", mark)
-      dbService.marking_idIndex.add(stixNode, "marking_id", stixNode.getProperty("marking_id"))
+      markObjNode = dbService.graphDB.createNode(label(Util.markingObjRefs))
+      markObjNode.setProperty("marking_id", definition_id)
+      markObjNode.setProperty("marking", mark)
+      dbService.marking_idIndex.add(markObjNode, "marking_id", markObjNode.getProperty("marking_id"))
     }
     transaction(dbService.graphDB) {
       val sourceNode = dbService.idIndex.get("id", idString).getSingle
-      sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_MARKING_OBJECT"))
+      sourceNode.createRelationshipTo(markObjNode, RelationshipType.withName("HAS_MARKING_OBJECT"))
     }
   }
 
