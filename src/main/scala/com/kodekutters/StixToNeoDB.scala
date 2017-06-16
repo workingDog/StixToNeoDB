@@ -34,11 +34,12 @@ object StixToNeoDB {
       val dbf = if (args.length == 3) args(2).trim else ""
       val dbFile = if (dbf.isEmpty) new java.io.File(".").getCanonicalPath + "/stixdb" else dbf
       println("database location: " + dbFile)
+      val neoLoader = new Neo4jLoader(args(1), dbFile)
       args(0) match {
-        case "--csv" => Neo4jLoader(args(1), dbFile).processBundleFile()
-        case "--zip" => Neo4jLoader(args(1), dbFile).processBundleZipFile()
-        case "--csvx" => Neo4jLoader(args(1), dbFile).processStixFile()
-        case "--zipx" => Neo4jLoader(args(1), dbFile).processStixZipFile()
+        case "--csv" => neoLoader.processBundleFile()
+        case "--zip" => neoLoader.processBundleZipFile()
+        case "--csvx" => neoLoader.processStixFile()
+        case "--zipx" => neoLoader.processStixZipFile()
         case x => println("unknown option: " + x + "\n"); println(usage)
       }
     }

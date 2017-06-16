@@ -1,6 +1,6 @@
 package com.kodekutters.neo4j
 
-import java.io.{File, InputStream}
+import java.io.File
 
 import com.kodekutters.stix._
 import com.kodekutters.stix.Bundle
@@ -11,7 +11,6 @@ import scala.io.Source
 import scala.language.implicitConversions
 import scala.language.postfixOps
 import scala.collection.JavaConverters._
-//import com.typesafe.config.ConfigFactory
 
 /**
   * loads Stix-2.1 objects and relationships into a Neo4j graph database
@@ -19,24 +18,14 @@ import scala.collection.JavaConverters._
   * @author R. Wathelet June 2017
   *
   *         ref: https://github.com/workingDog/scalastix
-  */
-object Neo4jLoader {
-  // must use this constructor, class is private
-  def apply(inFile: String, dbDir: String) = new Neo4jLoader(inFile, dbDir)
-}
-
-/**
-  * loads Stix-2.1 objects (nodes) and relationships (edges) into a Neo4j database
+  *
   *
   * @param inFile the input file to process
   * @param dbDir  the neo4j graph database directory name
   */
-class Neo4jLoader private(inFile: String, dbDir: String) {
+class Neo4jLoader(inFile: String, dbDir: String) {
 
   import Util._
-
-  // not used
-  // val config = ConfigFactory.parseFile(new File("application.conf"))
 
   // the neo4j graph database service
   val dbService = new DbService(dbDir)
