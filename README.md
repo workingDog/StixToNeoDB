@@ -18,8 +18,7 @@ using the [Java Neo4j API](https://neo4j.com/docs/java-reference/current/javadoc
          
 Once the Stix objects are in a Neo4j graph database, you can use the [export tools](https://github.com/jexp/neo4j-shell-tools) to          
 convert them into GraphML, Cypher statements, CSV and binary formats. See also 
-[how-2-convert](how-2-convert.md) for the 
-details of how to convert into those formats.         
+[how-2-convert](how-2-convert.md) for some explanations on how to convert into those formats.         
                          
 ### References
  
