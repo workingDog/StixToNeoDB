@@ -1,4 +1,4 @@
-###To convert Stix-2.1 objects to graphML, Cypher statements, CSV and binary.
+### To convert Stix-2.1 objects to graphML, Cypher statements, CSV and binary.
 
 Install neo4j-3.2.1 from the zip or tar file, not the exe or dmg.
 
