@@ -60,10 +60,10 @@ class RelationsMaker(dbService: DbService) {
         rel.setProperty("created", x.created.time)
         rel.setProperty("modified", x.modified.time)
         rel.setProperty("revoked", x.revoked.getOrElse(false))
-        rel.setProperty("labels", toStringArray(x.labels))
+        rel.setProperty("labels",  x.labels.getOrElse(List.empty).toArray)
         rel.setProperty("confidence", x.confidence.getOrElse(0))
         rel.setProperty("external_references", toIdArray(x.external_references))
-        rel.setProperty("lang", clean(x.lang.getOrElse("")))
+        rel.setProperty("lang", x.lang.getOrElse(""))
         rel.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
         rel.setProperty("granular_markings", toIdArray(x.granular_markings))
         rel.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
@@ -83,8 +83,8 @@ class RelationsMaker(dbService: DbService) {
       transaction(dbService.graphDB) {
         rel.setProperty("source_ref", y.source_ref.toString())
         rel.setProperty("target_ref", y.target_ref.toString())
-        rel.setProperty("relationship_type", asCleanLabel(y.relationship_type))
-        rel.setProperty("description", clean(y.description.getOrElse("")))
+        rel.setProperty("relationship_type", y.relationship_type)
+        rel.setProperty("description", y.description.getOrElse(""))
       }
     }
     else { // a Sighting
@@ -98,7 +98,7 @@ class RelationsMaker(dbService: DbService) {
         rel.setProperty("summary", y.summary.getOrElse(""))
         rel.setProperty("observed_data_id", toIdStringArray(y.observed_data_refs))
         rel.setProperty("where_sighted_refs_id", toIdStringArray(y.where_sighted_refs))
-        rel.setProperty("description", clean(y.description.getOrElse("")))
+        rel.setProperty("description", y.description.getOrElse(""))
       }
       // create relations between the sighting (SightingNode id) and the list of observed_data_refs ObservedData SDO id
       util.createRelToObjRef(y.id.toString(), y.observed_data_refs, "SIGHTED_OBSERVED_DATA")

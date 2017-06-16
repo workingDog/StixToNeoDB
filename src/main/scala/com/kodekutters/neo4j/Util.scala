@@ -54,23 +54,18 @@ object Util {
     }
   }
 
-  // clean the string, i.e. replace unwanted char, but not "-"
-  def clean(s: String) = s.replace(",", " ").replace(":", " ").replace("\'", " ").replace(";", " ").replace("\"", "").replace("\\", "").replace("\n", "").replace("\r", "")
-
   // make an array of unique random id values from the input list
   def toIdArray(dataList: Option[List[Any]]): Array[String] = {
-    (for (s <- dataList.getOrElse(List.empty)) yield s"${UUID.randomUUID().toString}").toArray[String]
+    (for (s <- dataList.getOrElse(List.empty)) yield UUID.randomUUID().toString).toArray
   }
 
-  // make an array of cleaned string values from the input list
-  def toStringArray(dataList: Option[List[String]]): Array[String] = {
-    (for (s <- dataList.getOrElse(List.empty)) yield s"${clean(s)}").toArray[String]
+  // make an array of id strings from the list of Identifier
+  def toIdStringArray(dataList: Option[List[Identifier]]): Array[String] = {
+    (for (s <- dataList.getOrElse(List.empty)) yield s.toString()).toArray
   }
 
-  // make an array of id strings from the list of Identifier --> no cleaning done here
-  def toIdStringArray(dataList: Option[List[Identifier]]): Array[String]  = {
-    (for (s <- dataList.getOrElse(List.empty)) yield s"${s.toString()}").toArray[String]
-  }
+  // clean the string, i.e. replace unwanted char, but not "-"
+  def clean(s: String) = s.replace(",", " ").replace(":", " ").replace("\'", " ").replace(";", " ").replace("\"", "").replace("\\", "").replace("\n", "").replace("\r", "")
 
   // the Neo4j :LABEL and :TYPE cannot deal with "-", so clean and replace with "_"
   def asCleanLabel(s: String) = clean(s).replace("-", "_")
@@ -84,8 +79,8 @@ class Util(dbService: DbService) {
   // create the marking definition object and its relationship
   def createMarkingDef(idString: String, definition: MarkingObject, definition_id: String) = {
     val mark: String = definition match {
-      case s: StatementMarking => clean(s.statement) + ",statement"
-      case s: TPLMarking => clean(s.tlp.value) + ",tlp"
+      case s: StatementMarking => s.statement
+      case s: TPLMarking => s.tlp.value
       case _ => ""
     }
     var markObjNode: Node = null
@@ -104,7 +99,7 @@ class Util(dbService: DbService) {
   // create the kill_chain_phases nodes and relationships
   def createKillPhases(idString: String, kill_chain_phases: Option[List[KillChainPhase]], kill_chain_phases_ids: Array[String]) = {
     val killphases = for (s <- kill_chain_phases.getOrElse(List.empty))
-      yield (clean(s.kill_chain_name), clean(s.phase_name), asCleanLabel(s.`type`))
+      yield (s.kill_chain_name, s.phase_name, asCleanLabel(s.`type`))
     if (killphases.nonEmpty) {
       val kp = (kill_chain_phases_ids zip killphases).foreach({ case (a, (b, c, d)) =>
         transaction(dbService.graphDB) {
@@ -128,8 +123,8 @@ class Util(dbService: DbService) {
   // create the external_references nodes and relationships
   def createExternRefs(idString: String, external_references: Option[List[ExternalReference]], external_references_ids: Array[String]) = {
     val externRefs = for (s <- external_references.getOrElse(List.empty))
-      yield (clean(s.source_name), clean(s.description.getOrElse("")),
-        clean(s.url.getOrElse("")), clean(s.external_id.getOrElse("")), asCleanLabel(s.`type`))
+      yield (s.source_name, s.description.getOrElse(""),
+        s.url.getOrElse(""), s.external_id.getOrElse(""), asCleanLabel(s.`type`))
     if (externRefs.nonEmpty) {
       val kp = (external_references_ids zip externRefs).foreach(
         { case (a, (b, c, d, e, f)) =>
@@ -158,8 +153,7 @@ class Util(dbService: DbService) {
   // create the granular_markings nodes and relationships
   def createGranulars(idString: String, granular_markings: Option[List[GranularMarking]], granular_markings_ids: Array[String]) = {
     val granulars = for (s <- granular_markings.getOrElse(List.empty))
-      yield (toStringArray(Option(s.selectors)), clean(s.marking_ref.getOrElse("")),
-        clean(s.lang.getOrElse("")), asCleanLabel(s.`type`))
+      yield (s.selectors.toArray, s.marking_ref.getOrElse(""), s.lang.getOrElse(""), asCleanLabel(s.`type`))
     if (granulars.nonEmpty) {
       val kp = (granular_markings_ids zip granulars).foreach(
         { case (a, (b, c, d, e)) =>
