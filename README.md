@@ -15,6 +15,11 @@ and their relationships.
 **StixToNeoDB** converts [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit#) 
 domain objects (SDO) and relationships (SRO) to [Neo4j](https://neo4j.com/) nodes and relations 
 using the [Java Neo4j API](https://neo4j.com/docs/java-reference/current/javadocs/). This allows for creating a new database or for adding new nodes and relations to an existing Neo4j graph database.
+         
+Once the Stix objects are in a Neo4j graph database, you can use the [export tools](https://github.com/jexp/neo4j-shell-tools) to          
+convert them into GraphML, Cypher statements, CSV and binary formats. See also 
+[how-2-convert](how-2-convert.md) for the 
+details of how to convert into those formats.         
                          
 ### References
  
