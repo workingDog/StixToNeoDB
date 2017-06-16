@@ -189,39 +189,22 @@ class NodesMaker(dbService: DbService) {
     }
   }
 
-  // create a Relationship and a Sighting node
+  // create a Relationship or a Sighting node
   def createSRONode(x: SRO) = {
     // the external_references nodes and relations
     util.createExternRefs(x.id.toString(), x.external_references, toIdArray(x.external_references))
     // the granular_markings nodes and relations
     util.createGranulars(x.id.toString(), x.granular_markings, toIdArray(x.granular_markings))
-
-    // a Relationship
-    if (x.isInstanceOf[Relationship]) {
-      val y = x.asInstanceOf[Relationship]
-      // create a relationshipNode to be the source node in the object marking relations
-      transaction(dbService.graphDB) {
-        val relNode = dbService.graphDB.createNode(label("SRO"))
-        relNode.addLabel(label("RelationshipNode"))
-        relNode.setProperty("id", y.id.toString())
-        relNode.setProperty("type", Relationship.`type`)
-        dbService.idIndex.add(relNode, "id", relNode.getProperty("id"))
-      }
-    }
-    else { // a Sighting
-      val y = x.asInstanceOf[Sighting]
-      // create a SightingNode to be the source node in the sighting relationship
-      transaction(dbService.graphDB) {
-        val sightingNode = dbService.graphDB.createNode(label("SRO"))
-        sightingNode.addLabel(label("SightingNode"))
-        sightingNode.setProperty("id", y.id.toString())
-        sightingNode.setProperty("type", Sighting.`type`)
-        dbService.idIndex.add(sightingNode, "id", sightingNode.getProperty("id"))
-      }
+    transaction(dbService.graphDB) {
+      val node = dbService.graphDB.createNode(label("SRO"))
+      node.addLabel(label(asCleanLabel(x.`type`+"_node")))
+      node.setProperty("id", x.id.toString())
+      node.setProperty("type", x.`type`)
+      dbService.idIndex.add(node, "id", node.getProperty("id"))
     }
   }
 
-  // create a MarkingDefinition and LanguageContent node
+  // create a MarkingDefinition or LanguageContent node
   def createStixObjNode(stixObj: StixObj) = {
 
     stixObj match {
