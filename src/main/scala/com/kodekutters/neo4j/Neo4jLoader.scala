@@ -29,7 +29,7 @@ class Neo4jLoader(inFile: String, dbDir: String) {
 
   // the neo4j graph database service
   val dbService = new DbService(dbDir)
-  // the nodes maker for creating nodes and their internal relations
+  // the nodes maker for creating nodes and their embedded relations
   val nodesMaker = new NodesMaker(dbService)
   // the relations maker for creating relations
   val relsMaker = new RelationsMaker(dbService)

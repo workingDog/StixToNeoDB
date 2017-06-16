@@ -1,10 +1,9 @@
 ## To convert Stix-2.1 objects to graphML, Cypher statements, CSV and binary.
 
-Install [neo4j-3.2.1](https://neo4j.com/download/other-releases/) from the zip or tar file, 
-not the exe or dmg and 
-click on Neo4j 3.2.1 (tar) to download it.
+Download [neo4j-3.2.1](https://neo4j.com/download/other-releases/) from the zip or tar file, 
+not the exe or dmg.
 
-Untar/unzip into a directory of your choice, let say, "myneo4j"
+Untar/unzip it into a directory of your choice, let say, "myneo4j"
 
 Setup the tools required for exporting to other formats, go to [neo4j-shell-tools](https://github.com/jexp/neo4j-shell-tools)
 and download the "neo4j-shell-tools_3.0.1.zip" file.

@@ -17,7 +17,7 @@ class NodesMaker(dbService: DbService) {
 
   val util = new Util(dbService)
 
-  // create nodes and internal relations from a Stix object
+  // create nodes and embedded relations from a Stix object
   def createNodes(obj: StixObj) = {
     obj match {
       case stix if stix.isInstanceOf[SDO] => createSDONode(stix.asInstanceOf[SDO])
@@ -27,7 +27,7 @@ class NodesMaker(dbService: DbService) {
     }
   }
 
-  // create nodes and internal relations from a SDO
+  // create nodes and embedded relations from a SDO
   def createSDONode(x: SDO) = {
     // common elements
     val granular_markings_ids = toIdArray(x.granular_markings)
