@@ -187,41 +187,6 @@ object MakerSupport {
       })
   }
 
-  def createObservables(idString: String, objects: Map[String, Observable], obsIds: Map[String, String]) = {
-    // create the observable nodes and relations
-    for ((k, obs) <- objects) {
-      val obsId = obsIds(k)
-      // create the extensions ids
-      val ext_ids: Map[String, String] = {
-        if (obs.extensions.isDefined)
-          (for (s <- obs.extensions.get.keySet) yield s -> UUID.randomUUID().toString).toMap
-        else Map.empty
-      }
-      // create the observable node
-      var node: Node = null
-      transaction(DbService.graphDB) {
-        node = DbService.graphDB.createNode(label(asCleanLabel(obs.`type`)))
-        node.addLabel(label("Observable"))
-        node.setProperty("name", k) // todo <--- not part of the specs
-        node.setProperty("type", obs.`type`)
-        node.setProperty("observable_id", obsId)
-        node.setProperty("extensions", ext_ids.values.toArray)
-        node.setProperty("description", obs.description.getOrElse(""))
-        DbService.observable_idIndex.add(node, "observable_id", node.getProperty("observable_id"))
-      }
-      // create the Extension nodes and relations to this observable
-      ExtensionsMaker.create(obsId, obs.extensions, ext_ids)
-      // specify the observable attributes
-      ObservablesMaker.specify(obsId, obs, node)
-      // create the relation to the parent node
-      transaction(DbService.graphDB) {
-        // the ObservedData node
-        val sourceNode = DbService.idIndex.get("id", idString).getSingle
-        sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_OBSERVABLE"))
-      }
-    }
-  }
-
   // create the hashes objects and their relationship to the parent node
   def createHashes(idString: String, hashes: Option[Map[String, String]], hashes_ids: Map[String, String]) = {
     hashes.foreach(m =>
