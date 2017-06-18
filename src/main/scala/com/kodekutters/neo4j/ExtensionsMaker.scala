@@ -1,5 +1,7 @@
 package com.kodekutters.neo4j
 
+import java.util.UUID
+
 import com.kodekutters.stix._
 import org.neo4j.graphdb.Label.label
 import org.neo4j.graphdb.{Node, RelationshipType}
@@ -47,10 +49,12 @@ object ExtensionsMaker {
             }
 
           case x: NTFSFileExt =>
+            val altStream_ids = toIdArray(x.alternate_data_streams)
             transaction(DbService.graphDB) {
               xNode.setProperty("sid", x.sid.getOrElse(""))
-              // todo alternate_data_streams
+              xNode.setProperty("alternate_data_streams", altStream_ids)
             }
+            createAltDataStream(ext_ids(k), x.alternate_data_streams, altStream_ids)
 
           case x: PdfFileExt =>
             transaction(DbService.graphDB) {
@@ -89,6 +93,48 @@ object ExtensionsMaker {
         }
       }
     })
+  }
+
+  private def createAltDataStream(extIdString: String, altStreamOpt: Option[List[AlternateDataStream]], ids: Array[String]) = {
+    altStreamOpt.foreach(altStream => {
+      for ((kp, i) <- altStream.zipWithIndex) {
+        val hashes_ids: Map[String, String] = (for (s <- kp.hashes.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
+        var stixNode: Node = null
+        transaction(DbService.graphDB) {
+          val stixNode = DbService.graphDB.createNode(label(asCleanLabel(kp.`type`)))
+          stixNode.setProperty("alternate_data_stream_id", ids(i))
+          stixNode.setProperty("name", kp.name)
+          stixNode.setProperty("size", kp.size.getOrElse(0))
+          stixNode.setProperty("hashes", hashes_ids.values.toArray)
+          DbService.altStream_idIndex.add(stixNode, "alternate_data_stream_id", stixNode.getProperty("alternate_data_stream_id"))
+        }
+        createHashes(ids(i), kp.hashes, hashes_ids)
+        transaction(DbService.graphDB) {
+          val sourceNode = DbService.extension_idIndex.get("extension_id", extIdString).getSingle
+          sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_ALTERNATE_DATA_STREAM"))
+        }
+      }
+    })
+  }
+
+  // create the hashes objects and their relationship to the AlternateDataStream node
+  private def createHashes(altIdString: String, hashesOpt: Option[Map[String, String]], ids: Map[String, String]) = {
+    hashesOpt.foreach(hashes =>
+      for ((k, obs) <- hashes) {
+        var hashNode: Node = null
+        transaction(DbService.graphDB) {
+          hashNode = DbService.graphDB.createNode(label("hashes"))
+          hashNode.setProperty("hash_id", ids(k))
+          hashNode.setProperty("type", k)
+          hashNode.setProperty("hash", obs)
+          DbService.hash_idIndex.add(hashNode, "hash_id", hashNode.getProperty("hash_id"))
+        }
+        transaction(DbService.graphDB) {
+          val sourceNode = DbService.altStream_idIndex.get("alternate_data_stream_id", altIdString).getSingle
+          sourceNode.createRelationshipTo(hashNode, RelationshipType.withName("HAS_HASHES"))
+        }
+      }
+    )
   }
 
 }

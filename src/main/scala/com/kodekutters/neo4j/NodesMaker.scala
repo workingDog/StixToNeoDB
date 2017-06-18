@@ -184,6 +184,7 @@ class NodesMaker() {
           sdoNode.setProperty("objects", obs_ids.values.toArray)
           sdoNode.setProperty("description", y.description.getOrElse(""))
         }
+        // create the Observable objects nodes and relations for this ObservedData object
         ObservablesMaker.create(y.id.toString(), y.objects, obs_ids)
 
       case _ => // do nothing for now

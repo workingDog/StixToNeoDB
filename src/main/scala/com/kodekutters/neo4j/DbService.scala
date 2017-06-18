@@ -22,6 +22,7 @@ object DbService {
   var observable_idIndex: Index[Node] = _
   var extension_idIndex: Index[Node] = _
   var hash_idIndex: Index[Node] = _
+  var altStream_idIndex: Index[Node] = _
 
   // general transaction support
   // see snippet: http://sandrasi-sw.blogspot.jp/2012/02/neo4j-transactions-in-scala.html
@@ -57,6 +58,7 @@ object DbService {
       observable_idIndex = graphDB.index.forNodes("observable_id")
       extension_idIndex = graphDB.index.forNodes("extension_id")
       hash_idIndex = graphDB.index.forNodes("hash_id")
+      altStream_idIndex = graphDB.index.forNodes("alternate_data_stream_id")
     }
   }
 

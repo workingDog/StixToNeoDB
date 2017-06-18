@@ -18,8 +18,8 @@ object ObservablesMaker {
     * create the Observables node and relations for the parent ObservedData SDO node
     *
     * @param idString the parent ObservedData SDO node id
-    * @param objects  the parent node Observables
-    * @param obsIds   the Observable ids
+    * @param objects  the Observables
+    * @param obsIds   the Observables ids
     */
   def create(idString: String, objects: Map[String, Observable], obsIds: Map[String, String]) = {
     // create the observable nodes and relations for each Observable
@@ -130,6 +130,7 @@ object ObservablesMaker {
           node.setProperty("decryption_key", x.decryption_key.getOrElse(""))
           node.setProperty("contains_refs", x.contains_refs.getOrElse(List.empty).toArray)
           node.setProperty("content_ref", x.content_ref.getOrElse(""))
+          node.setProperty("hashes", hashes_ids.values.toArray)
         }
         createHashes(theObsId, x.hashes, hashes_ids)
 
@@ -248,36 +249,34 @@ object ObservablesMaker {
           node.setProperty("subject", x.subject.getOrElse(""))
           node.setProperty("subject_public_key_algorithm", x.subject_public_key_algorithm.getOrElse(""))
           node.setProperty("subject_public_key_modulus", x.subject_public_key_modulus.getOrElse(""))
-          node.setProperty("subject_public_key_exponent", x.subject_public_key_exponent.getOrElse(0)) // todo
+          node.setProperty("subject_public_key_exponent", x.subject_public_key_exponent.getOrElse(0))
+          node.setProperty("hashes", hashes_ids.values.toArray)
           // todo x509_v3_extensions
         }
         createHashes(theObsId, x.hashes, hashes_ids)
 
       case _ =>
     }
-
   }
 
   // create the hashes objects and their relationship to the Observable parent node
-  private def createHashes(idString: String, hashes: Option[Map[String, String]], hashes_ids: Map[String, String]) = {
-    hashes.foreach(m =>
-      for ((k, obs) <- m) {
-        val obsId = hashes_ids(k)
+  private def createHashes(obsIdString: String, hashesOpt: Option[Map[String, String]], ids: Map[String, String]) = {
+    hashesOpt.foreach(hashes =>
+      for ((k, obs) <- hashes) {
         var hashNode: Node = null
         transaction(DbService.graphDB) {
           hashNode = DbService.graphDB.createNode(label("hashes"))
-          hashNode.setProperty("hash_id", obsId)
+          hashNode.setProperty("hash_id", ids(k))
           hashNode.setProperty("type", k)
           hashNode.setProperty("hash", obs)
           DbService.hash_idIndex.add(hashNode, "hash_id", hashNode.getProperty("hash_id"))
         }
         transaction(DbService.graphDB) {
-          val sourceNode = DbService.observable_idIndex.get("observable_id", idString).getSingle
+          val sourceNode = DbService.observable_idIndex.get("observable_id", obsIdString).getSingle
           sourceNode.createRelationshipTo(hashNode, RelationshipType.withName("HAS_HASHES"))
         }
       }
     )
   }
-
 
 }
