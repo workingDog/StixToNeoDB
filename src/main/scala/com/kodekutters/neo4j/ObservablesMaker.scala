@@ -6,15 +6,18 @@ import com.kodekutters.stix._
 import org.neo4j.graphdb.Label.label
 import org.neo4j.graphdb.{Node, RelationshipType}
 
+/**
+  * make the Observables nodes and relations for the ObservedData SDO
+  */
 object ObservablesMaker {
 
   import MakerSupport._
   import DbService._
 
   /**
-    * create the Observalebs node and relations for the parent node
+    * create the Observables node and relations for the parent ObservedData SDO node
     *
-    * @param idString the parent node id
+    * @param idString the parent ObservedData SDO node id
     * @param objects  the parent node Observables
     * @param obsIds   the Observable ids
     */
@@ -23,11 +26,7 @@ object ObservablesMaker {
     for ((k, obs) <- objects) {
       val obsId = obsIds(k)
       // create the extensions ids
-      val ext_ids: Map[String, String] = {
-        if (obs.extensions.isDefined)
-          (for (s <- obs.extensions.get.keySet) yield s -> UUID.randomUUID().toString).toMap
-        else Map.empty
-      }
+      val ext_ids: Map[String, String] = (for (s <- obs.extensions.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
       // create the observable node
       var node: Node = null
       transaction(DbService.graphDB) {
@@ -58,11 +57,7 @@ object ObservablesMaker {
     observable match {
       case x: Artifact =>
         // create the hashes ids
-        val hashes_ids: Map[String, String] = {
-          if (x.hashes.isDefined)
-            (for (s <- x.hashes.get.keySet) yield s -> UUID.randomUUID().toString).toMap
-          else Map.empty
-        }
+        val hashes_ids: Map[String, String] = (for (s <- x.hashes.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
         transaction(DbService.graphDB) {
           node.setProperty("mime_type", x.mime_type.getOrElse(""))
           node.setProperty("payload_bin", x.payload_bin.getOrElse(""))
