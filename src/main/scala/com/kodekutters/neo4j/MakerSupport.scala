@@ -187,25 +187,4 @@ object MakerSupport {
       })
   }
 
-  // create the hashes objects and their relationship to the parent node
-  def createHashes(idString: String, hashes: Option[Map[String, String]], hashes_ids: Map[String, String]) = {
-    hashes.foreach(m =>
-      for ((k, obs) <- m) {
-        val obsId = hashes_ids(k)
-        var hashNode: Node = null
-        transaction(DbService.graphDB) {
-          hashNode = DbService.graphDB.createNode(label("hashes"))
-          hashNode.setProperty("hash_id", obsId)
-          hashNode.setProperty("type", k)
-          hashNode.setProperty("hash", obs)
-          DbService.hash_idIndex.add(hashNode, "hash_id", hashNode.getProperty("hash_id"))
-        }
-        transaction(DbService.graphDB) {
-          val sourceNode = DbService.idIndex.get("id", idString).getSingle
-          sourceNode.createRelationshipTo(hashNode, RelationshipType.withName("HAS_HASHES"))
-        }
-      }
-    )
-  }
-
 }
