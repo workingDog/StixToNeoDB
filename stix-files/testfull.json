@@ -5,6 +5,32 @@
   "objects": [
 
     {
+      "type": "observed-data",
+      "id": "observed-data--b67d30ff-02ac-498a-92f9-32f845f448cf",
+      "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220",
+      "created": "2016-04-06T19:58:16.000Z",
+      "modified": "2016-04-06T19:58:16.000Z",
+      "first_observed": "2015-12-21T19:00:00Z",
+      "last_observed": "2015-12-21T19:00:00Z",
+      "number_observed": 50,
+      "objects": {
+        "0": {
+          "type": "artifact",
+          "mime_type": "image/jpeg",
+          "payload_bin": "VBORw0KGgoAAAANSUhEUgAAADI== ..."
+        },
+        "1": {
+          "type": "file",
+          "hashes": {
+            "MD5": "66e2ea40dc71d5ba701574ea215a81f1"
+          },
+          "name": "quêry.dll",
+          "name_enc": "windows-1252"
+        }
+      }
+    },
+
+    {
       "type": "marking-definition",
       "id": "marking-definition--34098fce-860f-48ae-8e50-ebd3cc5e41da",
       "created": "2016-05-12T08:17:27.000Z",

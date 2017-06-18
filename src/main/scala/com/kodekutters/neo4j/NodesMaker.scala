@@ -11,11 +11,10 @@ import org.neo4j.graphdb.Node
   * create Neo4j nodes and internal relations from a Stix object
   *
   */
-class NodesMaker(dbService: DbService) {
+class NodesMaker() {
 
-  import Util._
-
-  val util = new Util(dbService)
+  import MakerSupport._
+  import DbService._
 
   // create nodes and embedded relations from a Stix object
   def createNodes(obj: StixObj) = {
@@ -34,8 +33,8 @@ class NodesMaker(dbService: DbService) {
     val external_references_ids = toIdArray(x.external_references)
     // create a base node and internal relations common to all SDO
     var sdoNode: Node = null
-    transaction(dbService.graphDB) {
-      sdoNode = dbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
+    transaction(DbService.graphDB) {
+      sdoNode = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
       sdoNode.addLabel(label("SDO"))
       sdoNode.setProperty("id", x.id.toString())
       sdoNode.setProperty("type", x.`type`)
@@ -49,28 +48,28 @@ class NodesMaker(dbService: DbService) {
       sdoNode.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
       sdoNode.setProperty("granular_markings", granular_markings_ids)
       sdoNode.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
-      dbService.idIndex.add(sdoNode, "id", sdoNode.getProperty("id"))
+      DbService.idIndex.add(sdoNode, "id", sdoNode.getProperty("id"))
     }
     // the external_references nodes and relations
-    util.createExternRefs(x.id.toString(), x.external_references, external_references_ids)
+    createExternRefs(x.id.toString(), x.external_references, external_references_ids)
     // the granular_markings nodes and relations
-    util.createGranulars(x.id.toString(), x.granular_markings, granular_markings_ids)
+    createGranulars(x.id.toString(), x.granular_markings, granular_markings_ids)
 
     x.`type` match {
 
       case AttackPattern.`type` =>
         val y = x.asInstanceOf[AttackPattern]
         val kill_chain_phases_ids = toIdArray(y.kill_chain_phases)
-        transaction(dbService.graphDB) {
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("name", y.name)
           sdoNode.setProperty("description", y.description.getOrElse(""))
           sdoNode.setProperty("kill_chain_phases", kill_chain_phases_ids)
         }
-        util.createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
+        createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
 
       case Identity.`type` =>
         val y = x.asInstanceOf[Identity]
-        transaction(dbService.graphDB) {
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("name", y.name)
           sdoNode.setProperty("identity_class", y.identity_class)
           sdoNode.setProperty("sectors", y.sectors.getOrElse(List.empty).toArray)
@@ -80,7 +79,7 @@ class NodesMaker(dbService: DbService) {
 
       case Campaign.`type` =>
         val y = x.asInstanceOf[Campaign]
-        transaction(dbService.graphDB) {
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("name", y.name)
           sdoNode.setProperty("objective", y.objective.getOrElse(""))
           sdoNode.setProperty("aliases", y.aliases.getOrElse(List.empty).toArray)
@@ -91,14 +90,14 @@ class NodesMaker(dbService: DbService) {
 
       case CourseOfAction.`type` =>
         val y = x.asInstanceOf[CourseOfAction]
-        transaction(dbService.graphDB) {
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("name", y.name)
           sdoNode.setProperty("description", y.description.getOrElse(""))
         }
 
       case IntrusionSet.`type` =>
         val y = x.asInstanceOf[IntrusionSet]
-        transaction(dbService.graphDB) {
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("name", y.name)
           sdoNode.setProperty("description", y.description.getOrElse(""))
           sdoNode.setProperty("aliases", y.aliases.getOrElse(List.empty).toArray)
@@ -113,16 +112,16 @@ class NodesMaker(dbService: DbService) {
       case Malware.`type` =>
         val y = x.asInstanceOf[Malware]
         val kill_chain_phases_ids = toIdArray(y.kill_chain_phases)
-        transaction(dbService.graphDB) {
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("name", y.name)
           sdoNode.setProperty("description", y.description.getOrElse(""))
           sdoNode.setProperty("kill_chain_phases", kill_chain_phases_ids)
         }
-        util.createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
+        createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
 
       case Report.`type` =>
         val y = x.asInstanceOf[Report]
-        transaction(dbService.graphDB) {
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("name", y.name)
           sdoNode.setProperty("published", y.published.time)
           sdoNode.setProperty("object_refs_ids", toIdStringArray(y.object_refs))
@@ -131,7 +130,7 @@ class NodesMaker(dbService: DbService) {
 
       case ThreatActor.`type` =>
         val y = x.asInstanceOf[ThreatActor]
-        transaction(dbService.graphDB) {
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("name", y.name)
           sdoNode.setProperty("description", y.description.getOrElse(""))
           sdoNode.setProperty("aliases", y.aliases.getOrElse(List.empty).toArray)
@@ -147,17 +146,17 @@ class NodesMaker(dbService: DbService) {
       case Tool.`type` =>
         val y = x.asInstanceOf[Tool]
         val kill_chain_phases_ids = toIdArray(y.kill_chain_phases)
-        transaction(dbService.graphDB) {
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("name", y.name)
           sdoNode.setProperty("description", y.description.getOrElse(""))
           sdoNode.setProperty("kill_chain_phases", kill_chain_phases_ids)
           sdoNode.setProperty("tool_version", y.tool_version.getOrElse(""))
         }
-        util.createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
+        createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
 
       case Vulnerability.`type` =>
         val y = x.asInstanceOf[Vulnerability]
-        transaction(dbService.graphDB) {
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("name", y.name)
           sdoNode.setProperty("description", y.description.getOrElse(""))
         }
@@ -165,7 +164,7 @@ class NodesMaker(dbService: DbService) {
       case Indicator.`type` =>
         val y = x.asInstanceOf[Indicator]
         val kill_chain_phases_ids = toIdArray(y.kill_chain_phases)
-        transaction(dbService.graphDB) {
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("name", y.name.getOrElse(""))
           sdoNode.setProperty("description", y.description.getOrElse(""))
           sdoNode.setProperty("pattern", y.pattern)
@@ -173,17 +172,19 @@ class NodesMaker(dbService: DbService) {
           sdoNode.setProperty("valid_until", y.valid_until.getOrElse("").toString)
           sdoNode.setProperty("kill_chain_phases", kill_chain_phases_ids)
         }
-        util.createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
+        createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
 
-      // todo  objects: Map[String, Observable],
       case ObservedData.`type` =>
         val y = x.asInstanceOf[ObservedData]
-        transaction(dbService.graphDB) {
+        val obs_ids: Map[String, String] = for (s <- y.objects) yield s._1 -> UUID.randomUUID().toString
+        transaction(DbService.graphDB) {
           sdoNode.setProperty("first_observed", y.first_observed.toString())
           sdoNode.setProperty("last_observed", y.last_observed.toString())
           sdoNode.setProperty("number_observed", y.number_observed)
+          sdoNode.setProperty("objects", obs_ids.values.toArray)
           sdoNode.setProperty("description", y.description.getOrElse(""))
         }
+        createObservables(y.id.toString(), y.objects, obs_ids)
 
       case _ => // do nothing for now
     }
@@ -192,15 +193,15 @@ class NodesMaker(dbService: DbService) {
   // create a Relationship or a Sighting node
   def createSRONode(x: SRO) = {
     // the external_references nodes and relations
-    util.createExternRefs(x.id.toString(), x.external_references, toIdArray(x.external_references))
+    createExternRefs(x.id.toString(), x.external_references, toIdArray(x.external_references))
     // the granular_markings nodes and relations
-    util.createGranulars(x.id.toString(), x.granular_markings, toIdArray(x.granular_markings))
-    transaction(dbService.graphDB) {
-      val node = dbService.graphDB.createNode(label("SRO"))
-      node.addLabel(label(asCleanLabel(x.`type`+"_node")))
+    createGranulars(x.id.toString(), x.granular_markings, toIdArray(x.granular_markings))
+    transaction(DbService.graphDB) {
+      val node = DbService.graphDB.createNode(label("SRO"))
+      node.addLabel(label(asCleanLabel(x.`type` + "_node")))
       node.setProperty("id", x.id.toString())
       node.setProperty("type", x.`type`)
-      dbService.idIndex.add(node, "id", node.getProperty("id"))
+      DbService.idIndex.add(node, "id", node.getProperty("id"))
     }
   }
 
@@ -213,8 +214,8 @@ class NodesMaker(dbService: DbService) {
         val definition_id = UUID.randomUUID().toString
         val granular_markings_ids = toIdArray(x.granular_markings)
         val external_references_ids = toIdArray(x.external_references)
-        transaction(dbService.graphDB) {
-          val stixNode = dbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
+        transaction(DbService.graphDB) {
+          val stixNode = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
           stixNode.addLabel(label("StixObj"))
           stixNode.setProperty("id", x.id.toString())
           stixNode.setProperty("type", x.`type`)
@@ -225,21 +226,21 @@ class NodesMaker(dbService: DbService) {
           stixNode.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
           stixNode.setProperty("granular_markings", granular_markings_ids)
           stixNode.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
-          dbService.idIndex.add(stixNode, "id", stixNode.getProperty("id"))
+          DbService.idIndex.add(stixNode, "id", stixNode.getProperty("id"))
         }
         // the external_references
-        util.createExternRefs(x.id.toString(), x.external_references, external_references_ids)
+        createExternRefs(x.id.toString(), x.external_references, external_references_ids)
         // the granular_markings
-        util.createGranulars(x.id.toString(), x.granular_markings, granular_markings_ids)
+        createGranulars(x.id.toString(), x.granular_markings, granular_markings_ids)
         // the marking object definition
-        util.createMarkingDef(x.id.toString(), x.definition, definition_id)
+        createMarkingDef(x.id.toString(), x.definition, definition_id)
 
       // todo <----- contents: Map[String, Map[String, String]]
       case x: LanguageContent =>
         val granular_markings_ids = toIdArray(x.granular_markings)
         val external_references_ids = toIdArray(x.external_references)
-        transaction(dbService.graphDB) {
-          val stixNode = dbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
+        transaction(DbService.graphDB) {
+          val stixNode = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
           stixNode.addLabel(label("StixObj"))
           stixNode.setProperty("id", x.id.toString())
           stixNode.setProperty("type", x.`type`)
@@ -253,12 +254,12 @@ class NodesMaker(dbService: DbService) {
           stixNode.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
           stixNode.setProperty("granular_markings", granular_markings_ids)
           stixNode.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
-          dbService.idIndex.add(stixNode, "id", stixNode.getProperty("id"))
+          DbService.idIndex.add(stixNode, "id", stixNode.getProperty("id"))
         }
         // the external_references
-        util.createExternRefs(x.id.toString(), x.external_references, external_references_ids)
+        createExternRefs(x.id.toString(), x.external_references, external_references_ids)
         // the granular_markings
-        util.createGranulars(x.id.toString(), x.granular_markings, granular_markings_ids)
+        createGranulars(x.id.toString(), x.granular_markings, granular_markings_ids)
     }
   }
 

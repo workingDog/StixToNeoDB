@@ -25,14 +25,12 @@ import scala.collection.JavaConverters._
   */
 class Neo4jLoader(inFile: String, dbDir: String) {
 
-  import Util._
+  import MakerSupport._
 
-  // the neo4j graph database service
-  val dbService = new DbService(dbDir)
   // the nodes maker for creating nodes and their embedded relations
-  val nodesMaker = new NodesMaker(dbService)
+  val nodesMaker = new NodesMaker()
   // the relations maker for creating relations
-  val relsMaker = new RelationsMaker(dbService)
+  val relsMaker = new RelationsMaker()
 
   // process a bundle of Stix objects
   private def processBundle(bundle: Bundle) = {
@@ -54,7 +52,7 @@ class Neo4jLoader(inFile: String, dbDir: String) {
       case Left(failure) => println("\n-----> ERROR reading bundle in file: " + inFile)
       case Right(bundle) => processBundle(bundle)
     }
-    dbService.closeAll()
+    DbService.closeAll()
   }
 
   /**
@@ -72,7 +70,7 @@ class Neo4jLoader(inFile: String, dbDir: String) {
         case None => println("-----> ERROR invalid bundle JSON in zip file: \n")
       }
     })
-    dbService.closeAll()
+    DbService.closeAll()
   }
 
   /**
@@ -100,7 +98,7 @@ class Neo4jLoader(inFile: String, dbDir: String) {
         }
       }
     }
-    dbService.closeAll()
+    DbService.closeAll()
   }
 
   /**
@@ -138,7 +136,7 @@ class Neo4jLoader(inFile: String, dbDir: String) {
         }
       }
     })
-    dbService.closeAll()
+    DbService.closeAll()
   }
 
 }
