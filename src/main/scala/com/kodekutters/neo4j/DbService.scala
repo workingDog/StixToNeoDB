@@ -26,6 +26,9 @@ object DbService {
   var exif_tags_idIndex: Index[Node] = _
   var contents_idIndex: Index[Node] = _
   var translations_idIndex: Index[Node] = _
+  var ipfix_idIndex: Index[Node] = _
+  var environment_variables_idIndex: Index[Node] = _
+  var additional_header_fields_idIndex: Index[Node] = _
 
   // general transaction support
   // see snippet: http://sandrasi-sw.blogspot.jp/2012/02/neo4j-transactions-in-scala.html
@@ -66,6 +69,9 @@ object DbService {
       exif_tags_idIndex = graphDB.index.forNodes("exif_tags_id")
       contents_idIndex = graphDB.index.forNodes("contents_id")
       translations_idIndex = graphDB.index.forNodes("translations_id")
+      ipfix_idIndex = graphDB.index.forNodes("ipfix_id")
+      environment_variables_idIndex = graphDB.index.forNodes("environment_variables_id")
+      additional_header_fields_idIndex = graphDB.index.forNodes("additional_header_fields_id")
     }
   }
 

@@ -191,13 +191,13 @@ class NodesMaker() {
     }
   }
 
-  // create a Relationship or a Sighting node so that the embedded relations can refer to it
+  // create an artificial Relationship or a Sighting node so that the embedded relations can refer to it
   def createSRONode(x: SRO) = {
     transaction(DbService.graphDB) {
       val node = DbService.graphDB.createNode(label("SRO"))
       node.addLabel(label(asCleanLabel(x.`type` + "_node")))
       node.setProperty("id", x.id.toString())
-      node.setProperty("type", x.`type`)
+      node.setProperty("type", x.`type`) // todo should this be here
       DbService.idIndex.add(node, "id", node.getProperty("id"))
     }
   }

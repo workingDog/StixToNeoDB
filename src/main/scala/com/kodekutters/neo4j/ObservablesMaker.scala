@@ -15,7 +15,7 @@ object ObservablesMaker {
   import DbService._
 
   /**
-    * create the Observables node and relations for the parent ObservedData SDO node
+    * create the Observables nodes and relations for the parent ObservedData SDO node
     *
     * @param idString the parent ObservedData SDO node id
     * @param objects  the Observables
@@ -96,9 +96,10 @@ object ObservablesMaker {
         }
 
       case x: EmailMessage =>
+        val headers_ids: Map[String, String] = (for (s <- x.additional_header_fields.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
         transaction(DbService.graphDB) {
           node.setProperty("is_multipart", x.is_multipart)
-          // todo EmailMimeType
+          // todo body_multipart: Option[List[EmailMimeType]]
           node.setProperty("body", x.body.getOrElse(""))
           node.setProperty("date", x.date.getOrElse("").toString)
           node.setProperty("content_type", x.content_type.getOrElse(""))
@@ -109,9 +110,10 @@ object ObservablesMaker {
           node.setProperty("bcc_refs", x.bcc_refs.getOrElse(List.empty).toArray)
           node.setProperty("subject", x.subject.getOrElse(""))
           node.setProperty("received_lines", x.received_lines.getOrElse(List.empty).toArray)
-          // todo additional_header_fields
+          node.setProperty("additional_header_fields", headers_ids.values.toArray)
           node.setProperty("raw_email_ref", x.raw_email_ref.getOrElse(""))
         }
+        createHeaders(theObsId, x.additional_header_fields, headers_ids)
 
       case x: File =>
         val hashes_ids: Map[String, String] = (for (s <- x.hashes.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
@@ -159,6 +161,7 @@ object ObservablesMaker {
         }
 
       case x: NetworkTraffic =>
+        val ipfix_ids: Map[String, String] = (for (s <- x.ipfix.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
         transaction(DbService.graphDB) {
           node.setProperty("start", x.start.getOrElse("").toString)
           node.setProperty("end", x.end.getOrElse("").toString)
@@ -172,14 +175,16 @@ object ObservablesMaker {
           node.setProperty("dst_byte_count", x.dst_byte_count.getOrElse(0))
           node.setProperty("src_packets", x.src_packets.getOrElse(0))
           node.setProperty("dst_packets", x.dst_packets.getOrElse(0))
-          // todo ipfix
+          node.setProperty("ipfix", ipfix_ids.values.toArray)
           node.setProperty("src_payload_ref", x.src_payload_ref.getOrElse(""))
           node.setProperty("dst_payload_ref", x.dst_payload_ref.getOrElse(""))
           node.setProperty("encapsulates_refs", x.encapsulates_refs.getOrElse(List.empty).toArray)
           node.setProperty("encapsulated_by_ref", x.encapsulated_by_ref.getOrElse(""))
         }
+        createIpfix(theObsId, x.ipfix, ipfix_ids)
 
       case x: Process =>
+        val env_ids: Map[String, String] = (for (s <- x.environment_variables.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
         transaction(DbService.graphDB) {
           node.setProperty("is_hidden", x.is_hidden.getOrElse(false).toString)
           node.setProperty("pid", x.pid.getOrElse(0)) // todo <-- not correct
@@ -188,13 +193,14 @@ object ObservablesMaker {
           node.setProperty("cwd", x.cwd.getOrElse(""))
           node.setProperty("arguments", x.arguments.getOrElse(List.empty).toArray)
           node.setProperty("command_line", x.cwd.getOrElse(""))
-          // todo environment_variables
+          node.setProperty("environment_variables", env_ids.values.toArray)
           node.setProperty("opened_connection_refs", x.opened_connection_refs.getOrElse(List.empty).toArray)
           node.setProperty("creator_user_ref", x.creator_user_ref.getOrElse(""))
           node.setProperty("binary_ref", x.binary_ref.getOrElse(""))
           node.setProperty("parent_ref", x.parent_ref.getOrElse(""))
           node.setProperty("child_refs", x.child_refs.getOrElse(List.empty).toArray)
         }
+        createEnv(theObsId, x.environment_variables, env_ids)
 
       case x: Software =>
         transaction(DbService.graphDB) {
@@ -251,7 +257,7 @@ object ObservablesMaker {
           node.setProperty("subject_public_key_modulus", x.subject_public_key_modulus.getOrElse(""))
           node.setProperty("subject_public_key_exponent", x.subject_public_key_exponent.getOrElse(0))
           node.setProperty("hashes", hashes_ids.values.toArray)
-          // todo x509_v3_extensions
+          // todo x509_v3_extensions: Option[X509V3ExtenstionsType]
         }
         createHashes(theObsId, x.hashes, hashes_ids)
 
@@ -273,6 +279,65 @@ object ObservablesMaker {
         transaction(DbService.graphDB) {
           val sourceNode = DbService.observable_idIndex.get("observable_id", obsIdString).getSingle
           sourceNode.createRelationshipTo(hashNode, RelationshipType.withName("HAS_HASHES"))
+        }
+      }
+    )
+  }
+
+  private def createEnv(obsIdString: String, envOpt: Option[Map[String, String]], ids: Map[String, String]) = {
+    envOpt.foreach(env =>
+      for ((k, obs) <- env) {
+        var node: Node = null
+        transaction(DbService.graphDB) {
+          node = DbService.graphDB.createNode(label("environment_variables"))
+          node.setProperty("environment_variables_id", ids(k))
+          node.setProperty(k, obs)
+          DbService.environment_variables_idIndex.add(node, "environment_variables_id", node.getProperty("environment_variables_id"))
+        }
+        transaction(DbService.graphDB) {
+          val sourceNode = DbService.observable_idIndex.get("observable_id", obsIdString).getSingle
+          sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_ENVIRONMENT_VARIABLE"))
+        }
+      }
+    )
+  }
+
+  private def createHeaders(obsIdString: String, headersOpt: Option[Map[String, String]], ids: Map[String, String]) = {
+    headersOpt.foreach(headers =>
+      for ((k, obs) <- headers) {
+        var node: Node = null
+        transaction(DbService.graphDB) {
+          node = DbService.graphDB.createNode(label("additional_header_fields"))
+          node.setProperty("additional_header_fields_id", ids(k))
+          node.setProperty(k, obs)
+          DbService.additional_header_fields_idIndex.add(node, "additional_header_fields_id", node.getProperty("additional_header_fields_id"))
+        }
+        transaction(DbService.graphDB) {
+          val sourceNode = DbService.observable_idIndex.get("observable_id", obsIdString).getSingle
+          sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_ADDITIONAL_HEADER_FIELD"))
+        }
+      }
+    )
+  }
+
+  private def createIpfix(obsIdString: String, ipfixOpt: Option[Map[String, Either[Int, String]]], ids: Map[String, String]) = {
+    ipfixOpt.foreach(ipfix =>
+      for ((k, obs) <- ipfix) {
+        // either a int or string
+        val theValue = obs match {
+          case Right(x) => x
+          case Left(x) => x
+        }
+        var node: Node = null
+        transaction(DbService.graphDB) {
+          node = DbService.graphDB.createNode(label(asCleanLabel("ipfix")))
+          node.setProperty("ipfix_id", ids(k))
+          node.setProperty(k, theValue)
+          DbService.ipfix_idIndex.add(node, "ipfix_id", node.getProperty("ipfix_id"))
+        }
+        transaction(DbService.graphDB) {
+          val sourceNode = DbService.observable_idIndex.get("observable_id", obsIdString).getSingle
+          sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_IPFIX"))
         }
       }
     )

@@ -28,7 +28,6 @@ class RelationsMaker() {
     createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
     // the created_by relation
     createdByRel(x.id.toString(), x.created_by_ref)
-
     x.`type` match {
       case Report.`type` =>
         val y = x.asInstanceOf[Report]

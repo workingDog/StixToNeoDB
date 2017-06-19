@@ -142,7 +142,7 @@ object ExtensionsMaker {
     exitTagsOpt.foreach(exitTags =>
       for ((k, obs) <- exitTags) {
         // either a int or string
-        val tagValue = obs match {
+        val theValue = obs match {
           case Right(x) => x
           case Left(x)  => x
         }
@@ -150,7 +150,7 @@ object ExtensionsMaker {
         transaction(DbService.graphDB) {
           node = DbService.graphDB.createNode(label(asCleanLabel("exif_tags")))
           node.setProperty("exif_tags_id", ids(k))
-          node.setProperty(k, tagValue)
+          node.setProperty(k, theValue)
           DbService.exif_tags_idIndex.add(node, "exif_tags_id", node.getProperty("exif_tags_id"))
         }
         transaction(DbService.graphDB) {
