@@ -142,7 +142,7 @@ object MakerSupport {
         }
         transaction(DbService.graphDB) {
           val sourceNode = DbService.idIndex.get("id", idString).getSingle
-          sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_EXTERNAL_REF"))
+          sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_GRANULAR_MARKING"))
         }
       }
     })

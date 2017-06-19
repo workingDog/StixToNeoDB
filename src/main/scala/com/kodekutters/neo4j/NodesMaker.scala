@@ -191,12 +191,8 @@ class NodesMaker() {
     }
   }
 
-  // create a Relationship or a Sighting node
+  // create a Relationship or a Sighting node so that the embedded relations can refer to it
   def createSRONode(x: SRO) = {
-    // the external_references nodes and relations
-    createExternRefs(x.id.toString(), x.external_references, toIdArray(x.external_references))
-    // the granular_markings nodes and relations
-    createGranulars(x.id.toString(), x.granular_markings, toIdArray(x.granular_markings))
     transaction(DbService.graphDB) {
       val node = DbService.graphDB.createNode(label("SRO"))
       node.addLabel(label(asCleanLabel(x.`type` + "_node")))

@@ -42,6 +42,8 @@ class RelationsMaker() {
   // create the Relationship and Sighting
   def createSRORel(x: SRO) = {
     def baseRel(sourceId: String, targetId: String, name: String): org.neo4j.graphdb.Relationship = {
+      val externRefIds = toIdArray(x.external_references)
+      val granularIds = toIdArray(x.granular_markings)
       var rel: org.neo4j.graphdb.Relationship = null
       transaction(DbService.graphDB) {
         val sourceNode = DbService.idIndex.get("id", sourceId).getSingle
@@ -54,16 +56,20 @@ class RelationsMaker() {
         rel.setProperty("revoked", x.revoked.getOrElse(false))
         rel.setProperty("labels", x.labels.getOrElse(List.empty).toArray)
         rel.setProperty("confidence", x.confidence.getOrElse(0))
-        rel.setProperty("external_references", toIdArray(x.external_references))
+        rel.setProperty("external_references", externRefIds)
         rel.setProperty("lang", x.lang.getOrElse(""))
         rel.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
-        rel.setProperty("granular_markings", toIdArray(x.granular_markings))
+        rel.setProperty("granular_markings", granularIds)
         rel.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
       }
       // the object marking relations
       createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
       // the created_by relation
       createdByRel(x.id.toString(), x.created_by_ref)
+      // the external_references nodes and relations
+      createExternRefs(x.id.toString(), x.external_references, externRefIds)
+      // the granular_markings nodes and relations
+      createGranulars(x.id.toString(), x.granular_markings, granularIds)
       // the relation
       rel
     }
