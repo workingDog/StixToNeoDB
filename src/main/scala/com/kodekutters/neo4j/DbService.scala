@@ -23,6 +23,9 @@ object DbService {
   var extension_idIndex: Index[Node] = _
   var hash_idIndex: Index[Node] = _
   var altStream_idIndex: Index[Node] = _
+  var exif_tags_idIndex: Index[Node] = _
+  var contents_idIndex: Index[Node] = _
+  var translations_idIndex: Index[Node] = _
 
   // general transaction support
   // see snippet: http://sandrasi-sw.blogspot.jp/2012/02/neo4j-transactions-in-scala.html
@@ -43,6 +46,7 @@ object DbService {
 
   /**
     * initialise this singleton
+    *
     * @param dbDir dbDir the directory of the database
     */
   def init(dbDir: String): Unit = {
@@ -59,6 +63,9 @@ object DbService {
       extension_idIndex = graphDB.index.forNodes("extension_id")
       hash_idIndex = graphDB.index.forNodes("hash_id")
       altStream_idIndex = graphDB.index.forNodes("alternate_data_stream_id")
+      exif_tags_idIndex = graphDB.index.forNodes("exif_tags_id")
+      contents_idIndex = graphDB.index.forNodes("contents_id")
+      translations_idIndex = graphDB.index.forNodes("translations_id")
     }
   }
 

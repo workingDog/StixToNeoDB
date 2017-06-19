@@ -168,4 +168,37 @@ object MakerSupport {
       })
   }
 
+  def createLangContents(idString: String, contents: Map[String, Map[String, String]], ids: Map[String, String]) = {
+   for ((k, obs) <- contents) {
+     val obs_contents_ids: Map[String, String] = (for (s <- obs.keySet) yield s -> UUID.randomUUID().toString).toMap
+     var node: Node = null
+      transaction(DbService.graphDB) {
+        node = DbService.graphDB.createNode(label("contents"))
+        node.setProperty("contents_id", ids(k))
+        node.setProperty(k, obs_contents_ids.values.toArray)
+        DbService.contents_idIndex.add(node, "contents_id", node.getProperty("contents_id"))
+      }
+     createTranslations(node, obs, obs_contents_ids)
+      transaction(DbService.graphDB) {
+        val sourceNode = DbService.idIndex.get("id", idString).getSingle
+        sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_CONTENTS"))
+      }
+    }
+  }
+
+  private def createTranslations(sourceNode: Node, translations: Map[String, String], ids: Map[String, String]) = {
+    for ((k, obs) <- translations) {
+      var node: Node = null
+      transaction(DbService.graphDB) {
+        node = DbService.graphDB.createNode(label("translations"))
+        node.setProperty("translations_id", ids(k))
+        node.setProperty(k, obs)
+        DbService.translations_idIndex.add(node, "translations_id", node.getProperty("translations_id"))
+      }
+      transaction(DbService.graphDB) {
+        sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_TRANSLATION"))
+      }
+    }
+  }
+
 }

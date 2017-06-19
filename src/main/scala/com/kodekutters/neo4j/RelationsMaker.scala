@@ -30,15 +30,10 @@ class RelationsMaker() {
     createdByRel(x.id.toString(), x.created_by_ref)
 
     x.`type` match {
-
       case Report.`type` =>
         val y = x.asInstanceOf[Report]
         // create relations between the Report id and the list of object_refs SDO id
         createRelToObjRef(y.id.toString(), y.object_refs, "REFERS_TO")
-
-      // todo  objects: Map[String, Observable],
-      //  case ObservedData.`type` =>
-      //    val y = x.asInstanceOf[ObservedData]
 
       case _ => // do nothing more
     }
@@ -113,12 +108,18 @@ class RelationsMaker() {
         // the created_by relation
         createdByRel(x.id.toString(), x.created_by_ref)
 
-      // todo <----- contents: Map[String, Map[String, String]]
       case x: LanguageContent =>
         // the object marking relations
         createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
         // the created_by relation
         createdByRel(x.id.toString(), x.created_by_ref)
+        // the language contents relation from the LanguageContent object to the object_ref
+        transaction(DbService.graphDB) {
+          val sourceNode = DbService.idIndex.get("id", x.id.toString()).getSingle
+          val targetNode = DbService.idIndex.get("id", x.object_ref.toString()).getSingle
+          val rel = sourceNode.createRelationshipTo(targetNode, RelationshipType.withName(asCleanLabel(x.`type`)))
+          rel.setProperty("object_modified", x.object_modified.time)
+        }
     }
   }
 

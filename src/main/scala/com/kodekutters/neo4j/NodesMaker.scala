@@ -236,10 +236,10 @@ class NodesMaker() {
         // the marking object definition
         createMarkingDef(x.id.toString(), x.definition, definition_id)
 
-      // todo <----- contents: Map[String, Map[String, String]]
       case x: LanguageContent =>
         val granular_markings_ids = toIdArray(x.granular_markings)
         val external_references_ids = toIdArray(x.external_references)
+        val lang_contents_ids: Map[String, String] = (for (s <- x.contents.keySet) yield s -> UUID.randomUUID().toString).toMap
         transaction(DbService.graphDB) {
           val stixNode = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
           stixNode.addLabel(label("StixObj"))
@@ -255,12 +255,15 @@ class NodesMaker() {
           stixNode.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
           stixNode.setProperty("granular_markings", granular_markings_ids)
           stixNode.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
+          stixNode.setProperty("contents", lang_contents_ids.values.toArray)
           DbService.idIndex.add(stixNode, "id", stixNode.getProperty("id"))
         }
         // the external_references
         createExternRefs(x.id.toString(), x.external_references, external_references_ids)
         // the granular_markings
         createGranulars(x.id.toString(), x.granular_markings, granular_markings_ids)
+        // the language contents
+        createLangContents(x.id.toString(), x.contents, lang_contents_ids)
     }
   }
 

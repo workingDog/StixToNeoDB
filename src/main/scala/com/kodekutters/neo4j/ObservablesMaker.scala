@@ -267,8 +267,7 @@ object ObservablesMaker {
         transaction(DbService.graphDB) {
           hashNode = DbService.graphDB.createNode(label("hashes"))
           hashNode.setProperty("hash_id", ids(k))
-          hashNode.setProperty("type", k)
-          hashNode.setProperty("hash", obs)
+          hashNode.setProperty(k, obs)
           DbService.hash_idIndex.add(hashNode, "hash_id", hashNode.getProperty("hash_id"))
         }
         transaction(DbService.graphDB) {

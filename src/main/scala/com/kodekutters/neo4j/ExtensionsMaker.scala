@@ -65,13 +65,15 @@ object ExtensionsMaker {
             }
 
           case x: RasterImgExt =>
+            val exitTags_ids: Map[String, String] = (for (s <- x.exif_tags.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
             transaction(DbService.graphDB) {
               xNode.setProperty("image_height", x.image_height.getOrElse(0))
               xNode.setProperty("image_width", x.image_width.getOrElse(0))
               xNode.setProperty("bits_per_pixel", x.bits_per_pixel.getOrElse(0))
+              xNode.setProperty("exif_tags", exitTags_ids.values.toArray)
               xNode.setProperty("image_compression_algorithm", x.image_compression_algorithm.getOrElse(""))
-              // todo exif_tags
             }
+            createExifTags(ext_ids(k), x.exif_tags, exitTags_ids)
 
           case x: WindowPEBinExt =>
             transaction(DbService.graphDB) {
@@ -125,13 +127,35 @@ object ExtensionsMaker {
         transaction(DbService.graphDB) {
           hashNode = DbService.graphDB.createNode(label("hashes"))
           hashNode.setProperty("hash_id", ids(k))
-          hashNode.setProperty("type", k)
-          hashNode.setProperty("hash", obs)
+          hashNode.setProperty(k, obs)
           DbService.hash_idIndex.add(hashNode, "hash_id", hashNode.getProperty("hash_id"))
         }
         transaction(DbService.graphDB) {
           val sourceNode = DbService.altStream_idIndex.get("alternate_data_stream_id", altIdString).getSingle
           sourceNode.createRelationshipTo(hashNode, RelationshipType.withName("HAS_HASHES"))
+        }
+      }
+    )
+  }
+
+  private def createExifTags(extIdString: String, exitTagsOpt: Option[Map[String, Either[Int, String]]], ids: Map[String, String]) = {
+    exitTagsOpt.foreach(exitTags =>
+      for ((k, obs) <- exitTags) {
+        // either a int or string
+        val tagValue = obs match {
+          case Right(x) => x
+          case Left(x)  => x
+        }
+        var node: Node = null
+        transaction(DbService.graphDB) {
+          node = DbService.graphDB.createNode(label(asCleanLabel("exif_tags")))
+          node.setProperty("exif_tags_id", ids(k))
+          node.setProperty(k, tagValue)
+          DbService.exif_tags_idIndex.add(node, "exif_tags_id", node.getProperty("exif_tags_id"))
+        }
+        transaction(DbService.graphDB) {
+          val sourceNode = DbService.extension_idIndex.get("extension_id", extIdString).getSingle
+          sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_EXIF_TAGS"))
         }
       }
     )
