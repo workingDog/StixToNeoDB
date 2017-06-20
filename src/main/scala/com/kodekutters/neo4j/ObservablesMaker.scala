@@ -24,7 +24,6 @@ object ObservablesMaker {
   def create(sourceNode: Node, objects: Map[String, Observable], obsIds: Map[String, String]) = {
     // create the observable nodes and relations for each Observable
     for ((k, obs) <- objects) {
-      val obsId = obsIds(k)
       // create the extensions ids
       val ext_ids: Map[String, String] = (for (s <- obs.extensions.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
       // create the observable node
@@ -33,7 +32,7 @@ object ObservablesMaker {
         node = DbService.graphDB.createNode(label(asCleanLabel(obs.`type`)))
         node.addLabel(label("Observable"))
         node.setProperty("type", obs.`type`)
-        node.setProperty("observable_id", obsId)
+        node.setProperty("observable_id", obsIds(k))
         node.setProperty("extensions", ext_ids.values.toArray)
         node.setProperty("description", obs.description.getOrElse(""))
         DbService.observable_idIndex.add(node, "observable_id", node.getProperty("observable_id"))
@@ -261,24 +260,6 @@ object ObservablesMaker {
 
       case _ =>
     }
-  }
-
-  // create the hashes objects and their relationship to the Observable parent node
-  private def createHashes(sourceNode: Node, hashesOpt: Option[Map[String, String]], ids: Map[String, String]) = {
-    hashesOpt.foreach(hashes =>
-      for ((k, obs) <- hashes) {
-        var hashNode: Node = null
-        transaction(DbService.graphDB) {
-          hashNode = DbService.graphDB.createNode(label("hashes"))
-          hashNode.setProperty("hash_id", ids(k))
-          hashNode.setProperty(k, obs)
-          DbService.hash_idIndex.add(hashNode, "hash_id", hashNode.getProperty("hash_id"))
-        }
-        transaction(DbService.graphDB) {
-          sourceNode.createRelationshipTo(hashNode, RelationshipType.withName("HAS_HASHES"))
-        }
-      }
-    )
   }
 
   private def createEnv(sourceNode: Node, envOpt: Option[Map[String, String]], ids: Map[String, String]) = {

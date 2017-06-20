@@ -214,4 +214,22 @@ object MakerSupport {
     }
   }
 
+  // create the hashes objects and their relationship to the theNode
+  def createHashes(theNode: Node, hashesOpt: Option[Map[String, String]], ids: Map[String, String]) = {
+    hashesOpt.foreach(hashes =>
+      for ((k, obs) <- hashes) {
+        var hashNode: Node = null
+        transaction(DbService.graphDB) {
+          hashNode = DbService.graphDB.createNode(label("hashes"))
+          hashNode.setProperty("hash_id", ids(k))
+          hashNode.setProperty(k, obs)
+          DbService.hash_idIndex.add(hashNode, "hash_id", hashNode.getProperty("hash_id"))
+        }
+        transaction(DbService.graphDB) {
+          theNode.createRelationshipTo(hashNode, RelationshipType.withName("HAS_HASHES"))
+        }
+      }
+    )
+  }
+
 }
