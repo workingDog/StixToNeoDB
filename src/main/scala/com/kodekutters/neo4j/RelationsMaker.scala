@@ -43,11 +43,11 @@ class RelationsMaker() {
     def baseRel(sourceId: String, targetId: String, name: String): org.neo4j.graphdb.Relationship = {
       val externRefIds = toIdArray(x.external_references)
       val granularIds = toIdArray(x.granular_markings)
-      var rel: org.neo4j.graphdb.Relationship = null
+      val rel: org.neo4j.graphdb.Relationship =
       transaction(DbService.graphDB) {
         val sourceNode = DbService.idIndex.get("id", sourceId).getSingle
         val targetNode = DbService.idIndex.get("id", targetId).getSingle
-        rel = sourceNode.createRelationshipTo(targetNode, RelationshipType.withName(name))
+        val rel = sourceNode.createRelationshipTo(targetNode, RelationshipType.withName(name))
         rel.setProperty("id", x.id.toString())
         rel.setProperty("type", x.`type`)
         rel.setProperty("created", x.created.time)
@@ -60,6 +60,7 @@ class RelationsMaker() {
         rel.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
         rel.setProperty("granular_markings", granularIds)
         rel.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
+        rel
       }
       // the object marking relations
       createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")

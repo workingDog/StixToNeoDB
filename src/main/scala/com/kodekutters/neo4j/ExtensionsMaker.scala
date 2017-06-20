@@ -17,23 +17,24 @@ object ExtensionsMaker {
   /**
     * create the Extension nodes and embedded relation for the Observable object
     *
-    * @param sourceNode  the Observable object
-    * @param extMapOpt the Extensions
-    * @param ext_ids   the Extensions ids
+    * @param sourceNode the Observable object
+    * @param extMapOpt  the Extensions
+    * @param ext_ids    the Extensions ids
     */
   def create(sourceNode: Node, extMapOpt: Option[Map[String, Extension]], ext_ids: Map[String, String]) = {
     extMapOpt.foreach(extMap => {
       // for each extension
       for ((k, extention) <- extMap) {
         // create the Extension node
-        var xNode: Node = null
-        transaction(DbService.graphDB) {
-          xNode = DbService.graphDB.createNode(label(asCleanLabel(extention.`type`)))
-          xNode.addLabel(label("Extension"))
-          xNode.setProperty("type", extention.`type`)
-          xNode.setProperty("extension_id", ext_ids(k))
-          DbService.extension_idIndex.add(xNode, "extension_id", xNode.getProperty("extension_id"))
-        }
+        val xNode: Node =
+          transaction(DbService.graphDB) {
+            val node = DbService.graphDB.createNode(label(asCleanLabel(extention.`type`)))
+            node.addLabel(label("Extension"))
+            node.setProperty("type", extention.`type`)
+            node.setProperty("extension_id", ext_ids(k))
+            DbService.extension_idIndex.add(node, "extension_id", node.getProperty("extension_id"))
+            node
+          }
         // create a relation between the parent Observable node and this Extension node
         transaction(DbService.graphDB) {
           sourceNode.createRelationshipTo(xNode, RelationshipType.withName("HAS_EXTENSION"))
@@ -96,44 +97,46 @@ object ExtensionsMaker {
     })
   }
 
-  private def createAltDataStream(xNode: Node, altStreamOpt: Option[List[AlternateDataStream]], ids: Array[String]) = {
+  private def createAltDataStream(fromNode: Node, altStreamOpt: Option[List[AlternateDataStream]], ids: Array[String]) = {
     altStreamOpt.foreach(altStream => {
       for ((kp, i) <- altStream.zipWithIndex) {
         val hashes_ids: Map[String, String] = (for (s <- kp.hashes.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
-        var stixNode: Node = null
+        val tgtNode: Node =
+          transaction(DbService.graphDB) {
+            val node = DbService.graphDB.createNode(label(asCleanLabel(kp.`type`)))
+            node.setProperty("alternate_data_stream_id", ids(i))
+            node.setProperty("name", kp.name)
+            node.setProperty("size", kp.size.getOrElse(0))
+            node.setProperty("hashes", hashes_ids.values.toArray)
+            DbService.altStream_idIndex.add(node, "alternate_data_stream_id", node.getProperty("alternate_data_stream_id"))
+            node
+          }
+        createHashes(tgtNode, kp.hashes, hashes_ids)
         transaction(DbService.graphDB) {
-          val stixNode = DbService.graphDB.createNode(label(asCleanLabel(kp.`type`)))
-          stixNode.setProperty("alternate_data_stream_id", ids(i))
-          stixNode.setProperty("name", kp.name)
-          stixNode.setProperty("size", kp.size.getOrElse(0))
-          stixNode.setProperty("hashes", hashes_ids.values.toArray)
-          DbService.altStream_idIndex.add(stixNode, "alternate_data_stream_id", stixNode.getProperty("alternate_data_stream_id"))
-        }
-        createHashes(stixNode, kp.hashes, hashes_ids)
-        transaction(DbService.graphDB) {
-          xNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_ALTERNATE_DATA_STREAM"))
+          fromNode.createRelationshipTo(tgtNode, RelationshipType.withName("HAS_ALTERNATE_DATA_STREAM"))
         }
       }
     })
   }
 
-  private def createExifTags(theNode: Node, exitTagsOpt: Option[Map[String, Either[Int, String]]], ids: Map[String, String]) = {
+  private def createExifTags(fromNode: Node, exitTagsOpt: Option[Map[String, Either[Int, String]]], ids: Map[String, String]) = {
     exitTagsOpt.foreach(exitTags =>
       for ((k, obs) <- exitTags) {
         // either a int or string
         val theValue = obs match {
           case Right(x) => x
-          case Left(x)  => x
+          case Left(x) => x
         }
-        var node: Node = null
+        val tgtNode: Node =
+          transaction(DbService.graphDB) {
+            val node = DbService.graphDB.createNode(label(asCleanLabel("exif_tags")))
+            node.setProperty("exif_tags_id", ids(k))
+            node.setProperty(k, theValue)
+            DbService.exif_tags_idIndex.add(node, "exif_tags_id", node.getProperty("exif_tags_id"))
+            node
+          }
         transaction(DbService.graphDB) {
-          node = DbService.graphDB.createNode(label(asCleanLabel("exif_tags")))
-          node.setProperty("exif_tags_id", ids(k))
-          node.setProperty(k, theValue)
-          DbService.exif_tags_idIndex.add(node, "exif_tags_id", node.getProperty("exif_tags_id"))
-        }
-        transaction(DbService.graphDB) {
-          theNode.createRelationshipTo(node, RelationshipType.withName("HAS_EXIF_TAGS"))
+          fromNode.createRelationshipTo(tgtNode, RelationshipType.withName("HAS_EXIF_TAGS"))
         }
       }
     )

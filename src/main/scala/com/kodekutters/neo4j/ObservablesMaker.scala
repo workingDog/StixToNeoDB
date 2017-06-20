@@ -27,15 +27,16 @@ object ObservablesMaker {
       // create the extensions ids
       val ext_ids: Map[String, String] = (for (s <- obs.extensions.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
       // create the observable node
-      var node: Node = null
+      val node: Node =
       transaction(DbService.graphDB) {
-        node = DbService.graphDB.createNode(label(asCleanLabel(obs.`type`)))
-        node.addLabel(label("Observable"))
-        node.setProperty("type", obs.`type`)
-        node.setProperty("observable_id", obsIds(k))
-        node.setProperty("extensions", ext_ids.values.toArray)
-        node.setProperty("description", obs.description.getOrElse(""))
-        DbService.observable_idIndex.add(node, "observable_id", node.getProperty("observable_id"))
+        val theNode = DbService.graphDB.createNode(label(asCleanLabel(obs.`type`)))
+        theNode.addLabel(label("Observable"))
+        theNode.setProperty("type", obs.`type`)
+        theNode.setProperty("observable_id", obsIds(k))
+        theNode.setProperty("extensions", ext_ids.values.toArray)
+        theNode.setProperty("description", obs.description.getOrElse(""))
+        DbService.observable_idIndex.add(theNode, "observable_id", theNode.getProperty("observable_id"))
+        theNode
       }
       // create the Extension nodes and relations to this observable
       ExtensionsMaker.create(node, obs.extensions, ext_ids)
@@ -265,12 +266,13 @@ object ObservablesMaker {
   private def createEnv(sourceNode: Node, envOpt: Option[Map[String, String]], ids: Map[String, String]) = {
     envOpt.foreach(env =>
       for ((k, obs) <- env) {
-        var node: Node = null
+        val node: Node =
         transaction(DbService.graphDB) {
-          node = DbService.graphDB.createNode(label("environment_variables"))
-          node.setProperty("environment_variables_id", ids(k))
-          node.setProperty(k, obs)
-          DbService.environment_variables_idIndex.add(node, "environment_variables_id", node.getProperty("environment_variables_id"))
+          val theNode = DbService.graphDB.createNode(label("environment_variables"))
+          theNode.setProperty("environment_variables_id", ids(k))
+          theNode.setProperty(k, obs)
+          DbService.environment_variables_idIndex.add(theNode, "environment_variables_id", theNode.getProperty("environment_variables_id"))
+          theNode
         }
         transaction(DbService.graphDB) {
           sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_ENVIRONMENT_VARIABLE"))
@@ -282,12 +284,13 @@ object ObservablesMaker {
   private def createHeaders(sourceNode: Node, headersOpt: Option[Map[String, String]], ids: Map[String, String]) = {
     headersOpt.foreach(headers =>
       for ((k, obs) <- headers) {
-        var node: Node = null
+        val node: Node =
         transaction(DbService.graphDB) {
-          node = DbService.graphDB.createNode(label("additional_header_fields"))
-          node.setProperty("additional_header_fields_id", ids(k))
-          node.setProperty(k, obs)
-          DbService.additional_header_fields_idIndex.add(node, "additional_header_fields_id", node.getProperty("additional_header_fields_id"))
+          val theNode = DbService.graphDB.createNode(label("additional_header_fields"))
+          theNode.setProperty("additional_header_fields_id", ids(k))
+          theNode.setProperty(k, obs)
+          DbService.additional_header_fields_idIndex.add(theNode, "additional_header_fields_id", theNode.getProperty("additional_header_fields_id"))
+          theNode
         }
         transaction(DbService.graphDB) {
           sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_ADDITIONAL_HEADER_FIELD"))
@@ -304,12 +307,13 @@ object ObservablesMaker {
           case Right(x) => x
           case Left(x) => x
         }
-        var node: Node = null
+        val node: Node =
         transaction(DbService.graphDB) {
-          node = DbService.graphDB.createNode(label(asCleanLabel("ipfix")))
-          node.setProperty("ipfix_id", ids(k))
-          node.setProperty(k, theValue)
-          DbService.ipfix_idIndex.add(node, "ipfix_id", node.getProperty("ipfix_id"))
+          val theNode = DbService.graphDB.createNode(label(asCleanLabel("ipfix")))
+          theNode.setProperty("ipfix_id", ids(k))
+          theNode.setProperty(k, theValue)
+          DbService.ipfix_idIndex.add(theNode, "ipfix_id", theNode.getProperty("ipfix_id"))
+          theNode
         }
         transaction(DbService.graphDB) {
           sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_IPFIX"))

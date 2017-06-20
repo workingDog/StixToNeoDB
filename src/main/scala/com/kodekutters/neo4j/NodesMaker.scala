@@ -32,23 +32,24 @@ class NodesMaker() {
     val granular_markings_ids = toIdArray(x.granular_markings)
     val external_references_ids = toIdArray(x.external_references)
     // create a base node and internal relations common to all SDO
-    var sdoNode: Node = null
+    val sdoNode: Node =
     transaction(DbService.graphDB) {
-      sdoNode = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
-      sdoNode.addLabel(label("SDO"))
-      sdoNode.setProperty("id", x.id.toString())
-      sdoNode.setProperty("type", x.`type`)
-      sdoNode.setProperty("created", x.created.time)
-      sdoNode.setProperty("modified", x.modified.time)
-      sdoNode.setProperty("revoked", x.revoked.getOrElse(false))
-      sdoNode.setProperty("labels", x.labels.getOrElse(List.empty).toArray)
-      sdoNode.setProperty("confidence", x.confidence.getOrElse(0))
-      sdoNode.setProperty("external_references", external_references_ids)
-      sdoNode.setProperty("lang", x.lang.getOrElse(""))
-      sdoNode.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
-      sdoNode.setProperty("granular_markings", granular_markings_ids)
-      sdoNode.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
-      DbService.idIndex.add(sdoNode, "id", sdoNode.getProperty("id"))
+      val node = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
+      node.addLabel(label("SDO"))
+      node.setProperty("id", x.id.toString())
+      node.setProperty("type", x.`type`)
+      node.setProperty("created", x.created.time)
+      node.setProperty("modified", x.modified.time)
+      node.setProperty("revoked", x.revoked.getOrElse(false))
+      node.setProperty("labels", x.labels.getOrElse(List.empty).toArray)
+      node.setProperty("confidence", x.confidence.getOrElse(0))
+      node.setProperty("external_references", external_references_ids)
+      node.setProperty("lang", x.lang.getOrElse(""))
+      node.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
+      node.setProperty("granular_markings", granular_markings_ids)
+      node.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
+      DbService.idIndex.add(node, "id", node.getProperty("id"))
+      node
     }
     // the external_references nodes and relations
     createExternRefs(sdoNode, x.external_references, external_references_ids)
@@ -211,20 +212,21 @@ class NodesMaker() {
         val definition_id = UUID.randomUUID().toString
         val granular_markings_ids = toIdArray(x.granular_markings)
         val external_references_ids = toIdArray(x.external_references)
-        var stixNode: Node = null
+        val stixNode: Node =
         transaction(DbService.graphDB) {
-          stixNode = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
-          stixNode.addLabel(label("StixObj"))
-          stixNode.setProperty("id", x.id.toString())
-          stixNode.setProperty("type", x.`type`)
-          stixNode.setProperty("created", x.created.time)
-          stixNode.setProperty("definition_type", x.definition_type)
-          stixNode.setProperty("definition_id", definition_id)
-          stixNode.setProperty("external_references", external_references_ids)
-          stixNode.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
-          stixNode.setProperty("granular_markings", granular_markings_ids)
-          stixNode.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
-          DbService.idIndex.add(stixNode, "id", stixNode.getProperty("id"))
+          val node = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
+          node.addLabel(label("StixObj"))
+          node.setProperty("id", x.id.toString())
+          node.setProperty("type", x.`type`)
+          node.setProperty("created", x.created.time)
+          node.setProperty("definition_type", x.definition_type)
+          node.setProperty("definition_id", definition_id)
+          node.setProperty("external_references", external_references_ids)
+          node.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
+          node.setProperty("granular_markings", granular_markings_ids)
+          node.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
+          DbService.idIndex.add(node, "id", node.getProperty("id"))
+          node
         }
         // the external_references
         createExternRefs(stixNode, x.external_references, external_references_ids)
@@ -237,24 +239,25 @@ class NodesMaker() {
         val granular_markings_ids = toIdArray(x.granular_markings)
         val external_references_ids = toIdArray(x.external_references)
         val lang_contents_ids: Map[String, String] = (for (s <- x.contents.keySet) yield s -> UUID.randomUUID().toString).toMap
-        var stixNode: Node = null
+        val stixNode: Node =
         transaction(DbService.graphDB) {
-          stixNode = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
-          stixNode.addLabel(label("StixObj"))
-          stixNode.setProperty("id", x.id.toString())
-          stixNode.setProperty("type", x.`type`)
-          stixNode.setProperty("created", x.created.time)
-          stixNode.setProperty("modified", x.modified.time)
-          stixNode.setProperty("object_modified", x.object_modified.time)
-          stixNode.setProperty("object_ref", x.object_ref.toString())
-          stixNode.setProperty("labels", x.labels.getOrElse(List.empty).toArray)
-          stixNode.setProperty("revoked", x.revoked.getOrElse(false))
-          stixNode.setProperty("external_references", external_references_ids)
-          stixNode.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
-          stixNode.setProperty("granular_markings", granular_markings_ids)
-          stixNode.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
-          stixNode.setProperty("contents", lang_contents_ids.values.toArray)
-          DbService.idIndex.add(stixNode, "id", stixNode.getProperty("id"))
+          val node = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
+          node.addLabel(label("StixObj"))
+          node.setProperty("id", x.id.toString())
+          node.setProperty("type", x.`type`)
+          node.setProperty("created", x.created.time)
+          node.setProperty("modified", x.modified.time)
+          node.setProperty("object_modified", x.object_modified.time)
+          node.setProperty("object_ref", x.object_ref.toString())
+          node.setProperty("labels", x.labels.getOrElse(List.empty).toArray)
+          node.setProperty("revoked", x.revoked.getOrElse(false))
+          node.setProperty("external_references", external_references_ids)
+          node.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
+          node.setProperty("granular_markings", granular_markings_ids)
+          node.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
+          node.setProperty("contents", lang_contents_ids.values.toArray)
+          DbService.idIndex.add(node, "id", node.getProperty("id"))
+          node
         }
         // the external_references
         createExternRefs(stixNode, x.external_references, external_references_ids)
