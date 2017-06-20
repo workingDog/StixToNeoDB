@@ -51,9 +51,9 @@ class NodesMaker() {
       DbService.idIndex.add(sdoNode, "id", sdoNode.getProperty("id"))
     }
     // the external_references nodes and relations
-    createExternRefs(x.id.toString(), x.external_references, external_references_ids)
+    createExternRefs(sdoNode, x.external_references, external_references_ids)
     // the granular_markings nodes and relations
-    createGranulars(x.id.toString(), x.granular_markings, granular_markings_ids)
+    createGranulars(sdoNode, x.granular_markings, granular_markings_ids)
 
     x.`type` match {
 
@@ -65,7 +65,7 @@ class NodesMaker() {
           sdoNode.setProperty("description", y.description.getOrElse(""))
           sdoNode.setProperty("kill_chain_phases", kill_chain_phases_ids)
         }
-        createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
+        createKillPhases(sdoNode, y.kill_chain_phases, kill_chain_phases_ids)
 
       case Identity.`type` =>
         val y = x.asInstanceOf[Identity]
@@ -117,7 +117,7 @@ class NodesMaker() {
           sdoNode.setProperty("description", y.description.getOrElse(""))
           sdoNode.setProperty("kill_chain_phases", kill_chain_phases_ids)
         }
-        createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
+        createKillPhases(sdoNode, y.kill_chain_phases, kill_chain_phases_ids)
 
       case Report.`type` =>
         val y = x.asInstanceOf[Report]
@@ -152,7 +152,7 @@ class NodesMaker() {
           sdoNode.setProperty("kill_chain_phases", kill_chain_phases_ids)
           sdoNode.setProperty("tool_version", y.tool_version.getOrElse(""))
         }
-        createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
+        createKillPhases(sdoNode, y.kill_chain_phases, kill_chain_phases_ids)
 
       case Vulnerability.`type` =>
         val y = x.asInstanceOf[Vulnerability]
@@ -172,7 +172,7 @@ class NodesMaker() {
           sdoNode.setProperty("valid_until", y.valid_until.getOrElse("").toString)
           sdoNode.setProperty("kill_chain_phases", kill_chain_phases_ids)
         }
-        createKillPhases(y.id.toString(), y.kill_chain_phases, kill_chain_phases_ids)
+        createKillPhases(sdoNode, y.kill_chain_phases, kill_chain_phases_ids)
 
       case ObservedData.`type` =>
         val y = x.asInstanceOf[ObservedData]
@@ -185,7 +185,7 @@ class NodesMaker() {
           sdoNode.setProperty("description", y.description.getOrElse(""))
         }
         // create the Observable objects nodes and relations for this ObservedData object
-        ObservablesMaker.create(y.id.toString(), y.objects, obs_ids)
+        ObservablesMaker.create(sdoNode, y.objects, obs_ids)
 
       case _ => // do nothing for now
     }
@@ -211,8 +211,9 @@ class NodesMaker() {
         val definition_id = UUID.randomUUID().toString
         val granular_markings_ids = toIdArray(x.granular_markings)
         val external_references_ids = toIdArray(x.external_references)
+        var stixNode: Node = null
         transaction(DbService.graphDB) {
-          val stixNode = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
+          stixNode = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
           stixNode.addLabel(label("StixObj"))
           stixNode.setProperty("id", x.id.toString())
           stixNode.setProperty("type", x.`type`)
@@ -226,18 +227,19 @@ class NodesMaker() {
           DbService.idIndex.add(stixNode, "id", stixNode.getProperty("id"))
         }
         // the external_references
-        createExternRefs(x.id.toString(), x.external_references, external_references_ids)
+        createExternRefs(stixNode, x.external_references, external_references_ids)
         // the granular_markings
-        createGranulars(x.id.toString(), x.granular_markings, granular_markings_ids)
+        createGranulars(stixNode, x.granular_markings, granular_markings_ids)
         // the marking object definition
-        createMarkingDef(x.id.toString(), x.definition, definition_id)
+        createMarkingDef(stixNode, x.definition, definition_id)
 
       case x: LanguageContent =>
         val granular_markings_ids = toIdArray(x.granular_markings)
         val external_references_ids = toIdArray(x.external_references)
         val lang_contents_ids: Map[String, String] = (for (s <- x.contents.keySet) yield s -> UUID.randomUUID().toString).toMap
+        var stixNode: Node = null
         transaction(DbService.graphDB) {
-          val stixNode = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
+          stixNode = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
           stixNode.addLabel(label("StixObj"))
           stixNode.setProperty("id", x.id.toString())
           stixNode.setProperty("type", x.`type`)
@@ -255,11 +257,11 @@ class NodesMaker() {
           DbService.idIndex.add(stixNode, "id", stixNode.getProperty("id"))
         }
         // the external_references
-        createExternRefs(x.id.toString(), x.external_references, external_references_ids)
+        createExternRefs(stixNode, x.external_references, external_references_ids)
         // the granular_markings
-        createGranulars(x.id.toString(), x.granular_markings, granular_markings_ids)
+        createGranulars(stixNode, x.granular_markings, granular_markings_ids)
         // the language contents
-        createLangContents(x.id.toString(), x.contents, lang_contents_ids)
+        createLangContents(stixNode, x.contents, lang_contents_ids)
     }
   }
 

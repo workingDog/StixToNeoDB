@@ -66,7 +66,7 @@ object MakerSupport {
     replace("\n", "").replace("\r", "").replace("-", "_")
 
   // create the marking definition node and its relationship
-  def createMarkingDef(idString: String, definition: MarkingObject, definition_id: String) = {
+  def createMarkingDef(sourceNode: Node, definition: MarkingObject, definition_id: String) = {
     val mark: String = definition match {
       case s: StatementMarking => s.statement
       case s: TPLMarking => s.tlp.value
@@ -80,13 +80,12 @@ object MakerSupport {
       DbService.marking_idIndex.add(markObjNode, "marking_id", markObjNode.getProperty("marking_id"))
     }
     transaction(DbService.graphDB) {
-      val sourceNode = DbService.idIndex.get("id", idString).getSingle
       sourceNode.createRelationshipTo(markObjNode, RelationshipType.withName("HAS_MARKING_OBJECT"))
     }
   }
 
   // create the kill_chain_phases nodes and relationships
-  def createKillPhases(idString: String, kill_chain_phasesOpt: Option[List[KillChainPhase]], ids: Array[String]) = {
+  def createKillPhases(sourceNode: Node, kill_chain_phasesOpt: Option[List[KillChainPhase]], ids: Array[String]) = {
     kill_chain_phasesOpt.foreach(kill_chain_phases => {
       for ((kp, i) <- kill_chain_phases.zipWithIndex) {
         var stixNode: Node = null
@@ -98,7 +97,6 @@ object MakerSupport {
           DbService.kill_chain_phase_idIndex.add(stixNode, "kill_chain_phase_id", stixNode.getProperty("kill_chain_phase_id"))
         }
         transaction(DbService.graphDB) {
-          val sourceNode = DbService.idIndex.get("id", idString).getSingle
           sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_KILL_CHAIN_PHASE"))
         }
       }
@@ -106,7 +104,16 @@ object MakerSupport {
   }
 
   // create the external_references nodes and relationships
-  def createExternRefs(idString: String, external_referencesOpt: Option[List[ExternalReference]], ids: Array[String]) = {
+  def createExternRefs(idString: String, external_referencesOpt: Option[List[ExternalReference]], ids: Array[String]): Unit = {
+    var sourceNode: Node = null
+      transaction(DbService.graphDB) {
+      val sourceNode = DbService.idIndex.get("id", idString).getSingle
+    }
+    createExternRefs(sourceNode, external_referencesOpt, ids)
+  }
+
+  // create the external_references nodes and relationships
+  def createExternRefs(sourceNode: Node, external_referencesOpt: Option[List[ExternalReference]], ids: Array[String]): Unit = {
     external_referencesOpt.foreach(external_references => {
       for ((extRef, i) <- external_references.zipWithIndex) {
         var stixNode: Node = null
@@ -120,7 +127,6 @@ object MakerSupport {
           DbService.external_reference_idIndex.add(stixNode, "external_reference_id", stixNode.getProperty("external_reference_id"))
         }
         transaction(DbService.graphDB) {
-          val sourceNode = DbService.idIndex.get("id", idString).getSingle
           sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_EXTERNAL_REF"))
         }
       }
@@ -128,7 +134,16 @@ object MakerSupport {
   }
 
   // create the granular_markings nodes and relationships
-  def createGranulars(idString: String, granular_markingsOpt: Option[List[GranularMarking]], ids: Array[String]) = {
+  def createGranulars(idString: String, granular_markingsOpt: Option[List[GranularMarking]], ids: Array[String]): Unit = {
+    var sourceNode: Node = null
+    transaction(DbService.graphDB) {
+      val sourceNode = DbService.idIndex.get("id", idString).getSingle
+    }
+    createGranulars(sourceNode, granular_markingsOpt, ids)
+  }
+
+  // create the granular_markings nodes and relationships
+  def createGranulars(sourceNode: Node, granular_markingsOpt: Option[List[GranularMarking]], ids: Array[String]): Unit = {
     granular_markingsOpt.foreach(granular_markings => {
       for ((gra, i) <- granular_markings.zipWithIndex) {
         var stixNode: Node = null
@@ -141,7 +156,6 @@ object MakerSupport {
           DbService.granular_marking_idIndex.add(stixNode, "granular_marking_id", stixNode.getProperty("granular_marking_id"))
         }
         transaction(DbService.graphDB) {
-          val sourceNode = DbService.idIndex.get("id", idString).getSingle
           sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_GRANULAR_MARKING"))
         }
       }
@@ -168,19 +182,18 @@ object MakerSupport {
       })
   }
 
-  def createLangContents(idString: String, contents: Map[String, Map[String, String]], ids: Map[String, String]) = {
-   for ((k, obs) <- contents) {
-     val obs_contents_ids: Map[String, String] = (for (s <- obs.keySet) yield s -> UUID.randomUUID().toString).toMap
-     var node: Node = null
+  def createLangContents(sourceNode: Node, contents: Map[String, Map[String, String]], ids: Map[String, String]) = {
+    for ((k, obs) <- contents) {
+      val obs_contents_ids: Map[String, String] = (for (s <- obs.keySet) yield s -> UUID.randomUUID().toString).toMap
+      var node: Node = null
       transaction(DbService.graphDB) {
         node = DbService.graphDB.createNode(label("contents"))
         node.setProperty("contents_id", ids(k))
         node.setProperty(k, obs_contents_ids.values.toArray)
         DbService.contents_idIndex.add(node, "contents_id", node.getProperty("contents_id"))
       }
-     createTranslations(node, obs, obs_contents_ids)
+      createTranslations(node, obs, obs_contents_ids)
       transaction(DbService.graphDB) {
-        val sourceNode = DbService.idIndex.get("id", idString).getSingle
         sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_CONTENTS"))
       }
     }

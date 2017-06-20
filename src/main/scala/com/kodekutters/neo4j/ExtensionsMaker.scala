@@ -17,11 +17,11 @@ object ExtensionsMaker {
   /**
     * create the Extension nodes and embedded relation for the Observable object
     *
-    * @param theObsId  the Observable object id
+    * @param sourceNode  the Observable object
     * @param extMapOpt the Extensions
     * @param ext_ids   the Extensions ids
     */
-  def create(theObsId: String, extMapOpt: Option[Map[String, Extension]], ext_ids: Map[String, String]) = {
+  def create(sourceNode: Node, extMapOpt: Option[Map[String, Extension]], ext_ids: Map[String, String]) = {
     extMapOpt.foreach(extMap => {
       // for each extension
       for ((k, extention) <- extMap) {
@@ -36,7 +36,6 @@ object ExtensionsMaker {
         }
         // create a relation between the parent Observable node and this Extension node
         transaction(DbService.graphDB) {
-          val sourceNode = DbService.observable_idIndex.get("observable_id", theObsId).getSingle
           sourceNode.createRelationshipTo(xNode, RelationshipType.withName("HAS_EXTENSION"))
         }
         // add the specific attributes to the extension node
@@ -54,7 +53,7 @@ object ExtensionsMaker {
               xNode.setProperty("sid", x.sid.getOrElse(""))
               xNode.setProperty("alternate_data_streams", altStream_ids)
             }
-            createAltDataStream(ext_ids(k), x.alternate_data_streams, altStream_ids)
+            createAltDataStream(xNode, x.alternate_data_streams, altStream_ids)
 
           case x: PdfFileExt =>
             transaction(DbService.graphDB) {
@@ -73,7 +72,7 @@ object ExtensionsMaker {
               xNode.setProperty("exif_tags", exitTags_ids.values.toArray)
               xNode.setProperty("image_compression_algorithm", x.image_compression_algorithm.getOrElse(""))
             }
-            createExifTags(ext_ids(k), x.exif_tags, exitTags_ids)
+            createExifTags(xNode, x.exif_tags, exitTags_ids)
 
           case x: WindowPEBinExt =>
             transaction(DbService.graphDB) {
@@ -97,7 +96,7 @@ object ExtensionsMaker {
     })
   }
 
-  private def createAltDataStream(extIdString: String, altStreamOpt: Option[List[AlternateDataStream]], ids: Array[String]) = {
+  private def createAltDataStream(xNode: Node, altStreamOpt: Option[List[AlternateDataStream]], ids: Array[String]) = {
     altStreamOpt.foreach(altStream => {
       for ((kp, i) <- altStream.zipWithIndex) {
         val hashes_ids: Map[String, String] = (for (s <- kp.hashes.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
@@ -110,17 +109,16 @@ object ExtensionsMaker {
           stixNode.setProperty("hashes", hashes_ids.values.toArray)
           DbService.altStream_idIndex.add(stixNode, "alternate_data_stream_id", stixNode.getProperty("alternate_data_stream_id"))
         }
-        createHashes(ids(i), kp.hashes, hashes_ids)
+        createHashes(stixNode, kp.hashes, hashes_ids)
         transaction(DbService.graphDB) {
-          val sourceNode = DbService.extension_idIndex.get("extension_id", extIdString).getSingle
-          sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_ALTERNATE_DATA_STREAM"))
+          xNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_ALTERNATE_DATA_STREAM"))
         }
       }
     })
   }
 
   // create the hashes objects and their relationship to the AlternateDataStream node
-  private def createHashes(altIdString: String, hashesOpt: Option[Map[String, String]], ids: Map[String, String]) = {
+  private def createHashes(theNode: Node, hashesOpt: Option[Map[String, String]], ids: Map[String, String]) = {
     hashesOpt.foreach(hashes =>
       for ((k, obs) <- hashes) {
         var hashNode: Node = null
@@ -131,14 +129,13 @@ object ExtensionsMaker {
           DbService.hash_idIndex.add(hashNode, "hash_id", hashNode.getProperty("hash_id"))
         }
         transaction(DbService.graphDB) {
-          val sourceNode = DbService.altStream_idIndex.get("alternate_data_stream_id", altIdString).getSingle
-          sourceNode.createRelationshipTo(hashNode, RelationshipType.withName("HAS_HASHES"))
+          theNode.createRelationshipTo(hashNode, RelationshipType.withName("HAS_HASHES"))
         }
       }
     )
   }
 
-  private def createExifTags(extIdString: String, exitTagsOpt: Option[Map[String, Either[Int, String]]], ids: Map[String, String]) = {
+  private def createExifTags(theNode: Node, exitTagsOpt: Option[Map[String, Either[Int, String]]], ids: Map[String, String]) = {
     exitTagsOpt.foreach(exitTags =>
       for ((k, obs) <- exitTags) {
         // either a int or string
@@ -154,8 +151,7 @@ object ExtensionsMaker {
           DbService.exif_tags_idIndex.add(node, "exif_tags_id", node.getProperty("exif_tags_id"))
         }
         transaction(DbService.graphDB) {
-          val sourceNode = DbService.extension_idIndex.get("extension_id", extIdString).getSingle
-          sourceNode.createRelationshipTo(node, RelationshipType.withName("HAS_EXIF_TAGS"))
+          theNode.createRelationshipTo(node, RelationshipType.withName("HAS_EXIF_TAGS"))
         }
       }
     )
