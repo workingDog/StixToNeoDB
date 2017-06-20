@@ -86,7 +86,7 @@ class RelationsMaker() {
     }
     else { // a Sighting
       val y = x.asInstanceOf[Sighting]
-      val rel = baseRel(y.id.toString(), y.sighting_of_ref.toString(), asCleanLabel(Sighting.`type`))
+      val rel = baseRel(y.sighting_of_ref.toString(), y.sighting_of_ref.toString(), asCleanLabel("sighting_of"))
       transaction(DbService.graphDB) {
         rel.setProperty("sighting_of_ref", y.sighting_of_ref.toString())
         rel.setProperty("first_seen", y.first_seen.getOrElse("").toString)
@@ -99,8 +99,8 @@ class RelationsMaker() {
       }
       // create relations between the sighting (SightingNode id) and the list of observed_data_refs ObservedData SDO id
       createRelToObjRef(y.id.toString(), y.observed_data_refs, "SIGHTED_OBSERVED_DATA")
-      // create relations between the sighting (SightingNode id) and the list of where_sighted SDO id
-      createRelToObjRef(y.id.toString(), y.where_sighted_refs, "WHERE_SIGHTED")
+      // create relations between the sighted SDO node and the list of where_sighted SDO nodes
+      createRelToObjRef(y.sighting_of_ref.toString(), y.where_sighted_refs, "WAS_SIGHTED_BY")
     }
   }
 
