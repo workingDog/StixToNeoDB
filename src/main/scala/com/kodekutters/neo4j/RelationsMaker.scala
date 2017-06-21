@@ -43,8 +43,7 @@ class RelationsMaker() {
     def baseRel(sourceId: String, targetId: String, name: String): org.neo4j.graphdb.Relationship = {
       val externRefIds = toIdArray(x.external_references)
       val granularIds = toIdArray(x.granular_markings)
-      val rel: org.neo4j.graphdb.Relationship =
-      transaction(DbService.graphDB) {
+      val rel = transaction(DbService.graphDB) {
         val sourceNode = DbService.idIndex.get("id", sourceId).getSingle
         val targetNode = DbService.idIndex.get("id", targetId).getSingle
         val rel = sourceNode.createRelationshipTo(targetNode, RelationshipType.withName(name))

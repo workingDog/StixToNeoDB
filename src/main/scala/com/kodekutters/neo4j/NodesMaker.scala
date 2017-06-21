@@ -32,8 +32,7 @@ class NodesMaker() {
     val granular_markings_ids = toIdArray(x.granular_markings)
     val external_references_ids = toIdArray(x.external_references)
     // create a base node and internal relations common to all SDO
-    val sdoNode: Node =
-    transaction(DbService.graphDB) {
+    val sdoNode = transaction(DbService.graphDB) {
       val node = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
       node.addLabel(label("SDO"))
       node.setProperty("id", x.id.toString())
@@ -212,8 +211,7 @@ class NodesMaker() {
         val definition_id = UUID.randomUUID().toString
         val granular_markings_ids = toIdArray(x.granular_markings)
         val external_references_ids = toIdArray(x.external_references)
-        val stixNode: Node =
-        transaction(DbService.graphDB) {
+        val stixNode = transaction(DbService.graphDB) {
           val node = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
           node.addLabel(label("StixObj"))
           node.setProperty("id", x.id.toString())
@@ -239,8 +237,7 @@ class NodesMaker() {
         val granular_markings_ids = toIdArray(x.granular_markings)
         val external_references_ids = toIdArray(x.external_references)
         val lang_contents_ids: Map[String, String] = (for (s <- x.contents.keySet) yield s -> UUID.randomUUID().toString).toMap
-        val stixNode: Node =
-        transaction(DbService.graphDB) {
+        val stixNode = transaction(DbService.graphDB) {
           val node = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
           node.addLabel(label("StixObj"))
           node.setProperty("id", x.id.toString())
