@@ -35,9 +35,6 @@ object StixToNeoDB {
       val dbf = if (args.length == 3) args(2).trim else ""
       val dbFile = if (dbf.isEmpty) new java.io.File(".").getCanonicalPath + "/stixdb" else dbf
       println("database location: " + dbFile)
-      // initialise the dbService
-      DbService.init(dbFile)
-      // setup the loader
       val neoLoader = new Neo4jLoader(args(1), dbFile)
       args(0) match {
         case "--csv" => neoLoader.processBundleFile()

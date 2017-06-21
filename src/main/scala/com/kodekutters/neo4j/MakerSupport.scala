@@ -225,13 +225,13 @@ object MakerSupport {
     hashesOpt.foreach(hashes =>
       for ((k, obs) <- hashes) {
         val hashNode: Node =
-        transaction(DbService.graphDB) {
-          val node = DbService.graphDB.createNode(label("hashes"))
-          node.setProperty("hash_id", ids(k))
-          node.setProperty(k, obs)
-          DbService.hash_idIndex.add(node, "hash_id", node.getProperty("hash_id"))
-          node
-        }
+          transaction(DbService.graphDB) {
+            val node = DbService.graphDB.createNode(label("hashes"))
+            node.setProperty("hash_id", ids(k))
+            node.setProperty(k, obs)
+            DbService.hash_idIndex.add(node, "hash_id", node.getProperty("hash_id"))
+            node
+          }
         transaction(DbService.graphDB) {
           theNode.createRelationshipTo(hashNode, RelationshipType.withName("HAS_HASHES"))
         }

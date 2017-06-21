@@ -27,13 +27,16 @@ class Neo4jLoader(inFile: String, dbDir: String) {
 
   import MakerSupport._
 
+  // initialize the db services
+  DbService.init(dbDir)
+
   // the nodes maker for creating nodes and their embedded relations
   val nodesMaker = new NodesMaker()
   // the relations maker for creating relations
   val relsMaker = new RelationsMaker()
 
   // process a bundle of Stix objects
-  private def processBundle(bundle: Bundle) = {
+  def processBundle(bundle: Bundle) = {
     // all nodes and their internal relations are created first
     bundle.objects.foreach(nodesMaker.createNodes(_))
     // all SRO and relations that depends on nodes are created after the nodes

@@ -36,7 +36,7 @@ export them into GraphML, Cypher statements, CSV and binary formats. See also
 Depends on the scala [ScalaStix](https://github.com/workingDog/scalastix) library
 (included in the "lib" directory).
 
-Java 8 is required and Neo4j-3.2.1 needs to be installed.
+Java 8 is required and Neo4j-3.2.1 should be installed to process the results.
 
 See also the build file.
 
