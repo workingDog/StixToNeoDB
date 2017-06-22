@@ -26,8 +26,8 @@ object ExtensionsMaker {
       // for each extension
       for ((k, extention) <- extMap) {
         // create the Extension node
-        val xNode: Node =
-          transaction(DbService.graphDB) {
+        val xNodeOpt =
+          transactionOpt(DbService.graphDB) {
             val node = DbService.graphDB.createNode(label(asCleanLabel(extention.`type`)))
             node.addLabel(label("Extension"))
             node.setProperty("type", extention.`type`)
@@ -35,64 +35,71 @@ object ExtensionsMaker {
             DbService.extension_idIndex.add(node, "extension_id", node.getProperty("extension_id"))
             node
           }
-        // create a relation between the parent Observable node and this Extension node
-        transaction(DbService.graphDB) {
-          sourceNode.createRelationshipTo(xNode, RelationshipType.withName("HAS_EXTENSION"))
+        xNodeOpt match {
+          case Some(xNode) =>
+            // create a relation between the parent Observable node and this Extension node
+            transactionOpt(DbService.graphDB) {
+              sourceNode.createRelationshipTo(xNode, "HAS_EXTENSION")
+            }.getOrElse(println("---> could not process HAS_EXTENSION relation"))
+
+            // add the specific attributes to the extension node
+            extention match {
+              case x: ArchiveFileExt =>
+                transactionOpt(DbService.graphDB) {
+                  xNode.setProperty("contains_refs", x.contains_refs.getOrElse(List.empty).toArray)
+                  xNode.setProperty("version", x.version.getOrElse(""))
+                  xNode.setProperty("comment", x.comment.getOrElse(""))
+                }
+
+              case x: NTFSFileExt =>
+                val altStream_ids = toIdArray(x.alternate_data_streams)
+                transactionOpt(DbService.graphDB) {
+                  xNode.setProperty("sid", x.sid.getOrElse(""))
+                  xNode.setProperty("alternate_data_streams", altStream_ids)
+                }
+                createAltDataStream(xNode, x.alternate_data_streams, altStream_ids)
+
+              case x: PdfFileExt =>
+                transactionOpt(DbService.graphDB) {
+                  xNode.setProperty("version", x.version.getOrElse(""))
+                  xNode.setProperty("is_optimized", x.is_optimized.getOrElse(false))
+                  xNode.setProperty("pdfid0", x.pdfid0.getOrElse(""))
+                  xNode.setProperty("pdfid1", x.pdfid1.getOrElse(""))
+                }
+
+              case x: RasterImgExt =>
+                val exitTags_ids: Map[String, String] = (for (s <- x.exif_tags.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
+                transactionOpt(DbService.graphDB) {
+                  xNode.setProperty("image_height", x.image_height.getOrElse(0))
+                  xNode.setProperty("image_width", x.image_width.getOrElse(0))
+                  xNode.setProperty("bits_per_pixel", x.bits_per_pixel.getOrElse(0))
+                  xNode.setProperty("exif_tags", exitTags_ids.values.toArray)
+                  xNode.setProperty("image_compression_algorithm", x.image_compression_algorithm.getOrElse(""))
+                }
+                createExifTags(xNode, x.exif_tags, exitTags_ids)
+
+              case x: WindowPEBinExt =>
+                transactionOpt(DbService.graphDB) {
+                  xNode.setProperty("pe_type", x.pe_type)
+                  xNode.setProperty("imphash", x.imphash.getOrElse(""))
+                  xNode.setProperty("machine_hex", x.machine_hex.getOrElse(""))
+                  xNode.setProperty("number_of_sections", x.number_of_sections.getOrElse(0))
+                  xNode.setProperty("time_date_stamp", x.time_date_stamp.getOrElse("").toString)
+                  xNode.setProperty("pointer_to_symbol_table_hex", x.pointer_to_symbol_table_hex.getOrElse(""))
+                  xNode.setProperty("number_of_symbols", x.number_of_symbols.getOrElse(0))
+                  xNode.setProperty("size_of_optional_header", x.size_of_optional_header.getOrElse(0))
+                  xNode.setProperty("characteristics_hex", x.characteristics_hex.getOrElse(""))
+                  // todo file_header_hashes
+                  // todo optional_header
+                  // todo sections
+                }
+
+              case _ =>
+            }
+
+          case None => println("---> could not create node Extension")
         }
-        // add the specific attributes to the extension node
-        extention match {
-          case x: ArchiveFileExt =>
-            transaction(DbService.graphDB) {
-              xNode.setProperty("contains_refs", x.contains_refs.getOrElse(List.empty).toArray)
-              xNode.setProperty("version", x.version.getOrElse(""))
-              xNode.setProperty("comment", x.comment.getOrElse(""))
-            }
 
-          case x: NTFSFileExt =>
-            val altStream_ids = toIdArray(x.alternate_data_streams)
-            transaction(DbService.graphDB) {
-              xNode.setProperty("sid", x.sid.getOrElse(""))
-              xNode.setProperty("alternate_data_streams", altStream_ids)
-            }
-            createAltDataStream(xNode, x.alternate_data_streams, altStream_ids)
-
-          case x: PdfFileExt =>
-            transaction(DbService.graphDB) {
-              xNode.setProperty("version", x.version.getOrElse(""))
-              xNode.setProperty("is_optimized", x.is_optimized.getOrElse(false))
-              xNode.setProperty("pdfid0", x.pdfid0.getOrElse(""))
-              xNode.setProperty("pdfid1", x.pdfid1.getOrElse(""))
-            }
-
-          case x: RasterImgExt =>
-            val exitTags_ids: Map[String, String] = (for (s <- x.exif_tags.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
-            transaction(DbService.graphDB) {
-              xNode.setProperty("image_height", x.image_height.getOrElse(0))
-              xNode.setProperty("image_width", x.image_width.getOrElse(0))
-              xNode.setProperty("bits_per_pixel", x.bits_per_pixel.getOrElse(0))
-              xNode.setProperty("exif_tags", exitTags_ids.values.toArray)
-              xNode.setProperty("image_compression_algorithm", x.image_compression_algorithm.getOrElse(""))
-            }
-            createExifTags(xNode, x.exif_tags, exitTags_ids)
-
-          case x: WindowPEBinExt =>
-            transaction(DbService.graphDB) {
-              xNode.setProperty("pe_type", x.pe_type)
-              xNode.setProperty("imphash", x.imphash.getOrElse(""))
-              xNode.setProperty("machine_hex", x.machine_hex.getOrElse(""))
-              xNode.setProperty("number_of_sections", x.number_of_sections.getOrElse(0))
-              xNode.setProperty("time_date_stamp", x.time_date_stamp.getOrElse("").toString)
-              xNode.setProperty("pointer_to_symbol_table_hex", x.pointer_to_symbol_table_hex.getOrElse(""))
-              xNode.setProperty("number_of_symbols", x.number_of_symbols.getOrElse(0))
-              xNode.setProperty("size_of_optional_header", x.size_of_optional_header.getOrElse(0))
-              xNode.setProperty("characteristics_hex", x.characteristics_hex.getOrElse(""))
-              // todo file_header_hashes
-              // todo optional_header
-              // todo sections
-            }
-
-          case _ =>
-        }
       }
     })
   }
@@ -101,8 +108,8 @@ object ExtensionsMaker {
     altStreamOpt.foreach(altStream => {
       for ((kp, i) <- altStream.zipWithIndex) {
         val hashes_ids: Map[String, String] = (for (s <- kp.hashes.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
-        val tgtNode: Node =
-          transaction(DbService.graphDB) {
+        val tgtNodeOpt =
+          transactionOpt(DbService.graphDB) {
             val node = DbService.graphDB.createNode(label(asCleanLabel(kp.`type`)))
             node.setProperty("alternate_data_stream_id", ids(i))
             node.setProperty("name", kp.name)
@@ -111,10 +118,12 @@ object ExtensionsMaker {
             DbService.altStream_idIndex.add(node, "alternate_data_stream_id", node.getProperty("alternate_data_stream_id"))
             node
           }
-        createHashes(tgtNode, kp.hashes, hashes_ids)
-        transaction(DbService.graphDB) {
-          fromNode.createRelationshipTo(tgtNode, RelationshipType.withName("HAS_ALTERNATE_DATA_STREAM"))
-        }
+        tgtNodeOpt.foreach(tgtNode => {
+          createHashes(tgtNode, kp.hashes, hashes_ids)
+          transactionOpt(DbService.graphDB) {
+            fromNode.createRelationshipTo(tgtNode, "HAS_ALTERNATE_DATA_STREAM")
+          }.getOrElse(println("---> could not process HAS_ALTERNATE_DATA_STREAM relation"))
+        })
       }
     })
   }
@@ -127,17 +136,19 @@ object ExtensionsMaker {
           case Right(x) => x
           case Left(x) => x
         }
-        val tgtNode: Node =
-          transaction(DbService.graphDB) {
+        val tgtNodeOpt =
+          transactionOpt(DbService.graphDB) {
             val node = DbService.graphDB.createNode(label(asCleanLabel("exif_tags")))
             node.setProperty("exif_tags_id", ids(k))
             node.setProperty(k, theValue)
             DbService.exif_tags_idIndex.add(node, "exif_tags_id", node.getProperty("exif_tags_id"))
             node
           }
-        transaction(DbService.graphDB) {
-          fromNode.createRelationshipTo(tgtNode, RelationshipType.withName("HAS_EXIF_TAGS"))
-        }
+        tgtNodeOpt.foreach(tgtNode => {
+          transactionOpt(DbService.graphDB) {
+            fromNode.createRelationshipTo(tgtNode, "HAS_EXIF_TAGS")
+          }.getOrElse(println("---> could not process HAS_EXIF_TAGS relation"))
+        })
       }
     )
   }

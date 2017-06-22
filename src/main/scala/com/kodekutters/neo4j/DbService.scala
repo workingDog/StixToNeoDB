@@ -6,6 +6,8 @@ import org.neo4j.graphdb.{GraphDatabaseService, Node}
 import org.neo4j.graphdb.factory.GraphDatabaseFactory
 import org.neo4j.graphdb.index.Index
 
+import scala.util.{Failure, Success, Try}
+
 /**
   * the GraphDatabaseService support and associated index
   */
@@ -32,8 +34,10 @@ object DbService {
 
   // general transaction support
   // see snippet: http://sandrasi-sw.blogspot.jp/2012/02/neo4j-transactions-in-scala.html
-  def transaction[A <: Any](db: GraphDatabaseService)(dbOp: => A): A = {
-    val tx = db.beginTx()
+  private def transaction[A <: Any](db: GraphDatabaseService)(dbOp: => A): A = {
+    val tx = synchronized {
+      db.beginTx
+    }
     try {
       val result = dbOp
       tx.success()
@@ -42,6 +46,8 @@ object DbService {
       tx.close()
     }
   }
+
+  def transactionOpt[A <: Any](db: GraphDatabaseService)(dbOp: => A): Option[A] = Try(transaction(db)(dbOp)).toOption
 
   def closeAll() = {
     graphDB.shutdown()

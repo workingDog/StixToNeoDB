@@ -21,6 +21,9 @@ object MakerSupport {
 
   import DbService._
 
+  // implicit transformation from a string to a RelationshipType
+  implicit def string2relationshipType(x: String): RelationshipType = RelationshipType.withName(x)
+
   val objectRefs = "object_refs"
   val observedDataRefs = "observed_data_refs"
   val whereSightedRefs = "where_sighted_refs"
@@ -72,16 +75,21 @@ object MakerSupport {
       case s: TPLMarking => s.tlp.value
       case _ => ""
     }
-    val markObjNode: Node =
-      transaction(DbService.graphDB) {
+    val markObjNodeOpt =
+      transactionOpt(DbService.graphDB) {
         val node = DbService.graphDB.createNode(label(MakerSupport.markingObjRefs))
         node.setProperty("marking_id", definition_id)
         node.setProperty("marking", mark)
         DbService.marking_idIndex.add(node, "marking_id", node.getProperty("marking_id"))
         node
       }
-    transaction(DbService.graphDB) {
-      sourceNode.createRelationshipTo(markObjNode, RelationshipType.withName("HAS_MARKING_OBJECT"))
+    markObjNodeOpt match {
+      case Some(markObjNode) =>
+        transactionOpt(DbService.graphDB) {
+          sourceNode.createRelationshipTo(markObjNode, "HAS_MARKING_OBJECT")
+        }.getOrElse(println("---> could not process " + MakerSupport.markingObjRefs + " relation: " + definition_id))
+
+      case None => println("---> could not create " + MakerSupport.markingObjRefs + " definition_id: " + definition_id)
     }
   }
 
@@ -89,8 +97,8 @@ object MakerSupport {
   def createKillPhases(sourceNode: Node, kill_chain_phasesOpt: Option[List[KillChainPhase]], ids: Array[String]) = {
     kill_chain_phasesOpt.foreach(kill_chain_phases => {
       for ((kp, i) <- kill_chain_phases.zipWithIndex) {
-        val stixNode: Node =
-          transaction(DbService.graphDB) {
+        val stixNodeOpt =
+          transactionOpt(DbService.graphDB) {
             val node = DbService.graphDB.createNode(label(asCleanLabel(kp.`type`)))
             node.setProperty("kill_chain_phase_id", ids(i))
             node.setProperty("kill_chain_name", kp.kill_chain_name)
@@ -98,8 +106,13 @@ object MakerSupport {
             DbService.kill_chain_phase_idIndex.add(node, "kill_chain_phase_id", node.getProperty("kill_chain_phase_id"))
             node
           }
-        transaction(DbService.graphDB) {
-          sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_KILL_CHAIN_PHASE"))
+        stixNodeOpt match {
+          case Some(stixNode) =>
+            transactionOpt(DbService.graphDB) {
+              sourceNode.createRelationshipTo(stixNode, "HAS_KILL_CHAIN_PHASE")
+            }.getOrElse(println("---> could not process relation: HAS_KILL_CHAIN_PHASE"))
+
+          case None => println("---> could not create node kill_chain_phase: " + kp.toString())
         }
       }
     })
@@ -107,19 +120,19 @@ object MakerSupport {
 
   // create the external_references nodes and relationships
   def createExternRefs(idString: String, external_referencesOpt: Option[List[ExternalReference]], ids: Array[String]): Unit = {
-    val sourceNode: Node =
-      transaction(DbService.graphDB) {
+    val sourceNodeOpt =
+      transactionOpt(DbService.graphDB) {
         DbService.idIndex.get("id", idString).getSingle
       }
-    createExternRefs(sourceNode, external_referencesOpt, ids)
+    sourceNodeOpt.foreach(sourceNode => createExternRefs(sourceNode, external_referencesOpt, ids))
   }
 
   // create the external_references nodes and relationships
   def createExternRefs(sourceNode: Node, external_referencesOpt: Option[List[ExternalReference]], ids: Array[String]): Unit = {
     external_referencesOpt.foreach(external_references => {
       for ((extRef, i) <- external_references.zipWithIndex) {
-        val stixNode: Node =
-          transaction(DbService.graphDB) {
+        val stixNodeOpt =
+          transactionOpt(DbService.graphDB) {
             val node = DbService.graphDB.createNode(label(asCleanLabel(extRef.`type`)))
             node.setProperty("external_reference_id", ids(i))
             node.setProperty("source_name", extRef.source_name)
@@ -129,8 +142,13 @@ object MakerSupport {
             DbService.external_reference_idIndex.add(node, "external_reference_id", node.getProperty("external_reference_id"))
             node
           }
-        transaction(DbService.graphDB) {
-          sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_EXTERNAL_REF"))
+        stixNodeOpt match {
+          case Some(stixNode) =>
+            transactionOpt(DbService.graphDB) {
+              sourceNode.createRelationshipTo(stixNode, "HAS_EXTERNAL_REF")
+            }.getOrElse(println("---> could not process relation: HAS_EXTERNAL_REF"))
+
+          case None => println("---> could not create node external_reference: " + extRef.toString())
         }
       }
     })
@@ -138,19 +156,19 @@ object MakerSupport {
 
   // create the granular_markings nodes and relationships
   def createGranulars(idString: String, granular_markingsOpt: Option[List[GranularMarking]], ids: Array[String]): Unit = {
-    val sourceNode: Node =
-      transaction(DbService.graphDB) {
+    val sourceNodeOpt =
+      transactionOpt(DbService.graphDB) {
         DbService.idIndex.get("id", idString).getSingle
       }
-    createGranulars(sourceNode, granular_markingsOpt, ids)
+    sourceNodeOpt.foreach(sourceNode => createGranulars(sourceNode, granular_markingsOpt, ids))
   }
 
   // create the granular_markings nodes and relationships
   def createGranulars(sourceNode: Node, granular_markingsOpt: Option[List[GranularMarking]], ids: Array[String]): Unit = {
     granular_markingsOpt.foreach(granular_markings => {
       for ((gra, i) <- granular_markings.zipWithIndex) {
-        val stixNode: Node =
-          transaction(DbService.graphDB) {
+        val stixNodeOpt =
+          transactionOpt(DbService.graphDB) {
             val node = DbService.graphDB.createNode(label(asCleanLabel(gra.`type`)))
             node.setProperty("granular_marking_id", ids(i))
             node.setProperty("selectors", gra.selectors.toArray)
@@ -159,8 +177,13 @@ object MakerSupport {
             DbService.granular_marking_idIndex.add(node, "granular_marking_id", node.getProperty("granular_marking_id"))
             node
           }
-        transaction(DbService.graphDB) {
-          sourceNode.createRelationshipTo(stixNode, RelationshipType.withName("HAS_GRANULAR_MARKING"))
+        stixNodeOpt match {
+          case Some(stixNode) =>
+            transactionOpt(DbService.graphDB) {
+              sourceNode.createRelationshipTo(stixNode, "HAS_GRANULAR_MARKING")
+            }.getOrElse(println("---> could not process relation: HAS_GRANULAR_MARKING"))
+
+          case None => println("---> could not create node granular_marking: " + gra.toString())
         }
       }
     })
@@ -169,53 +192,64 @@ object MakerSupport {
   // create relations between the idString and the list of object_refs SDO id
   def createRelToObjRef(idString: String, object_refs: Option[List[Identifier]], relName: String) = {
     for (s <- object_refs.getOrElse(List.empty)) {
-      transaction(DbService.graphDB) {
+      transactionOpt(DbService.graphDB) {
         val sourceNode = DbService.idIndex.get("id", idString).getSingle
         val targetNode = DbService.idIndex.get("id", s.toString()).getSingle
-        sourceNode.createRelationshipTo(targetNode, RelationshipType.withName(relName))
-      }
+        sourceNode.createRelationshipTo(targetNode, relName)
+      }.getOrElse(println("---> could not process " + relName + " relation from: " + idString + " to: " + s.toString()))
     }
   }
 
   def createdByRel(sourceId: String, tgtOpt: Option[Identifier]) = {
     tgtOpt.map(tgt =>
-      transaction(DbService.graphDB) {
+      transactionOpt(DbService.graphDB) {
         val sourceNode = DbService.idIndex.get("id", sourceId).getSingle
         val targetNode = DbService.idIndex.get("id", tgt.toString()).getSingle
-        sourceNode.createRelationshipTo(targetNode, RelationshipType.withName("CREATED_BY"))
-      })
+        sourceNode.createRelationshipTo(targetNode, "CREATED_BY")
+      }.getOrElse(println("---> could not process CREATED_BY relation from: " + sourceId + " to: " + tgt.toString()))
+    )
   }
 
   def createLangContents(sourceNode: Node, contents: Map[String, Map[String, String]], ids: Map[String, String]) = {
     for ((k, obs) <- contents) {
       val obs_contents_ids: Map[String, String] = (for (s <- obs.keySet) yield s -> UUID.randomUUID().toString).toMap
-      val tgtNode: Node =
-        transaction(DbService.graphDB) {
+      val tgtNodeOpt =
+        transactionOpt(DbService.graphDB) {
           val node = DbService.graphDB.createNode(label("contents"))
           node.setProperty("contents_id", ids(k))
           node.setProperty(k, obs_contents_ids.values.toArray)
           DbService.contents_idIndex.add(node, "contents_id", node.getProperty("contents_id"))
           node
         }
-      createTranslations(tgtNode, obs, obs_contents_ids)
-      transaction(DbService.graphDB) {
-        sourceNode.createRelationshipTo(tgtNode, RelationshipType.withName("HAS_CONTENTS"))
+      tgtNodeOpt match {
+        case Some(tgtNode) =>
+          createTranslations(tgtNode, obs, obs_contents_ids)
+          transactionOpt(DbService.graphDB) {
+            sourceNode.createRelationshipTo(tgtNode, "HAS_CONTENTS")
+          }.getOrElse(println("---> could not process language HAS_CONTENTS relation"))
+
+        case None => println("---> could not create node language contents")
       }
     }
   }
 
   private def createTranslations(sourceNode: Node, translations: Map[String, String], ids: Map[String, String]) = {
     for ((k, obs) <- translations) {
-      val tgtNode: Node =
-        transaction(DbService.graphDB) {
+      val tgtNodeOpt =
+        transactionOpt(DbService.graphDB) {
           val node = DbService.graphDB.createNode(label("translations"))
           node.setProperty("translations_id", ids(k))
           node.setProperty(k, obs)
           DbService.translations_idIndex.add(node, "translations_id", node.getProperty("translations_id"))
           node
         }
-      transaction(DbService.graphDB) {
-        sourceNode.createRelationshipTo(tgtNode, RelationshipType.withName("HAS_TRANSLATION"))
+      tgtNodeOpt match {
+        case Some(tgtNode) =>
+          transactionOpt(DbService.graphDB) {
+            sourceNode.createRelationshipTo(tgtNode, "HAS_TRANSLATION")
+          }.getOrElse(println("---> could not process language HAS_TRANSLATION relation"))
+
+        case None => println("---> could not create node language translations")
       }
     }
   }
@@ -224,16 +258,21 @@ object MakerSupport {
   def createHashes(theNode: Node, hashesOpt: Option[Map[String, String]], ids: Map[String, String]) = {
     hashesOpt.foreach(hashes =>
       for ((k, obs) <- hashes) {
-        val hashNode: Node =
-          transaction(DbService.graphDB) {
+        val hashNodeOpt =
+          transactionOpt(DbService.graphDB) {
             val node = DbService.graphDB.createNode(label("hashes"))
             node.setProperty("hash_id", ids(k))
             node.setProperty(k, obs)
             DbService.hash_idIndex.add(node, "hash_id", node.getProperty("hash_id"))
             node
           }
-        transaction(DbService.graphDB) {
-          theNode.createRelationshipTo(hashNode, RelationshipType.withName("HAS_HASHES"))
+        hashNodeOpt match {
+          case Some(hashNode) =>
+            transactionOpt(DbService.graphDB) {
+              theNode.createRelationshipTo(hashNode, "HAS_HASHES")
+            }.getOrElse(println("---> could not process language HAS_HASHES relation"))
+
+          case None => println("---> could not create node hashes")
         }
       }
     )
