@@ -64,7 +64,7 @@ object DbService {
   def init(dbDir: String): Unit = {
     // will create a new database or open the existing one
     graphDB = new GraphDatabaseFactory().newEmbeddedDatabase(new File(dbDir))
-    transaction(graphDB) {
+    transactionOpt(graphDB) {
       idIndex = graphDB.index.forNodes("id")
       marking_idIndex = graphDB.index.forNodes("marking_id")
       kill_chain_phase_idIndex = graphDB.index.forNodes("kill_chain_phase_id")
@@ -81,7 +81,7 @@ object DbService {
       ipfix_idIndex = graphDB.index.forNodes("ipfix_id")
       environment_variables_idIndex = graphDB.index.forNodes("environment_variables_id")
       additional_header_fields_idIndex = graphDB.index.forNodes("additional_header_fields_id")
-    }
+    }.getOrElse(println("---> could not process indexing in DbService.init()"))
   }
 
 }
