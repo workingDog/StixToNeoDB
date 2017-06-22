@@ -124,7 +124,10 @@ object MakerSupport {
       transactionOpt(DbService.graphDB) {
         DbService.idIndex.get("id", idString).getSingle
       }
-    sourceNodeOpt.foreach(sourceNode => createExternRefs(sourceNode, external_referencesOpt, ids))
+    sourceNodeOpt match {
+      case Some(sourceNode) => createExternRefs(sourceNode, external_referencesOpt, ids)
+      case None => println("---> could not create node external_reference for: " + idString)
+    }
   }
 
   // create the external_references nodes and relationships
@@ -160,7 +163,10 @@ object MakerSupport {
       transactionOpt(DbService.graphDB) {
         DbService.idIndex.get("id", idString).getSingle
       }
-    sourceNodeOpt.foreach(sourceNode => createGranulars(sourceNode, granular_markingsOpt, ids))
+    sourceNodeOpt match {
+      case Some(sourceNode) => createGranulars(sourceNode, granular_markingsOpt, ids)
+      case None => println("---> could not create node granular_markings for: " + idString)
+    }
   }
 
   // create the granular_markings nodes and relationships

@@ -43,7 +43,7 @@ class RelationsMaker() {
     def baseRel(sourceId: String, targetId: String, name: String): Option[org.neo4j.graphdb.Relationship] = {
       val externRefIds = toIdArray(x.external_references)
       val granularIds = toIdArray(x.granular_markings)
-      val relation = transactionOpt(DbService.graphDB) {
+      val relationOpt = transactionOpt(DbService.graphDB) {
         val sourceNode = DbService.idIndex.get("id", sourceId).getSingle
         val targetNode = DbService.idIndex.get("id", targetId).getSingle
         val rel = sourceNode.createRelationshipTo(targetNode, name)
@@ -62,8 +62,8 @@ class RelationsMaker() {
         rel
       }
       // catch errors
-      relation match {
-        case Some(relship) =>
+      relationOpt match {
+        case Some(relation) =>
           // the object marking relations
           createRelToObjRef(x.id.toString(), x.object_marking_refs, "HAS_MARKING")
           // the created_by relation
@@ -76,7 +76,7 @@ class RelationsMaker() {
         case None => println("---> could not process relation: " + x.id.toString() + " from: " + sourceId + " to: " + targetId)
       }
       // the relation option
-      relation
+      relationOpt
     }
 
     // a Relationsip

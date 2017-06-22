@@ -47,6 +47,9 @@ object DbService {
     }
   }
 
+  /**
+    * do a transaction that evaluate correctly to Some(results) or to a failure as None
+    */
   def transactionOpt[A <: Any](db: GraphDatabaseService)(dbOp: => A): Option[A] = Try(transaction(db)(dbOp)).toOption
 
   def closeAll() = {
