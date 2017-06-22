@@ -34,7 +34,7 @@ object DbService {
 
   // general transaction support
   // see snippet: http://sandrasi-sw.blogspot.jp/2012/02/neo4j-transactions-in-scala.html
-  private def transaction[A <: Any](db: GraphDatabaseService)(dbOp: => A): A = {
+  private def plainTransaction[A <: Any](db: GraphDatabaseService)(dbOp: => A): A = {
     val tx = synchronized {
       db.beginTx
     }
@@ -49,8 +49,11 @@ object DbService {
 
   /**
     * do a transaction that evaluate correctly to Some(results) or to a failure as None
+    *
+    * returns an Option
     */
-  def transactionOpt[A <: Any](db: GraphDatabaseService)(dbOp: => A): Option[A] = Try(transaction(db)(dbOp)).toOption
+  def transaction[A <: Any](dbOp: => A): Option[A] = Try(plainTransaction(DbService.graphDB)(dbOp)).toOption
+
 
   def closeAll() = {
     graphDB.shutdown()
@@ -64,7 +67,7 @@ object DbService {
   def init(dbDir: String): Unit = {
     // will create a new database or open the existing one
     graphDB = new GraphDatabaseFactory().newEmbeddedDatabase(new File(dbDir))
-    transactionOpt(graphDB) {
+    transaction {
       idIndex = graphDB.index.forNodes("id")
       marking_idIndex = graphDB.index.forNodes("marking_id")
       kill_chain_phase_idIndex = graphDB.index.forNodes("kill_chain_phase_id")

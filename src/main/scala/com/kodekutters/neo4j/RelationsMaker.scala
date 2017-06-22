@@ -43,7 +43,7 @@ class RelationsMaker() {
     def baseRel(sourceId: String, targetId: String, name: String): Option[org.neo4j.graphdb.Relationship] = {
       val externRefIds = toIdArray(x.external_references)
       val granularIds = toIdArray(x.granular_markings)
-      val relationOpt = transactionOpt(DbService.graphDB) {
+      val relationOpt = transaction {
         val sourceNode = DbService.idIndex.get("id", sourceId).getSingle
         val targetNode = DbService.idIndex.get("id", targetId).getSingle
         val rel = sourceNode.createRelationshipTo(targetNode, name)
@@ -84,7 +84,7 @@ class RelationsMaker() {
       val y = x.asInstanceOf[Relationship]
       val relOpt = baseRel(y.source_ref.toString(), y.target_ref.toString(), asCleanLabel(y.relationship_type))
       relOpt.foreach(rel => {
-        transactionOpt(DbService.graphDB) {
+        transaction {
           rel.setProperty("source_ref", y.source_ref.toString())
           rel.setProperty("target_ref", y.target_ref.toString())
           rel.setProperty("relationship_type", y.relationship_type)
@@ -96,7 +96,7 @@ class RelationsMaker() {
       val y = x.asInstanceOf[Sighting]
       val relOpt = baseRel(y.sighting_of_ref.toString(), y.sighting_of_ref.toString(), asCleanLabel("sighting_of"))
       relOpt.foreach(rel => {
-        transactionOpt(DbService.graphDB) {
+        transaction {
           rel.setProperty("sighting_of_ref", y.sighting_of_ref.toString())
           rel.setProperty("first_seen", y.first_seen.getOrElse("").toString)
           rel.setProperty("last_seen", y.last_seen.getOrElse("").toString)
@@ -129,7 +129,7 @@ class RelationsMaker() {
         // the created_by relation
         createdByRel(x.id.toString(), x.created_by_ref)
         // the language contents relation from the LanguageContent object to the object_ref
-        transactionOpt(DbService.graphDB) {
+        transaction {
           val sourceNode = DbService.idIndex.get("id", x.id.toString()).getSingle
           val targetNode = DbService.idIndex.get("id", x.object_ref.toString()).getSingle
           val rel = sourceNode.createRelationshipTo(targetNode, asCleanLabel(x.`type`))

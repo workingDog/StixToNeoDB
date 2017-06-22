@@ -27,17 +27,16 @@ object ObservablesMaker {
       // create the extensions ids
       val ext_ids: Map[String, String] = (for (s <- obs.extensions.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
       // create the observable node
-      val nodeOpt =
-        transactionOpt(DbService.graphDB) {
-          val theNode = DbService.graphDB.createNode(label(asCleanLabel(obs.`type`)))
-          theNode.addLabel(label("Observable"))
-          theNode.setProperty("type", obs.`type`)
-          theNode.setProperty("observable_id", obsIds(k))
-          theNode.setProperty("extensions", ext_ids.values.toArray)
-          theNode.setProperty("description", obs.description.getOrElse(""))
-          DbService.observable_idIndex.add(theNode, "observable_id", theNode.getProperty("observable_id"))
-          theNode
-        }
+      val nodeOpt = transaction {
+        val theNode = DbService.graphDB.createNode(label(asCleanLabel(obs.`type`)))
+        theNode.addLabel(label("Observable"))
+        theNode.setProperty("type", obs.`type`)
+        theNode.setProperty("observable_id", obsIds(k))
+        theNode.setProperty("extensions", ext_ids.values.toArray)
+        theNode.setProperty("description", obs.description.getOrElse(""))
+        DbService.observable_idIndex.add(theNode, "observable_id", theNode.getProperty("observable_id"))
+        theNode
+      }
       nodeOpt match {
         case Some(node) =>
           // create the Extension nodes and relations to this observable
@@ -45,7 +44,7 @@ object ObservablesMaker {
           // specify the observable attributes
           specify(node, obs)
           // create the relation to the parent node
-          transactionOpt(DbService.graphDB) {
+          transaction {
             sourceNode.createRelationshipTo(node, "HAS_OBSERVABLE")
           }.getOrElse(println("---> could not process HAS_OBSERVABLE relation"))
 
@@ -60,7 +59,7 @@ object ObservablesMaker {
       case x: Artifact =>
         // create the hashes ids
         val hashes_ids: Map[String, String] = (for (s <- x.hashes.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("mime_type", x.mime_type.getOrElse(""))
           node.setProperty("payload_bin", x.payload_bin.getOrElse(""))
           node.setProperty("url", x.url.getOrElse(""))
@@ -70,14 +69,14 @@ object ObservablesMaker {
         createHashes(node, x.hashes, hashes_ids)
 
       case x: AutonomousSystem =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("number", x.number)
           node.setProperty("name", x.name.getOrElse(""))
           node.setProperty("rir", x.rir.getOrElse(""))
         }
 
       case x: Directory =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("path", x.path)
           node.setProperty("path_enc", x.path_enc.getOrElse(""))
           node.setProperty("created", x.created.getOrElse("").toString)
@@ -87,20 +86,20 @@ object ObservablesMaker {
         }
 
       case x: DomainName =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("value", x.value)
           node.setProperty("resolves_to_refs", x.resolves_to_refs.getOrElse(List.empty).toArray)
         }
 
       case x: EmailAddress =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("display_name", x.display_name.getOrElse(""))
           node.setProperty("belongs_to_ref", x.belongs_to_ref.getOrElse(""))
         }
 
       case x: EmailMessage =>
         val headers_ids: Map[String, String] = (for (s <- x.additional_header_fields.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("is_multipart", x.is_multipart)
           // todo body_multipart: Option[List[EmailMimeType]]
           node.setProperty("body", x.body.getOrElse(""))
@@ -120,7 +119,7 @@ object ObservablesMaker {
 
       case x: File =>
         val hashes_ids: Map[String, String] = (for (s <- x.hashes.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("size", x.size.getOrElse(0))
           node.setProperty("name", x.name.getOrElse(""))
           node.setProperty("name_enc", x.name_enc.getOrElse(""))
@@ -140,32 +139,32 @@ object ObservablesMaker {
         createHashes(node, x.hashes, hashes_ids)
 
       case x: IPv4Address =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("value", x.value)
           node.setProperty("resolves_to_refs", x.resolves_to_refs.getOrElse(List.empty).toArray)
           node.setProperty("belongs_to_refs", x.belongs_to_refs.getOrElse(List.empty).toArray)
         }
 
       case x: IPv6Address =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("value", x.value)
           node.setProperty("resolves_to_refs", x.resolves_to_refs.getOrElse(List.empty).toArray)
           node.setProperty("belongs_to_refs", x.belongs_to_refs.getOrElse(List.empty).toArray)
         }
 
       case x: MACAddress =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("value", x.value)
         }
 
       case x: Mutex =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("name", x.name)
         }
 
       case x: NetworkTraffic =>
         val ipfix_ids: Map[String, String] = (for (s <- x.ipfix.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("start", x.start.getOrElse("").toString)
           node.setProperty("end", x.end.getOrElse("").toString)
           node.setProperty("is_active", x.is_active.getOrElse(false))
@@ -188,7 +187,7 @@ object ObservablesMaker {
 
       case x: Process =>
         val env_ids: Map[String, String] = (for (s <- x.environment_variables.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("is_hidden", x.is_hidden.getOrElse(false).toString)
           node.setProperty("pid", x.pid.getOrElse(0)) // todo <-- not correct
           node.setProperty("name", x.name.getOrElse(""))
@@ -206,7 +205,7 @@ object ObservablesMaker {
         createEnv(node, x.environment_variables, env_ids)
 
       case x: Software =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("name", x.name)
           node.setProperty("cpe", x.cpe.getOrElse(""))
           node.setProperty("languages", x.languages.getOrElse(List.empty).toArray)
@@ -215,12 +214,12 @@ object ObservablesMaker {
         }
 
       case x: URL =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("value", x.value)
         }
 
       case x: UserAccount =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("user_id", x.user_id)
           node.setProperty("account_login", x.account_login.getOrElse(""))
           node.setProperty("account_type", x.account_type.getOrElse(""))
@@ -237,7 +236,7 @@ object ObservablesMaker {
         }
 
       case x: WindowsRegistryKey =>
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("key", x.key)
           // todo values Option[List[WindowsRegistryValueType]]
           node.setProperty("modified", x.modified.getOrElse("").toString)
@@ -247,7 +246,7 @@ object ObservablesMaker {
 
       case x: X509Certificate =>
         val hashes_ids: Map[String, String] = (for (s <- x.hashes.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
-        transactionOpt(DbService.graphDB) {
+        transaction {
           node.setProperty("is_self_signed", x.is_self_signed.getOrElse(false))
           node.setProperty("version", x.version.getOrElse(""))
           node.setProperty("serial_number", x.serial_number.getOrElse(""))
@@ -271,16 +270,15 @@ object ObservablesMaker {
   private def createEnv(sourceNode: Node, envOpt: Option[Map[String, String]], ids: Map[String, String]) = {
     envOpt.foreach(env =>
       for ((k, obs) <- env) {
-        val nodeOpt =
-          transactionOpt(DbService.graphDB) {
-            val theNode = DbService.graphDB.createNode(label("environment_variables"))
-            theNode.setProperty("environment_variables_id", ids(k))
-            theNode.setProperty(k, obs)
-            DbService.environment_variables_idIndex.add(theNode, "environment_variables_id", theNode.getProperty("environment_variables_id"))
-            theNode
-          }
+        val nodeOpt = transaction {
+          val theNode = DbService.graphDB.createNode(label("environment_variables"))
+          theNode.setProperty("environment_variables_id", ids(k))
+          theNode.setProperty(k, obs)
+          DbService.environment_variables_idIndex.add(theNode, "environment_variables_id", theNode.getProperty("environment_variables_id"))
+          theNode
+        }
         nodeOpt.foreach(node => {
-          transactionOpt(DbService.graphDB) {
+          transaction {
             sourceNode.createRelationshipTo(node, "HAS_ENVIRONMENT_VARIABLE")
           }.getOrElse(println("---> could not process HAS_ENVIRONMENT_VARIABLE relation"))
         })
@@ -291,16 +289,15 @@ object ObservablesMaker {
   private def createHeaders(sourceNode: Node, headersOpt: Option[Map[String, String]], ids: Map[String, String]) = {
     headersOpt.foreach(headers =>
       for ((k, obs) <- headers) {
-        val nodeOpt =
-          transactionOpt(DbService.graphDB) {
-            val theNode = DbService.graphDB.createNode(label("additional_header_fields"))
-            theNode.setProperty("additional_header_fields_id", ids(k))
-            theNode.setProperty(k, obs)
-            DbService.additional_header_fields_idIndex.add(theNode, "additional_header_fields_id", theNode.getProperty("additional_header_fields_id"))
-            theNode
-          }
+        val nodeOpt = transaction {
+          val theNode = DbService.graphDB.createNode(label("additional_header_fields"))
+          theNode.setProperty("additional_header_fields_id", ids(k))
+          theNode.setProperty(k, obs)
+          DbService.additional_header_fields_idIndex.add(theNode, "additional_header_fields_id", theNode.getProperty("additional_header_fields_id"))
+          theNode
+        }
         nodeOpt.foreach(node => {
-          transactionOpt(DbService.graphDB) {
+          transaction {
             sourceNode.createRelationshipTo(node, "HAS_ADDITIONAL_HEADER_FIELD")
           }.getOrElse(println("---> could not process HAS_ADDITIONAL_HEADER_FIELD relation"))
         })
@@ -316,17 +313,15 @@ object ObservablesMaker {
           case Right(x) => x
           case Left(x) => x
         }
-        val nodeOpt =
-          transactionOpt(DbService.graphDB) {
-            val theNode = DbService.graphDB.createNode(label(asCleanLabel("ipfix")))
-            theNode.setProperty("ipfix_id", ids(k))
-            theNode.setProperty(k, theValue)
-            DbService.ipfix_idIndex.add(theNode, "ipfix_id", theNode.getProperty("ipfix_id"))
-            theNode
-          }
-
+        val nodeOpt = transaction {
+          val theNode = DbService.graphDB.createNode(label(asCleanLabel("ipfix")))
+          theNode.setProperty("ipfix_id", ids(k))
+          theNode.setProperty(k, theValue)
+          DbService.ipfix_idIndex.add(theNode, "ipfix_id", theNode.getProperty("ipfix_id"))
+          theNode
+        }
         nodeOpt.foreach(node => {
-          transactionOpt(DbService.graphDB) {
+          transaction {
             sourceNode.createRelationshipTo(node, "HAS_IPFIX")
           }.getOrElse(println("---> could not process HAS_IPFIX relation"))
         })

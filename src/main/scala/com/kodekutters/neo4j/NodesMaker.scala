@@ -31,7 +31,7 @@ class NodesMaker() {
     val granular_markings_ids = toIdArray(x.granular_markings)
     val external_references_ids = toIdArray(x.external_references)
     // create a base node and internal relations common to all SDO
-    val sdoNodeOpt = transactionOpt(DbService.graphDB) {
+    val sdoNodeOpt = transaction {
       val node = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
       node.addLabel(label("SDO"))
       node.setProperty("id", x.id.toString())
@@ -62,7 +62,7 @@ class NodesMaker() {
           case AttackPattern.`type` =>
             val y = x.asInstanceOf[AttackPattern]
             val kill_chain_phases_ids = toIdArray(y.kill_chain_phases)
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("name", y.name)
               sdoNode.setProperty("description", y.description.getOrElse(""))
               sdoNode.setProperty("kill_chain_phases", kill_chain_phases_ids)
@@ -71,7 +71,7 @@ class NodesMaker() {
 
           case Identity.`type` =>
             val y = x.asInstanceOf[Identity]
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("name", y.name)
               sdoNode.setProperty("identity_class", y.identity_class)
               sdoNode.setProperty("sectors", y.sectors.getOrElse(List.empty).toArray)
@@ -81,7 +81,7 @@ class NodesMaker() {
 
           case Campaign.`type` =>
             val y = x.asInstanceOf[Campaign]
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("name", y.name)
               sdoNode.setProperty("objective", y.objective.getOrElse(""))
               sdoNode.setProperty("aliases", y.aliases.getOrElse(List.empty).toArray)
@@ -92,14 +92,14 @@ class NodesMaker() {
 
           case CourseOfAction.`type` =>
             val y = x.asInstanceOf[CourseOfAction]
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("name", y.name)
               sdoNode.setProperty("description", y.description.getOrElse(""))
             }.getOrElse(println("---> could not process CourseOfAction node: " + x.id.toString()))
 
           case IntrusionSet.`type` =>
             val y = x.asInstanceOf[IntrusionSet]
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("name", y.name)
               sdoNode.setProperty("description", y.description.getOrElse(""))
               sdoNode.setProperty("aliases", y.aliases.getOrElse(List.empty).toArray)
@@ -114,7 +114,7 @@ class NodesMaker() {
           case Malware.`type` =>
             val y = x.asInstanceOf[Malware]
             val kill_chain_phases_ids = toIdArray(y.kill_chain_phases)
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("name", y.name)
               sdoNode.setProperty("description", y.description.getOrElse(""))
               sdoNode.setProperty("kill_chain_phases", kill_chain_phases_ids)
@@ -123,7 +123,7 @@ class NodesMaker() {
 
           case Report.`type` =>
             val y = x.asInstanceOf[Report]
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("name", y.name)
               sdoNode.setProperty("published", y.published.time)
               sdoNode.setProperty("object_refs_ids", toIdStringArray(y.object_refs))
@@ -132,7 +132,7 @@ class NodesMaker() {
 
           case ThreatActor.`type` =>
             val y = x.asInstanceOf[ThreatActor]
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("name", y.name)
               sdoNode.setProperty("description", y.description.getOrElse(""))
               sdoNode.setProperty("aliases", y.aliases.getOrElse(List.empty).toArray)
@@ -148,7 +148,7 @@ class NodesMaker() {
           case Tool.`type` =>
             val y = x.asInstanceOf[Tool]
             val kill_chain_phases_ids = toIdArray(y.kill_chain_phases)
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("name", y.name)
               sdoNode.setProperty("description", y.description.getOrElse(""))
               sdoNode.setProperty("kill_chain_phases", kill_chain_phases_ids)
@@ -158,7 +158,7 @@ class NodesMaker() {
 
           case Vulnerability.`type` =>
             val y = x.asInstanceOf[Vulnerability]
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("name", y.name)
               sdoNode.setProperty("description", y.description.getOrElse(""))
             }.getOrElse(println("---> could not process Vulnerability node: " + x.id.toString()))
@@ -166,7 +166,7 @@ class NodesMaker() {
           case Indicator.`type` =>
             val y = x.asInstanceOf[Indicator]
             val kill_chain_phases_ids = toIdArray(y.kill_chain_phases)
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("name", y.name.getOrElse(""))
               sdoNode.setProperty("description", y.description.getOrElse(""))
               sdoNode.setProperty("pattern", y.pattern)
@@ -179,7 +179,7 @@ class NodesMaker() {
           case ObservedData.`type` =>
             val y = x.asInstanceOf[ObservedData]
             val obs_ids: Map[String, String] = for (s <- y.objects) yield s._1 -> UUID.randomUUID().toString
-            transactionOpt(DbService.graphDB) {
+            transaction {
               sdoNode.setProperty("first_observed", y.first_observed.toString())
               sdoNode.setProperty("last_observed", y.last_observed.toString())
               sdoNode.setProperty("number_observed", y.number_observed)
@@ -198,7 +198,7 @@ class NodesMaker() {
 
   // create an artificial Relationship or a Sighting node so that the embedded relations can refer to it
   def createSRONode(x: SRO) = {
-    transactionOpt(DbService.graphDB) {
+    transaction {
       val node = DbService.graphDB.createNode(label("SRO"))
       node.addLabel(label(asCleanLabel(x.`type` + "_node")))
       node.setProperty("id", x.id.toString())
@@ -216,7 +216,7 @@ class NodesMaker() {
         val definition_id = UUID.randomUUID().toString
         val granular_markings_ids = toIdArray(x.granular_markings)
         val external_references_ids = toIdArray(x.external_references)
-        val stixNodeOpt = transactionOpt(DbService.graphDB) {
+        val stixNodeOpt = transaction {
           val node = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
           node.addLabel(label("StixObj"))
           node.setProperty("id", x.id.toString())
@@ -248,7 +248,7 @@ class NodesMaker() {
         val granular_markings_ids = toIdArray(x.granular_markings)
         val external_references_ids = toIdArray(x.external_references)
         val lang_contents_ids: Map[String, String] = (for (s <- x.contents.keySet) yield s -> UUID.randomUUID().toString).toMap
-        val stixNodeOpt = transactionOpt(DbService.graphDB) {
+        val stixNodeOpt = transaction {
           val node = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
           node.addLabel(label("StixObj"))
           node.setProperty("id", x.id.toString())
