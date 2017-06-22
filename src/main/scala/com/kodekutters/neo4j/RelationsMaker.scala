@@ -129,13 +129,12 @@ class RelationsMaker() {
         // the created_by relation
         createdByRel(x.id.toString(), x.created_by_ref)
         // the language contents relation from the LanguageContent object to the object_ref
-        val relOpt = transactionOpt(DbService.graphDB) {
+        transactionOpt(DbService.graphDB) {
           val sourceNode = DbService.idIndex.get("id", x.id.toString()).getSingle
           val targetNode = DbService.idIndex.get("id", x.object_ref.toString()).getSingle
           val rel = sourceNode.createRelationshipTo(targetNode, asCleanLabel(x.`type`))
           rel.setProperty("object_modified", x.object_modified.time)
-        }
-        if(relOpt.isEmpty) println("---> could not process LanguageContent relation: " + x.id.toString() + " from: " + x.id.toString() + " to: " + x.object_ref.toString())
+        }.getOrElse(println("---> could not process LanguageContent relation: " + x.id.toString() + " from: " + x.id.toString() + " to: " + x.object_ref.toString()))
     }
   }
 

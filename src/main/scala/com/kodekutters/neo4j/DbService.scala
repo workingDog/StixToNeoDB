@@ -6,7 +6,7 @@ import org.neo4j.graphdb.{GraphDatabaseService, Node}
 import org.neo4j.graphdb.factory.GraphDatabaseFactory
 import org.neo4j.graphdb.index.Index
 
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 /**
   * the GraphDatabaseService support and associated index
