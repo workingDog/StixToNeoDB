@@ -3746,15 +3746,6 @@
         "identity--5206ba14-478f-4b0b-9a48-395f690c20a2"
       ],
       "created_by_ref": "identity--5206ba14-478f-4b0b-9a48-395f690c20a2"
-    },
-    {
-      "type": "relationship",
-      "id": "relationship--bdcef81d-9dfa-4f5d-a495",
-      "created": "2015-05-07T14:22:14.760144Z",
-      "modified": "2015-05-07T14:22:14.760144Z",
-      "source_ref": "threat-actor--9a8ae-b2a73cd0f11f",
-      "relationship_type": "attributed-to",
-      "target_ref": "identity--1621d-9670-f01faf20d111"
     }
   ]
 }
