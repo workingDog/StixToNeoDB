@@ -3747,84 +3747,30 @@
       ],
       "created_by_ref": "identity--5206ba14-478f-4b0b-9a48-395f690c20a2"
     },
+
+
     {
       "type": "relationship",
       "id": "relationship--bdcef81d-9dfa-4f5d-a495",
       "created": "2015-05-07T14:22:14.760144Z",
       "modified": "2015-05-07T14:22:14.760144Z",
-      "source_ref": "threat-actor--9a8ae-b2a73cd0f11f",
+      "source_ref": "threat-actor--aaaaaaaaaaaaaaaa",
       "relationship_type": "attributed-to",
-      "target_ref": "identity--1621d-9670-f01faf20d111"
+      "target_ref": "identity--bbbbbbbbbbbbbbbbbbbb"
     },
     {
       "type": "sighting",
       "id": "sighting--834006833",
       "created": "2017-02-28T19:37:11.213Z",
       "modified": "2017-02-28T19:37:11.213Z",
-      "sighting_of_ref": "indicator--92952ccb53191",
+      "sighting_of_ref": "indicator--xxxxxzzzzzxxxxx",
       "first_seen": "2017-02-27T21:37:11.213Z",
       "last_seen": "2017-02-27T21:37:11.213Z",
       "count": 1,
       "where_sighted_refs": [
-        "identity--5206ba0b-9a48-395f690c20a2"
+        "identity--tttttttttvvvvvvvvv"
       ],
-      "created_by_ref": "identity--520b-9a48-395f690c20a2"
-    },
-
-    {
-      "type": "indicator",
-      "id": "indicator--33fe347cf-85d0-97c02164528d",
-      "created": "2017-04-14T13:07:49.812Z",
-      "modified": "2017-04-14T13:07:49.812Z",
-      "pattern": "[ipv4addr:value = '10.0.0.0']",
-      "valid_from": "2017-04-14T13:07:49.812Z",
-      "name": "Known malicious IP Address",
-      "labels": [
-        "malicious-activity"
-      ],
-      "object_marking_refs": [
-        "marking-definition--f88d31f6-48da-b317-01333bde0b82",
-        "marking-definition--d771aceb-3148-4315-b4b888533d0"
-      ],
-      "created_by_ref": "identity--611d9d41-dba5-4e13-9b29-e22488058ffc"
-    },
-
-    {
-      "type": "indicator",
-      "id": "indicator--1ed8c651-f1186ede6ca1",
-      "created": "2017-04-27T16:18:24.318Z",
-      "modified": "2017-04-27T16:18:24.318Z",
-      "pattern": "[email-message:from_ref.value MATCHES '.+\\\\banking@g0thamnatl\\\\.com$']",
-      "valid_from": "2017-04-27T16:18:24.318Z",
-      "name": "Fake email address",
-      "labels": [
-        "malicious-activity",
-        "attribution"
-      ],
-      "description": "Known to be used by The Joker.",
-      "granular_markings": [
-        {
-          "selectors": [
-            "description"
-          ],
-          "marking_ref": "marking-definition--5e57c739-391a-4eb3-b6be-7d15ca92d5ed"
-        },
-        {
-          "selectors": [
-            "labels.[1]"
-          ],
-          "marking_ref": "marking-definition--f88d31f6-486f-44da-b317-01333bde0b82"
-        },
-        {
-          "selectors": [
-            "labels.[0]",
-            "name",
-            "pattern"
-          ],
-          "marking_ref": "marking-definition--3409-8e50-ebd3cc5e41da"
-        }
-      ],
-      "created_by_ref": "identity--b38dfe21-7477--5c8671ce51ca"
+      "created_by_ref": "identity--hhhhhhhjjjjjjjjj"
     }
 
   ]

@@ -34,7 +34,6 @@ object ObservablesMaker {
         theNode.setProperty("observable_id", obsIds(k))
         theNode.setProperty("extensions", ext_ids.values.toArray)
         theNode.setProperty("description", obs.description.getOrElse(""))
-        DbService.observable_idIndex.add(theNode, "observable_id", theNode.getProperty("observable_id"))
         theNode
       }
       nodeOpt match {
@@ -274,7 +273,6 @@ object ObservablesMaker {
           val theNode = DbService.graphDB.createNode(label("environment_variables"))
           theNode.setProperty("environment_variables_id", ids(k))
           theNode.setProperty(k, obs)
-          DbService.environment_variables_idIndex.add(theNode, "environment_variables_id", theNode.getProperty("environment_variables_id"))
           theNode
         }
         nodeOpt.foreach(node => {
@@ -293,7 +291,6 @@ object ObservablesMaker {
           val theNode = DbService.graphDB.createNode(label("additional_header_fields"))
           theNode.setProperty("additional_header_fields_id", ids(k))
           theNode.setProperty(k, obs)
-          DbService.additional_header_fields_idIndex.add(theNode, "additional_header_fields_id", theNode.getProperty("additional_header_fields_id"))
           theNode
         }
         nodeOpt.foreach(node => {
@@ -317,7 +314,6 @@ object ObservablesMaker {
           val theNode = DbService.graphDB.createNode(label(asCleanLabel("ipfix")))
           theNode.setProperty("ipfix_id", ids(k))
           theNode.setProperty(k, theValue)
-          DbService.ipfix_idIndex.add(theNode, "ipfix_id", theNode.getProperty("ipfix_id"))
           theNode
         }
         nodeOpt.foreach(node => {

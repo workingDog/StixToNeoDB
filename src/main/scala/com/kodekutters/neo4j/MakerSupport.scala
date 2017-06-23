@@ -79,7 +79,6 @@ object MakerSupport {
       val node = DbService.graphDB.createNode(label(MakerSupport.markingObjRefs))
       node.setProperty("marking_id", definition_id)
       node.setProperty("marking", mark)
-      DbService.marking_idIndex.add(node, "marking_id", node.getProperty("marking_id"))
       node
     }
     markObjNodeOpt match {
@@ -101,7 +100,6 @@ object MakerSupport {
           node.setProperty("kill_chain_phase_id", ids(i))
           node.setProperty("kill_chain_name", kp.kill_chain_name)
           node.setProperty("phase_name", kp.phase_name)
-          DbService.kill_chain_phase_idIndex.add(node, "kill_chain_phase_id", node.getProperty("kill_chain_phase_id"))
           node
         }
         stixNodeOpt match {
@@ -138,7 +136,6 @@ object MakerSupport {
           node.setProperty("description", extRef.description.getOrElse(""))
           node.setProperty("url", extRef.url.getOrElse(""))
           node.setProperty("external_id", extRef.external_id.getOrElse(""))
-          DbService.external_reference_idIndex.add(node, "external_reference_id", node.getProperty("external_reference_id"))
           node
         }
         stixNodeOpt match {
@@ -174,7 +171,6 @@ object MakerSupport {
           node.setProperty("selectors", gra.selectors.toArray)
           node.setProperty("marking_ref", gra.marking_ref.getOrElse(""))
           node.setProperty("lang", gra.lang.getOrElse(""))
-          DbService.granular_marking_idIndex.add(node, "granular_marking_id", node.getProperty("granular_marking_id"))
           node
         }
         stixNodeOpt match {
@@ -217,7 +213,6 @@ object MakerSupport {
         val node = DbService.graphDB.createNode(label("contents"))
         node.setProperty("contents_id", ids(k))
         node.setProperty(k, obs_contents_ids.values.toArray)
-        DbService.contents_idIndex.add(node, "contents_id", node.getProperty("contents_id"))
         node
       }
       tgtNodeOpt match {
@@ -238,7 +233,6 @@ object MakerSupport {
         val node = DbService.graphDB.createNode(label("translations"))
         node.setProperty("translations_id", ids(k))
         node.setProperty(k, obs)
-        DbService.translations_idIndex.add(node, "translations_id", node.getProperty("translations_id"))
         node
       }
       tgtNodeOpt match {
@@ -260,7 +254,6 @@ object MakerSupport {
           val node = DbService.graphDB.createNode(label("hashes"))
           node.setProperty("hash_id", ids(k))
           node.setProperty(k, obs)
-          DbService.hash_idIndex.add(node, "hash_id", node.getProperty("hash_id"))
           node
         }
         hashNodeOpt match {

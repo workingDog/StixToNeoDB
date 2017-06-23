@@ -63,8 +63,8 @@ class Neo4jLoader(inFile: String, dbDir: String) {
     * convert them to neo4j nodes and relations and load them into the db
     */
   def processBundleZipFile(): Unit = {
-    // get the zip file
     import scala.collection.JavaConverters._
+    // get the zip file
     val rootZip = new java.util.zip.ZipFile(new File(inFile))
     // for each entry file containing a single bundle
     rootZip.entries.asScala.filter(_.getName.toLowerCase.endsWith(".json")).foreach(f => {

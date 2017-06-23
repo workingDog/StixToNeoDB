@@ -31,7 +31,6 @@ object ExtensionsMaker {
           node.addLabel(label("Extension"))
           node.setProperty("type", extention.`type`)
           node.setProperty("extension_id", ext_ids(k))
-          DbService.extension_idIndex.add(node, "extension_id", node.getProperty("extension_id"))
           node
         }
         xNodeOpt match {
@@ -113,7 +112,6 @@ object ExtensionsMaker {
           node.setProperty("name", kp.name)
           node.setProperty("size", kp.size.getOrElse(0))
           node.setProperty("hashes", hashes_ids.values.toArray)
-          DbService.altStream_idIndex.add(node, "alternate_data_stream_id", node.getProperty("alternate_data_stream_id"))
           node
         }
         tgtNodeOpt.foreach(tgtNode => {
@@ -138,7 +136,6 @@ object ExtensionsMaker {
           val node = DbService.graphDB.createNode(label(asCleanLabel("exif_tags")))
           node.setProperty("exif_tags_id", ids(k))
           node.setProperty(k, theValue)
-          DbService.exif_tags_idIndex.add(node, "exif_tags_id", node.getProperty("exif_tags_id"))
           node
         }
         tgtNodeOpt.foreach(tgtNode => {
