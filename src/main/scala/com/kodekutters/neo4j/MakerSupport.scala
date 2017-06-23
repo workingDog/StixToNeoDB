@@ -24,14 +24,6 @@ object MakerSupport {
   // convenience implicit transformation from a string to a RelationshipType
   implicit def string2relationshipType(x: String): RelationshipType = RelationshipType.withName(x)
 
-  val objectRefs = "object_refs"
-  val observedDataRefs = "observed_data_refs"
-  val whereSightedRefs = "where_sighted_refs"
-  val markingObjRefs = "marking_object_refs"
-  val createdByRefs = "created_by"
-  val observable_id = "observable_id"
-  val hash_id = "hash_id"
-
   /**
     * read a Bundle from the input source
     *
@@ -76,7 +68,7 @@ object MakerSupport {
       case _ => ""
     }
     val markObjNodeOpt = transaction {
-      val node = DbService.graphDB.createNode(label(MakerSupport.markingObjRefs))
+      val node = DbService.graphDB.createNode(label("marking_object_refs"))
       node.setProperty("marking_id", definition_id)
       node.setProperty("marking", mark)
       node
@@ -85,9 +77,9 @@ object MakerSupport {
       case Some(markObjNode) =>
         transaction {
           sourceNode.createRelationshipTo(markObjNode, "HAS_MARKING_OBJECT")
-        }.getOrElse(println("---> could not process " + MakerSupport.markingObjRefs + " relation: " + definition_id))
+        }.getOrElse(println("---> could not process marking_object_refs relation: " + definition_id))
 
-      case None => println("---> could not create " + MakerSupport.markingObjRefs + " definition_id: " + definition_id)
+      case None => println("---> could not create marking_object_refs definition_id: " + definition_id)
     }
   }
 

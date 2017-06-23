@@ -17,6 +17,19 @@ object DbService {
 
   var idIndex: Index[Node] = _
 
+  /**
+    * initialise this singleton
+    *
+    * @param dbDir dbDir the directory of the database
+    */
+  def init(dbDir: String): Unit = {
+    // will create a new database or open the existing one
+    graphDB = new GraphDatabaseFactory().newEmbeddedDatabase(new File(dbDir))
+    transaction {
+      idIndex = graphDB.index.forNodes("id")
+    }.getOrElse(println("---> could not process indexing in DbService.init()"))
+  }
+
   // general transaction support
   // see snippet: http://sandrasi-sw.blogspot.jp/2012/02/neo4j-transactions-in-scala.html
   private def plainTransaction[A <: Any](db: GraphDatabaseService)(dbOp: => A): A = {
@@ -38,19 +51,6 @@ object DbService {
     * returns an Option
     */
   def transaction[A <: Any](dbOp: => A): Option[A] = Try(plainTransaction(DbService.graphDB)(dbOp)).toOption
-
-  /**
-    * initialise this singleton
-    *
-    * @param dbDir dbDir the directory of the database
-    */
-  def init(dbDir: String): Unit = {
-    // will create a new database or open the existing one
-    graphDB = new GraphDatabaseFactory().newEmbeddedDatabase(new File(dbDir))
-    transaction {
-      idIndex = graphDB.index.forNodes("id")
-    }.getOrElse(println("---> could not process indexing in DbService.init()"))
-  }
 
   def closeAll() = {
     graphDB.shutdown()
