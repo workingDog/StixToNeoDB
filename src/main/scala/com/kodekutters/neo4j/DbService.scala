@@ -46,7 +46,7 @@ object DbService {
   }
 
   /**
-    * do a transaction that evaluate correctly to Some(results) or to a failure as None
+    * do a transaction that evaluate correctly to Some(result) or to a failure as None
     *
     * returns an Option
     */

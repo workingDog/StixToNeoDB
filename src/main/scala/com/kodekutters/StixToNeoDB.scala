@@ -34,7 +34,7 @@ object StixToNeoDB {
     else {
       // the db location path
       val dbf = if (args.length == 3) args(2).trim else ""
-      // if nothing default is current location path stixdb
+      // if nothing default is current location path plus stixdb
       val dbFile = if (dbf.isEmpty) new java.io.File(".").getCanonicalPath + "/stixdb" else dbf
       println("database location: " + dbFile)
       val neoLoader = new Neo4jLoader(args(1), dbFile)

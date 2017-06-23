@@ -3,6 +3,7 @@ package com.kodekutters.neo4j
 import java.io.InputStream
 import java.util.UUID
 
+import com.kodekutters.neo4j.DbService.transaction
 import com.kodekutters.stix._
 import com.kodekutters.stix.Bundle
 import io.circe.generic.auto._
@@ -189,13 +190,13 @@ object MakerSupport {
   }
 
   def createdByRel(sourceId: String, tgtOpt: Option[Identifier]) = {
-    tgtOpt.map(tgt =>
+    tgtOpt.map(tgt => {
       transaction {
         val sourceNode = DbService.idIndex.get("id", sourceId).getSingle
         val targetNode = DbService.idIndex.get("id", tgt.toString()).getSingle
         sourceNode.createRelationshipTo(targetNode, "CREATED_BY")
       }.getOrElse(println("---> could not process CREATED_BY relation from: " + sourceId + " to: " + tgt.toString()))
-    )
+    })
   }
 
   def createLangContents(sourceNode: Node, contents: Map[String, Map[String, String]], ids: Map[String, String]) = {
