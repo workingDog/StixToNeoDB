@@ -33,17 +33,17 @@ export them into GraphML, Cypher statements, CSV and binary formats. See also
 
 ### Dependencies and requirements
 
-Depends on the scala [ScalaStix](https://github.com/workingDog/scalastix) library
-(included in the "lib" directory).
-
-Java 8 is required and Neo4j-3.2.1 should be installed to process the results.
+Depends on the [ScalaStix](https://github.com/workingDog/scalastix) and 
+the [Neo4j Community](https://mvnrepository.com/artifact/org.neo4j/neo4j) jar file.
 
 See also the build file.
+
+Java 8 is required and Neo4j-3.2.1 should be installed to process the results.
 
 ### Installation and packaging
 
 The easiest way to compile and package the application from source is to use [SBT](http://www.scala-sbt.org/).
-To assemble the application and all its dependencies into a single jar file type:
+To assemble the application and all its dependencies into a single fat jar file, type:
 
     sbt assembly
 
@@ -69,7 +69,7 @@ in each.
 If the database already exists, the data will be added to it, otherwise a new neo4j database will be created.  
 
 To view the data, launch the Neo4j-3.2.1 app, select your "db_dir" as the database 
-location and click start. Once the status is started, open a browser on "http://localhost:7474". 
+location and click start. Once the status is "Started", open a browser on "http://localhost:7474". 
 
  #### For very large files
  
@@ -86,7 +86,7 @@ location and click start. Once the status is started, open a browser on "http://
  
 ### Status
 
-no testing done.
+only tested on the small ./stix-files/testfull.json
 
 Using Scala 2.12, Java 8, SBT-0.13.15 and Neo4j-3.2.1.
 
