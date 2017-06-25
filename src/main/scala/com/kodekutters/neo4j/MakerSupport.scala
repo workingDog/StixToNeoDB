@@ -3,13 +3,11 @@ package com.kodekutters.neo4j
 import java.io.InputStream
 import java.util.UUID
 
-import com.kodekutters.neo4j.DbService.transaction
 import com.kodekutters.stix._
 import com.kodekutters.stix.Bundle
-import io.circe.generic.auto._
-import io.circe.parser.decode
 import org.neo4j.graphdb.Label.label
 import org.neo4j.graphdb.{Node, RelationshipType}
+import play.api.libs.json.Json
 
 import scala.io.Source
 import scala.language.implicitConversions
@@ -34,10 +32,14 @@ object MakerSupport {
   def loadBundle(source: InputStream): Option[Bundle] = {
     // read a STIX bundle from the InputStream
     val jsondoc = Source.fromInputStream(source).mkString
-    // create a bundle object from it
-    decode[Bundle](jsondoc) match {
-      case Left(failure) => println("-----> ERROR invalid bundle JSON in zip file: \n"); None
-      case Right(bundle) => Option(bundle)
+    Option(Json.parse(jsondoc)) match {
+      case None => println("\n-----> could not parse JSON"); None
+      case Some(js) =>
+        // create a bundle object from it
+        Json.fromJson[Bundle](js).asOpt match {
+          case None => println("-----> ERROR invalid bundle JSON in zip file: \n"); None
+          case Some(bundle) => Option(bundle)
+        }
     }
   }
 
@@ -220,7 +222,9 @@ object MakerSupport {
     }
   }
 
-  private def createTranslations(sourceNode: Node, translations: Map[String, String], ids: Map[String, String]) = {
+  private def createTranslations(sourceNode: Node, translations: Map[String, String], ids: Map[String, String])
+
+  = {
     for ((k, obs) <- translations) {
       val tgtNodeOpt = transaction {
         val node = DbService.graphDB.createNode(label("translations"))

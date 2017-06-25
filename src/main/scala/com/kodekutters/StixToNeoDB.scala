@@ -1,6 +1,6 @@
 package com.kodekutters
 
-import com.kodekutters.neo4j.{DbService, Neo4jLoader}
+import com.kodekutters.neo4j.Neo4jLoader
 
 import scala.language.implicitConversions
 import scala.language.postfixOps
@@ -17,11 +17,11 @@ object StixToNeoDB {
 
   val usage =
     """Usage:
-       java -jar stixtoneodb-1.0.jar --csv stix_file.json db_dir
+       java -jar stixtoneodb-1.0.jar --json stix_file.json db_dir
         or
        java -jar stixtoneodb-1.0.jar --zip stix_file.zip db_dir
 
-       the options --csvx and --zipx can also be used for large files""".stripMargin
+       the options --jsonx and --zipx can also be used for large files""".stripMargin
 
   /**
     * loads a file containing STIX objects, or
@@ -39,9 +39,9 @@ object StixToNeoDB {
       println("database location: " + dbFile)
       val neoLoader = new Neo4jLoader(args(1), dbFile)
       args(0) match {
-        case "--csv" => neoLoader.processBundleFile()
+        case "--json" => neoLoader.processBundleFile()
         case "--zip" => neoLoader.processBundleZipFile()
-        case "--csvx" => neoLoader.processStixFile()
+        case "--jsonx" => neoLoader.processStixFile()
         case "--zipx" => neoLoader.processStixZipFile()
         case x => println("unknown option: " + x + "\n"); println(usage)
       }

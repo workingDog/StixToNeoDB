@@ -4,8 +4,7 @@ import java.io.File
 
 import com.kodekutters.stix._
 import com.kodekutters.stix.Bundle
-import io.circe.generic.auto._
-import io.circe.parser.decode
+import play.api.libs.json.Json
 
 import scala.io.Source
 import scala.language.implicitConversions
@@ -18,8 +17,6 @@ import scala.collection.JavaConverters._
   * @author R. Wathelet June 2017
   *
   *         ref: https://github.com/workingDog/scalastix
-  *
-  *
   * @param inFile the input file to process
   * @param dbDir  the neo4j graph database directory name
   */
@@ -50,12 +47,16 @@ class Neo4jLoader(inFile: String, dbDir: String) {
   def processBundleFile(): Unit = {
     // read a STIX bundle from the inFile
     val jsondoc = Source.fromFile(inFile).mkString
-    // create a bundle object from it and convert its objects to nodes and relations
-    decode[Bundle](jsondoc) match {
-      case Left(failure) => println("\n-----> ERROR reading bundle in file: " + inFile)
-      case Right(bundle) => processBundle(bundle)
+    Option(Json.parse(jsondoc)) match {
+      case None => println("\n-----> could not parse JSON in file: " + inFile)
+      case Some(js) =>
+        // create a bundle object from it and convert its objects to nodes and relations
+        Json.fromJson[Bundle](js).asOpt match {
+          case None => println("\n-----> ERROR reading bundle in file: " + inFile)
+          case Some(bundle) => processBundle(bundle)
+        }
+        DbService.closeAll()
     }
-    DbService.closeAll()
   }
 
   /**
@@ -90,14 +91,18 @@ class Neo4jLoader(inFile: String, dbDir: String) {
     for (pass <- 1 to 2) {
       // read a STIX object from the inFile, one line at a time
       for (line <- Source.fromFile(inFile).getLines) {
-        // create a Stix object from it
-        decode[StixObj](line) match {
-          case Left(failure) => println("\n-----> ERROR reading StixObj in file: " + inFile + " line: " + line)
-          case Right(stixObj) =>
-            if (pass == 1)
-              nodesMaker.createNodes(stixObj)
-            else
-              relsMaker.createRelations(stixObj)
+        Option(Json.parse(line)) match {
+          case None => println("\n-----> could not parse JSON in file: " + inFile + " line: " + line)
+          case Some(js) =>
+            // create a Stix object from it
+            Json.fromJson[StixObj](js).asOpt match {
+              case None => println("\n-----> ERROR reading StixObj in file: " + inFile + " line: " + line)
+              case Some(stixObj) =>
+                if (pass == 1)
+                  nodesMaker.createNodes(stixObj)
+                else
+                  relsMaker.createRelations(stixObj)
+            }
         }
       }
     }
@@ -127,18 +132,23 @@ class Neo4jLoader(inFile: String, dbDir: String) {
         val inputLines = Source.fromInputStream(rootZip.getInputStream(f)).getLines
         // read a Stix object from the inputLines, one line at a time
         for (line <- inputLines) {
-          // create a Stix object from it
-          decode[StixObj](line) match {
-            case Left(failure) => println("\n-----> ERROR reading StixObj in file: " + f.getName + " line: " + line)
-            case Right(stixObj) =>
-              if (pass == 1)
-                nodesMaker.createNodes(stixObj)
-              else
-                relsMaker.createRelations(stixObj)
+          Option(Json.parse(line)) match {
+            case None => println("\n-----> could not parse JSON in file: " + inFile + " line: " + line)
+            case Some(js) =>
+              // create a Stix object from it
+              Json.fromJson[StixObj](js).asOpt match {
+                case None => println("\n-----> ERROR reading StixObj in file: " + inFile + " line: " + line)
+                case Some(stixObj) =>
+                  if (pass == 1)
+                    nodesMaker.createNodes(stixObj)
+                  else
+                    relsMaker.createRelations(stixObj)
+              }
           }
         }
       }
-    })
+    }
+    )
     DbService.closeAll()
   }
 

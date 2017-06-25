@@ -11,7 +11,7 @@ crossScalaVersions := Seq("2.11.11", "2.12.2")
 
 libraryDependencies ++= Seq(
   "org.neo4j" % "neo4j" % "3.2.1",
-  "com.github.workingDog" %% "scalastix" % "0.1")
+  "com.github.workingDog" %% "scalastix" % "0.2")
 
 assemblyMergeStrategy in assembly := {
   case PathList(xs @_*) if xs.last.toLowerCase endsWith ".dsa" => MergeStrategy.discard

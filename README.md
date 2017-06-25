@@ -55,11 +55,11 @@ For convenience a **"stixtoneodb-1.0.jar"** file is in the "distrib" directory r
 
 To load the Stix objects into a Neo4j graph database, simply type at the prompt:
  
-    java -jar stixtoneodb-1.0.jar --csv stix_file.json db_dir
+    java -jar stixtoneodb-1.0.jar --json stix_file.json db_dir
     or
     java -jar stixtoneodb-1.0.jar --zip stix_file.zip db_dir
  
-With the option **--csv** the input file "stix_file.json" is the file containing a 
+With the option **--json** the input file "stix_file.json" is the file containing a 
 bundle of Stix objects you want to convert, and "db_dir" is the location path to the neo4j database directory.
 If "db_dir" is absent, the default output directory will be in the current directory with the name "stixdb". 
 
@@ -75,11 +75,11 @@ location and click start. Once the status is "Started", open a browser on "http:
  
  To process very large files use the following options:
  
-     java -jar stixtoneodb-1.0.jar --csvx stix_file.json db_dir
+     java -jar stixtoneodb-1.0.jar --jsonx stix_file.json db_dir
      or
      java -jar stixtoneodb-1.0.jar --zipx stix_file.zip db_dir
  
- With the **--csvx** option the input file must contain a Stix object on one line 
+ With the **--jsonx** option the input file must contain a Stix object on one line 
  ending with a new line. Similarly when using the **--zipx** option, each input zip file entries must 
  contain a Stix object on one line ending with a new line. When using these options 
  the processing is done one line at a time.
