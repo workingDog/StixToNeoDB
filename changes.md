@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-### changes in 1.1-SNAPSHOT
+### changes in 1.0
 
 * remove all circe dependencies
 * add Play json dependency
