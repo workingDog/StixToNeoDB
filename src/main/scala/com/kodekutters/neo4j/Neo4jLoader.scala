@@ -16,7 +16,8 @@ import scala.collection.JavaConverters._
   *
   * @author R. Wathelet June 2017
   *
-  *         ref: https://github.com/workingDog/scalastix
+  * ref: https://github.com/workingDog/scalastix
+  *
   * @param inFile the input file to process
   * @param dbDir  the neo4j graph database directory name
   */

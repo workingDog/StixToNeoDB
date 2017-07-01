@@ -24,10 +24,15 @@ object DbService {
     */
   def init(dbDir: String): Unit = {
     // will create a new database or open the existing one
-    graphDB = new GraphDatabaseFactory().newEmbeddedDatabase(new File(dbDir))
-    transaction {
-      idIndex = graphDB.index.forNodes("id")
-    }.getOrElse(println("---> could not process indexing in DbService.init()"))
+    Try(graphDB = new GraphDatabaseFactory().newEmbeddedDatabase(new File(dbDir))).toOption match {
+      case None =>
+        println("cannot access " + dbDir + ", ensure no other process is using this database, and that the directory is writable")
+        System.exit(1)
+      case Some(gph) =>
+        transaction {
+          idIndex = graphDB.index.forNodes("id")
+        }.getOrElse(println("---> could not process indexing in DbService.init()"))
+    }
   }
 
   // general transaction support

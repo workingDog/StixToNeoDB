@@ -34,7 +34,7 @@ export them into GraphML, Cypher statements, CSV and binary formats. See also
 ### Dependencies and requirements
 
 Depends on the [ScalaStix](https://github.com/workingDog/scalastix) and 
-the [Neo4j Community](https://mvnrepository.com/artifact/org.neo4j/neo4j) jar file.
+the [Neo4j Community](https://mvnrepository.com/artifact/org.neo4j/neo4j) 3.2.1 jar file.
 
 See also the build file.
 
@@ -66,7 +66,11 @@ If "db_dir" is absent, the default output directory will be in the current direc
 With the option **--zip** the input file must be a zip file with one or more entry files containing a single bundle of Stix objects 
 in each.
   
-If the database already exists, the data will be added to it, otherwise a new neo4j database will be created.  
+If the database already exists, the data will be added to it, otherwise a new neo4j database will be created. 
+An existing database must not be "opened" by another process. 
+
+Note that **StixToNeoDB** will try to "skip" errors in the objects and relations of the input file, 
+e.g. references to non existent objects.
 
 To view the data, launch the Neo4j-3.2.1 app, select your "db_dir" as the database 
 location and click start. Once the status is "Started", open a browser on "http://localhost:7474". 
@@ -85,6 +89,8 @@ location and click start. Once the status is "Started", open a browser on "http:
  the processing is done one line at a time.
  
 ### Status
+
+work in progress.
 
 only tested on the small ./stix-files/testfull.json
 
