@@ -24,6 +24,16 @@ object MakerSupport {
   implicit def string2relationshipType(x: String): RelationshipType = RelationshipType.withName(x)
 
   /**
+    * convenience method for converting a CustomMap option of custom properties into a json string
+    */
+  def asJsonString(cust: Option[CustomMap]) = {
+    cust match {
+      case Some(x) => Json.stringify(Json.toJson[CustomMap](x))
+      case None => ""
+    }
+  }
+
+  /**
     * read a Bundle from the input source
     *
     * @param source the input InputStream

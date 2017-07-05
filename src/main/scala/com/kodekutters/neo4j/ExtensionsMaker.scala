@@ -4,7 +4,7 @@ import java.util.UUID
 
 import com.kodekutters.stix._
 import org.neo4j.graphdb.Label.label
-import org.neo4j.graphdb.{Node, RelationshipType}
+import org.neo4j.graphdb.Node
 
 /**
   * create an Extension node and associated relations

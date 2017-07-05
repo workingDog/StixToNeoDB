@@ -2,6 +2,7 @@ package com.kodekutters.neo4j
 
 import com.kodekutters.stix._
 
+
 /**
   * create Neo4j relations from a Stix object
   */
@@ -59,6 +60,7 @@ class RelationsMaker() {
         rel.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
         rel.setProperty("granular_markings", granularIds)
         rel.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
+        rel.setProperty("custom", asJsonString(x.custom))
         rel
       }
       // catch errors

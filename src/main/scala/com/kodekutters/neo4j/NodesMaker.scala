@@ -5,6 +5,8 @@ import java.util.UUID
 import com.kodekutters.stix._
 import org.neo4j.graphdb.Label.label
 
+import scala.collection.mutable
+
 /**
   * create Neo4j nodes and internal relations from a Stix object
   *
@@ -14,12 +16,24 @@ class NodesMaker() {
   import MakerSupport._
   import DbService._
 
+  // counting the nodes
+  val counter = mutable.Map("SDO" -> 0,"SRO" -> 0,"StixObj" -> 0)
+
   // create nodes and embedded relations from a Stix object
   def createNodes(obj: StixObj) = {
     obj match {
-      case stix if stix.isInstanceOf[SDO] => createSDONode(stix.asInstanceOf[SDO])
-      case stix if stix.isInstanceOf[SRO] => createSRONode(stix.asInstanceOf[SRO])
-      case stix if stix.isInstanceOf[StixObj] => createStixObjNode(stix.asInstanceOf[StixObj])
+      case stix if stix.isInstanceOf[SDO] =>
+        createSDONode(stix.asInstanceOf[SDO])
+        counter("SDO") = counter("SDO") + 1
+
+      case stix if stix.isInstanceOf[SRO] =>
+        createSRONode(stix.asInstanceOf[SRO])
+        counter("SRO") = counter("SRO") + 1
+
+      case stix if stix.isInstanceOf[StixObj] =>
+        createStixObjNode(stix.asInstanceOf[StixObj])
+        counter("StixObj") = counter("StixObj") + 1
+
       case _ => // do nothing for now
     }
   }
@@ -46,6 +60,7 @@ class NodesMaker() {
       node.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
       node.setProperty("granular_markings", granular_markings_ids)
       node.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
+      node.setProperty("custom", asJsonString(x.custom))
       DbService.idIndex.add(node, "id", node.getProperty("id"))
       node
     }
@@ -228,6 +243,7 @@ class NodesMaker() {
           node.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
           node.setProperty("granular_markings", granular_markings_ids)
           node.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
+          node.setProperty("custom", asJsonString(x.custom))
           DbService.idIndex.add(node, "id", node.getProperty("id"))
           node
         }
@@ -264,6 +280,7 @@ class NodesMaker() {
           node.setProperty("granular_markings", granular_markings_ids)
           node.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
           node.setProperty("contents", lang_contents_ids.values.toArray)
+          node.setProperty("custom", asJsonString(x.custom))
           DbService.idIndex.add(node, "id", node.getProperty("id"))
           node
         }

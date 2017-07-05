@@ -6,3 +6,6 @@ Change Log
 * remove all circe dependencies
 * add Play json dependency
 * replace all circe code with Play json code
+* added counting the nodes
+* added custom properties
+* added temporary scalastix-0.3-SNAPSHOT.jar
