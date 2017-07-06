@@ -26,9 +26,9 @@ object MakerSupport {
   /**
     * convenience method for converting a CustomMap option of custom properties into a json string
     */
-  def asJsonString(cust: Option[CustomMap]) = {
+  def asJsonString(cust: Option[CustomProps]) = {
     cust match {
-      case Some(x) => Json.stringify(Json.toJson[CustomMap](x))
+      case Some(x) => Json.stringify(Json.toJson[CustomProps](x))
       case None => ""
     }
   }

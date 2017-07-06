@@ -37,7 +37,7 @@ class Neo4jLoader(inFile: String, dbDir: String) {
     // all nodes and their internal relations are created first
     bundle.objects.foreach(nodesMaker.createNodes(_))
     // print the number of SDO, SRO and StixObj (MarkingDefinition+LanguageContent)
-    nodesMaker.counter.foreach(n => println(n._1 + ": " + n._2))
+    nodesMaker.counter.foreach({ case (k, v) => println(k + ": " + v) })
     // sum the SDO, SRO and StixObj
     println("total: " + nodesMaker.counter.foldLeft(0)(_ + _._2))
     // all SRO and relations that depends on nodes are created after the nodes
