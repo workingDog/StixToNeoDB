@@ -27,6 +27,8 @@ class Neo4jLoader(inFile: String, dbDir: String) {
   // initialize the db services
   DbService.init(dbDir)
 
+  println("processing...")
+
   // the nodes maker for creating nodes and their embedded relations
   val nodesMaker = new NodesMaker()
   // the relations maker for creating relations

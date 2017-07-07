@@ -29,7 +29,9 @@ object DbService {
         println("cannot access " + dbDir + ", ensure no other process is using this database, and that the directory is writable")
         System.exit(1)
       case Some(gph) =>
-        transaction {
+        registerShutdownHook
+        println("connected")
+          transaction {
           idIndex = graphDB.index.forNodes("id")
         }.getOrElse(println("---> could not process indexing in DbService.init()"))
     }
@@ -60,5 +62,10 @@ object DbService {
   def closeAll() = {
     graphDB.shutdown()
   }
+
+  private def registerShutdownHook =
+    Runtime.getRuntime.addShutdownHook(new Thread() {
+      override def run = graphDB.shutdown()
+    })
 
 }
