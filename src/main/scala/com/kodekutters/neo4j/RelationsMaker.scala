@@ -14,9 +14,9 @@ class RelationsMaker() {
   // create relations from the stix object
   def createRelations(obj: StixObj) = {
     obj match {
-      case stix if stix.isInstanceOf[SDO] => createSDORel(stix.asInstanceOf[SDO])
-      case stix if stix.isInstanceOf[SRO] => createSRORel(stix.asInstanceOf[SRO])
-      case stix if stix.isInstanceOf[StixObj] => createStixObjRel(stix.asInstanceOf[StixObj])
+      case stix: SDO => createSDORel(stix)
+      case stix: SRO => createSRORel(stix)
+      case stix: StixObj => createStixObjRel(stix)
       case _ => // do nothing for now
     }
   }

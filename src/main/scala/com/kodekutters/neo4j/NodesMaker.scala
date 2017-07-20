@@ -17,23 +17,14 @@ class NodesMaker() {
   import DbService._
 
   // counting the nodes
-  val counter = mutable.Map("SDO" -> 0,"SRO" -> 0,"StixObj" -> 0)
+  val counter = mutable.Map("SDO" -> 0, "SRO" -> 0, "StixObj" -> 0)
 
   // create nodes and embedded relations from a Stix object
   def createNodes(obj: StixObj) = {
     obj match {
-      case stix if stix.isInstanceOf[SDO] =>
-        createSDONode(stix.asInstanceOf[SDO])
-        counter("SDO") = counter("SDO") + 1
-
-      case stix if stix.isInstanceOf[SRO] =>
-        createSRONode(stix.asInstanceOf[SRO])
-        counter("SRO") = counter("SRO") + 1
-
-      case stix if stix.isInstanceOf[StixObj] =>
-        createStixObjNode(stix.asInstanceOf[StixObj])
-        counter("StixObj") = counter("StixObj") + 1
-
+      case stix: SDO => createSDONode(stix); counter("SDO") = counter("SDO") + 1
+      case stix: SRO => createSRONode(stix); counter("SRO") = counter("SRO") + 1
+      case stix: StixObj => createStixObjNode(stix); counter("StixObj") = counter("StixObj") + 1
       case _ => // do nothing for now
     }
   }
