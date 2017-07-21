@@ -131,14 +131,8 @@ object MakerSupport {
     }
   }
 
-  private def toArrayOfString(m: Map[String, String]) = {
-    val arr = mutable.ArrayBuffer[String]()
-    m.foreach(kv => {
-      arr += kv._1
-      arr += kv._2
-    })
-    arr.toArray
-  }
+  // converts a Map[String, String] to an Array[String]
+  private def toArrayOfString(m: Map[String, String]) = m.toList.flatMap(t => List(t._1, t._2)).toArray
 
   // create the external_references nodes and relationships
   def createExternRefs(sourceNode: Node, external_referencesOpt: Option[List[ExternalReference]], ids: Array[String]): Unit = {
