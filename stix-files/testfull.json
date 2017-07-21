@@ -22,7 +22,9 @@
         "1": {
           "type": "file",
           "hashes": {
-            "MD5": "66e2ea40dc71d5ba701574ea215a81f1"
+            "MD5": "66e2ea40dc71d5ba701574ea215a81f1",
+            "MD1": "xxxxxx1d5ba701574ea215a81f1",
+            "MD2": "zzzzzzba701574ea215a81f1"
           },
           "name": "quêry.dll",
           "name_enc": "windows-1252"
@@ -131,7 +133,12 @@
       "external_references": [
         {
           "source_name": "capec",
-          "external_id": "CAPEC-98"
+          "external_id": "CAPEC-98",
+          "hashes": {
+            "MD3": "66e2ea40fffffff574ea215a81f1",
+            "MD1": "bbbbbbb01574ea215a81f1",
+            "MD2": "hhhhhhhhhhea215a81f1"
+          }
         }
       ],
       "created_by_ref": "identity--f690c992-8e7d-4b9a-9303-3312616c0220"

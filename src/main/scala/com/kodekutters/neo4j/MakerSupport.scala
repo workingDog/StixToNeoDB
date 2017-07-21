@@ -9,7 +9,6 @@ import org.neo4j.graphdb.Label.label
 import org.neo4j.graphdb.{Node, RelationshipType}
 import play.api.libs.json.Json
 
-import scala.collection.mutable
 import scala.io.Source
 import scala.language.implicitConversions
 import scala.language.postfixOps
@@ -131,13 +130,11 @@ object MakerSupport {
     }
   }
 
-  // converts a Map[String, String] to an Array[String]
-  private def toArrayOfString(m: Map[String, String]) = m.toList.flatMap(t => List(t._1, t._2)).toArray
-
   // create the external_references nodes and relationships
   def createExternRefs(sourceNode: Node, external_referencesOpt: Option[List[ExternalReference]], ids: Array[String]): Unit = {
     external_referencesOpt.foreach(external_references => {
       for ((extRef, i) <- external_references.zipWithIndex) {
+        val hashes_ids: Map[String, String] = (for (s <- extRef.hashes.getOrElse(Map.empty).keySet) yield s -> UUID.randomUUID().toString).toMap
         val stixNodeOpt = transaction {
           val node = DbService.graphDB.createNode(label(asCleanLabel(extRef.`type`)))
           node.setProperty("external_reference_id", ids(i))
@@ -145,11 +142,12 @@ object MakerSupport {
           node.setProperty("description", extRef.description.getOrElse(""))
           node.setProperty("external_id", extRef.external_id.getOrElse(""))
           node.setProperty("url", extRef.url.getOrElse(""))
-          node.setProperty("hashes", toArrayOfString(extRef.hashes.getOrElse(Map.empty)))
+          node.setProperty("hashes", hashes_ids.values.toArray)
           node
         }
         stixNodeOpt match {
           case Some(stixNode) =>
+            createHashes(stixNode, extRef.hashes, hashes_ids)
             transaction {
               sourceNode.createRelationshipTo(stixNode, "HAS_EXTERNAL_REF")
             }.getOrElse(println("---> could not process relation: HAS_EXTERNAL_REF"))
@@ -237,9 +235,7 @@ object MakerSupport {
     }
   }
 
-  private def createTranslations(sourceNode: Node, translations: Map[String, String], ids: Map[String, String])
-
-  = {
+  private def createTranslations(sourceNode: Node, translations: Map[String, String], ids: Map[String, String]) = {
     for ((k, obs) <- translations) {
       val tgtNodeOpt = transaction {
         val node = DbService.graphDB.createNode(label("translations"))
