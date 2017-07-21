@@ -9,7 +9,7 @@ scalaVersion := "2.12.2"
 
 libraryDependencies ++= Seq(
   "org.neo4j" % "neo4j" % "3.2.1",
-  "com.github.workingDog" %% "scalastix" % "0.3"
+  "com.github.workingDog" %% "scalastix" % "0.4"
 )
 
 assemblyMergeStrategy in assembly := {
@@ -17,7 +17,8 @@ assemblyMergeStrategy in assembly := {
   case PathList(xs @_*) if xs.last.toLowerCase endsWith ".sf" => MergeStrategy.discard
   case PathList(xs @_*) if xs.last.toLowerCase endsWith ".des" => MergeStrategy.discard
   case PathList(xs @_*) if xs.last endsWith "LICENSES.txt"=> MergeStrategy.discard
-  case x => val oldStrategy = (assemblyMergeStrategy in assembly).value
+  case x =>
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
     oldStrategy(x)
 }
 

@@ -9,3 +9,4 @@ Change Log
 * added counting the nodes
 * added custom properties
 * added temporary scalastix-0.3-SNAPSHOT.jar
+* added the missing hashes of ExternalReference

@@ -9,6 +9,7 @@ import org.neo4j.graphdb.Label.label
 import org.neo4j.graphdb.{Node, RelationshipType}
 import play.api.libs.json.Json
 
+import scala.collection.mutable
 import scala.io.Source
 import scala.language.implicitConversions
 import scala.language.postfixOps
@@ -130,6 +131,15 @@ object MakerSupport {
     }
   }
 
+  private def toArrayOfString(m: Map[String, String]) = {
+    val arr = mutable.ArrayBuffer[String]()
+    m.foreach(kv => {
+      arr += kv._1
+      arr += kv._2
+    })
+    arr.toArray
+  }
+
   // create the external_references nodes and relationships
   def createExternRefs(sourceNode: Node, external_referencesOpt: Option[List[ExternalReference]], ids: Array[String]): Unit = {
     external_referencesOpt.foreach(external_references => {
@@ -139,8 +149,9 @@ object MakerSupport {
           node.setProperty("external_reference_id", ids(i))
           node.setProperty("source_name", extRef.source_name)
           node.setProperty("description", extRef.description.getOrElse(""))
-          node.setProperty("url", extRef.url.getOrElse(""))
           node.setProperty("external_id", extRef.external_id.getOrElse(""))
+          node.setProperty("url", extRef.url.getOrElse(""))
+          node.setProperty("hashes", toArrayOfString(extRef.hashes.getOrElse(Map.empty)))
           node
         }
         stixNodeOpt match {
@@ -149,7 +160,7 @@ object MakerSupport {
               sourceNode.createRelationshipTo(stixNode, "HAS_EXTERNAL_REF")
             }.getOrElse(println("---> could not process relation: HAS_EXTERNAL_REF"))
 
-          case None => println("---> could not create node external_reference: " + extRef.toString())
+          case None => println("---> could not create node external_reference: " + extRef.toString)
         }
       }
     })
