@@ -63,11 +63,6 @@ object MakerSupport {
     (for (s <- dataList.getOrElse(List.empty)) yield s.toString()).toArray
   }
 
-  // clean the string, i.e. escape special char
-  //  def clean(s: String) = s.replace("\\", """\\""").replace("'", """\'""").
-  //    replace("\"", """\""").replace("\n", """\n""").replace("\r", """\r""").
-  //    replace("\b", """\b""").replace("\f", """\f""").replace("\t", """\t""")
-
   // the Neo4j :LABEL and :TYPE cannot deal with "-", so clean and replace with "_"
   def asCleanLabel(s: String) = s.replace(",", " ").replace(":", " ").replace("\'", " ").
     replace(";", " ").replace("\"", "").replace("\\", "").

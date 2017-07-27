@@ -33,7 +33,7 @@ object ObservablesMaker {
         theNode.setProperty("type", obs.`type`)
         theNode.setProperty("observable_id", obsIds(k))
         theNode.setProperty("extensions", ext_ids.values.toArray)
-        theNode.setProperty("description", obs.description.getOrElse(""))
+        theNode.setProperty("custom", asJsonString(obs.custom))
         theNode
       }
       nodeOpt match {
