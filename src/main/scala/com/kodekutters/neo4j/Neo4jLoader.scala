@@ -35,9 +35,11 @@ class Neo4jLoader(inFile: String, dbDir: String) {
   val relsMaker = new RelationsMaker()
 
   // process a bundle of Stix objects
-  def processBundle(bundle: Bundle) = {
+  def processBundle(bundle: Bundle, fileName: String) = {
     // all nodes and their internal relations are created first
     bundle.objects.foreach(nodesMaker.createNodes(_))
+    // the file name being processed
+    println("\nfile: " + fileName)
     // print the number of SDO, SRO and StixObj (MarkingDefinition+LanguageContent)
     nodesMaker.counter.foreach({ case (k, v) => println(k + ": " + v) })
     // sum the SDO, SRO and StixObj
@@ -59,7 +61,7 @@ class Neo4jLoader(inFile: String, dbDir: String) {
         // create a bundle object from it and convert its objects to nodes and relations
         Json.fromJson[Bundle](js).asOpt match {
           case None => println("\n-----> ERROR reading bundle in file: " + inFile)
-          case Some(bundle) => processBundle(bundle)
+          case Some(bundle) => processBundle(bundle, inFile)
         }
         DbService.closeAll()
     }
@@ -76,7 +78,7 @@ class Neo4jLoader(inFile: String, dbDir: String) {
     // for each entry file containing a single bundle
     rootZip.entries.asScala.filter(_.getName.toLowerCase.endsWith(".json")).foreach(f => {
       loadBundle(rootZip.getInputStream(f)) match {
-        case Some(bundle) => processBundle(bundle)
+        case Some(bundle) => processBundle(bundle, inFile + " --> " + f.getName)
         case None => println("-----> ERROR invalid bundle JSON in zip file: \n")
       }
     })
