@@ -1,9 +1,9 @@
 ## Loads STIX-2.1 to a Neo4j graph database
 
-This application **StixToNeoDB**, loads [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit#) 
+This application **StixToNeoDB**, loads [STIX-2.1](https://oasis-open.github.io/cti-documentation/) 
 objects and relations from json and zip files into a [Neo4j](https://neo4j.com/) graph database. 
 
-The [OASIS](https://www.oasis-open.org/) open standard Structured Threat Information Expression [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit#) 
+The [OASIS](https://www.oasis-open.org/) open standard Structured Threat Information Expression [STIX-2.1](https://oasis-open.github.io/cti-documentation/) 
 is a language for expressing cyber threat and observable information.
 
 [Neo4j](https://neo4j.com/) "is a highly scalable native graph database that leverages data 
@@ -12,7 +12,7 @@ to meet today’s evolving data challenges."
 In essence, a graph database and processing engine that is used here for storing Stix objects 
 and their relationships.
  
-**StixToNeoDB** converts [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit#) 
+**StixToNeoDB** converts [STIX-2.1](https://oasis-open.github.io/cti-documentation/) 
 domain objects (SDO) and relationships (SRO) to [Neo4j](https://neo4j.com/) nodes and relations 
 using the [Java Neo4j API](https://neo4j.com/docs/java-reference/current/javadocs/). This allows for creating a new database or for adding new nodes and relations to an existing Neo4j graph database.
       
@@ -29,7 +29,7 @@ export them into GraphML, Cypher statements, CSV and binary formats. See also
 
 3) [ScalaStix](https://github.com/workingDog/scalastix)
 
-4) [STIX-2.1](https://docs.google.com/document/d/1yvqWaPPnPW-2NiVCLqzRszcx91ffMowfT5MmE9Nsy_w/edit)
+4) [STIX-2.1](https://oasis-open.github.io/cti-documentation/)
 
 ### Dependencies and requirements
 
