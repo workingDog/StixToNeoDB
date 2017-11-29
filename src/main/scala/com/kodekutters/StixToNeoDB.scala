@@ -6,7 +6,7 @@ import scala.language.implicitConversions
 import scala.language.postfixOps
 
 /**
-  * loads a file containing STIX (json) objects, or
+  * loads a file containing STIX-2.x (json) objects, or
   * a zip file containing one or more entry files,
   * into a neo4j graph database
   *
@@ -24,7 +24,7 @@ object StixToNeoDB {
        the options --jsonx and --zipx can also be used for large files""".stripMargin
 
   /**
-    * loads a file containing STIX objects, or
+    * loads a file containing STIX-2.x objects, or
     * a zip file containing one or more of such entry files,
     * into a neo4j graph database
     */
