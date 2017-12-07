@@ -9,7 +9,7 @@ scalaVersion := "2.12.4"
 
 libraryDependencies ++= Seq(
   "org.neo4j" % "neo4j" % "3.2.1",
-  "com.github.workingDog" %% "scalastix" % "0.5"
+  "com.github.workingDog" %% "scalastix" % "0.6"
 )
 
 assemblyMergeStrategy in assembly := {

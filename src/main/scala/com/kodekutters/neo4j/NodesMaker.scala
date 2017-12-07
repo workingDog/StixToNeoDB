@@ -36,6 +36,7 @@ class NodesMaker() {
     val granular_markings_ids = toIdArray(x.granular_markings)
     val external_references_ids = toIdArray(x.external_references)
     // create a base node and internal relations common to all SDO
+    // this includes making a node for a CustomStix object
     val sdoNodeOpt = transaction {
       val node = DbService.graphDB.createNode(label(asCleanLabel(x.`type`)))
       node.addLabel(label("SDO"))
@@ -195,7 +196,8 @@ class NodesMaker() {
             // create the Observable objects nodes and relations for this ObservedData object
             ObservablesMaker.create(sdoNode, y.objects, obs_ids)
 
-          case _ => // do nothing for now
+          case _ => // do nothing here
+
         }
 
       case None => println("---> could not process SDO node: " + x.id.toString())
