@@ -12,4 +12,5 @@ Change Log
 * added the missing hashes of ExternalReference
 * remove description from ObservablesMaker
 * added custom (for custom properties x_...) to ObservablesMaker
-* update to scalastix-05
+* update to scalastix-06, ie. can process Custom Objects
+
