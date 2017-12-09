@@ -94,6 +94,5 @@ work in progress.
 
 only tested on the small ./stix-files/testfull.json
 
-Using Scala 2.12, Java 8, SBT-0.13.15 and Neo4j-3.2.1.
 
 

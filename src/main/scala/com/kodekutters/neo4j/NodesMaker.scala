@@ -46,9 +46,9 @@ class NodesMaker() {
       node.setProperty("modified", x.modified.time)
       node.setProperty("revoked", x.revoked.getOrElse(false))
       node.setProperty("labels", x.labels.getOrElse(List.empty).toArray)
-      node.setProperty("confidence", x.confidence.getOrElse(0))
+    //  node.setProperty("confidence", x.confidence.getOrElse(0))
       node.setProperty("external_references", external_references_ids)
-      node.setProperty("lang", x.lang.getOrElse(""))
+    //  node.setProperty("lang", x.lang.getOrElse(""))
       node.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
       node.setProperty("granular_markings", granular_markings_ids)
       node.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)
@@ -133,7 +133,7 @@ class NodesMaker() {
             transaction {
               sdoNode.setProperty("name", y.name)
               sdoNode.setProperty("published", y.published.time)
-              sdoNode.setProperty("object_refs_ids", toIdStringArray(y.object_refs))
+              sdoNode.setProperty("object_refs_ids", toIdStringArray(Option(y.object_refs)))
               sdoNode.setProperty("description", y.description.getOrElse(""))
             }.getOrElse(println("---> could not process Report node: " + x.id.toString()))
 

@@ -31,7 +31,7 @@ class RelationsMaker() {
       case Report.`type` =>
         val y = x.asInstanceOf[Report]
         // create relations between the Report id and the list of object_refs SDO id
-        createRelToObjRef(y.id.toString(), y.object_refs, "REFERS_TO")
+        createRelToObjRef(y.id.toString(), Option(y.object_refs), "REFERS_TO")
 
       case _ => // do nothing more
     }
@@ -54,9 +54,9 @@ class RelationsMaker() {
         rel.setProperty("modified", x.modified.time)
         rel.setProperty("revoked", x.revoked.getOrElse(false))
         rel.setProperty("labels", x.labels.getOrElse(List.empty).toArray)
-        rel.setProperty("confidence", x.confidence.getOrElse(0))
+      //  rel.setProperty("confidence", x.confidence.getOrElse(0))
         rel.setProperty("external_references", externRefIds)
-        rel.setProperty("lang", x.lang.getOrElse(""))
+      //  rel.setProperty("lang", x.lang.getOrElse(""))
         rel.setProperty("object_marking_refs", toIdStringArray(x.object_marking_refs))
         rel.setProperty("granular_markings", granularIds)
         rel.setProperty("created_by_ref", x.created_by_ref.getOrElse("").toString)

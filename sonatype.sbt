@@ -15,25 +15,17 @@ pomExtra := {
 
 pomIncludeRepository := { _ => false }
 
-// Release settings
-sonatypeProfileName := "com.github.workingDog"
-releasePublishArtifactsAction := PgpKeys.publishSigned.value
-releaseCrossBuild := true
-releaseTagName := (version in ThisBuild).value
+publishMavenStyle := true
 
-import ReleaseTransformations._
+publishArtifact in Test := false
 
-releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,
-  inquireVersions,
-  setReleaseVersion,
-  commitReleaseVersion,
-  tagRelease,
-  publishArtifacts,
-  ReleaseStep(action = Command.process("publishSigned", _)),
-  releaseStepCommand("sonatypeRelease"),
-  setNextVersion,
-  commitNextVersion,
-  pushChanges
+publishTo := Some(
+  if (isSnapshot.value)
+    Opts.resolver.sonatypeSnapshots
+  else
+    Opts.resolver.sonatypeStaging
 )
 
+sonatypeProfileName := "com.github.workingDog"
+releasePublishArtifactsAction := PgpKeys.publishSigned.value
+releaseTagName := (version in ThisBuild).value
