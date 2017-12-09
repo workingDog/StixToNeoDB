@@ -1,9 +1,9 @@
-## Loads STIX-2.1 to a Neo4j graph database
+## Loads STIX-2 to a Neo4j graph database
 
-This application **StixToNeoDB**, loads [STIX-2.1](https://oasis-open.github.io/cti-documentation/) 
+This application **StixToNeoDB**, loads [STIX-2](https://oasis-open.github.io/cti-documentation/) 
 objects and relations from json and zip files into a [Neo4j](https://neo4j.com/) graph database. 
 
-The [OASIS](https://www.oasis-open.org/) open standard Structured Threat Information Expression [STIX-2.1](https://oasis-open.github.io/cti-documentation/) 
+The [OASIS](https://www.oasis-open.org/) open standard Structured Threat Information Expression [STIX-2](https://oasis-open.github.io/cti-documentation/) 
 is a language for expressing cyber threat and observable information.
 
 [Neo4j](https://neo4j.com/) "is a highly scalable native graph database that leverages data 
@@ -12,7 +12,7 @@ to meet today’s evolving data challenges."
 In essence, a graph database and processing engine that is used here for storing Stix objects 
 and their relationships.
  
-**StixToNeoDB** converts [STIX-2.1](https://oasis-open.github.io/cti-documentation/) 
+**StixToNeoDB** converts [STIX-2](https://oasis-open.github.io/cti-documentation/) 
 domain objects (SDO) and relationships (SRO) to [Neo4j](https://neo4j.com/) nodes and relations 
 using the [Java Neo4j API](https://neo4j.com/docs/java-reference/current/javadocs/). This allows for creating a new database or for adding new nodes and relations to an existing Neo4j graph database.
       
@@ -29,14 +29,14 @@ export them into GraphML, Cypher statements, CSV and binary formats. See also
 
 3) [ScalaStix](https://github.com/workingDog/scalastix)
 
-4) [STIX-2.1](https://oasis-open.github.io/cti-documentation/)
+4) [STIX-2](https://oasis-open.github.io/cti-documentation/)
 
 ### Dependencies and requirements
 
 Depends on the [ScalaStix](https://github.com/workingDog/scalastix) and 
 the [Neo4j Community](https://mvnrepository.com/artifact/org.neo4j/neo4j) 3.2.1 jar file.
 
-See also the build file.
+See also the *build.sbt* file.
 
 Java 8 is required and Neo4j-3.2.1 should be installed to process the results.
 
