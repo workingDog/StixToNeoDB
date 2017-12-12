@@ -12,7 +12,7 @@ import scala.language.postfixOps
 import scala.collection.JavaConverters._
 
 /**
-  * loads Stix-2.1 objects and relationships into a Neo4j graph database
+  * loads Stix-2.0 objects and relationships into a Neo4j graph database
   *
   * @author R. Wathelet June 2017
   *

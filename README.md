@@ -16,9 +16,11 @@ and their relationships.
 domain objects (SDO) and relationships (SRO) to [Neo4j](https://neo4j.com/) nodes and relations 
 using the [Java Neo4j API](https://neo4j.com/docs/java-reference/current/javadocs/). This allows for creating a new database or for adding new nodes and relations to an existing Neo4j graph database.
       
-### Exporting         
-Once the Stix objects are in a Neo4j graph database, you can use these [export tools](https://github.com/jexp/neo4j-shell-tools) to          
-export them into GraphML, Cypher statements, CSV and binary formats. See also 
+### Tools         
+Once the Stix objects are in a Neo4j graph database you can use the useful built-in tools to visualise and 
+analyse the data. Other tools such as the [Tinkerpop](http://tinkerpop.apache.org/) framework and [Spark GraphX](https://spark.apache.org/graphx/) 
+can easily link to the neo4j data for very large data sets processing. 
+You can also use these [export tools](https://github.com/jexp/neo4j-shell-tools) to export the data into GraphML, Cypher statements, CSV and binary formats. See also 
 [how-2-convert](how-2-convert.md) for some explanations on how to convert Stix objects into those formats.         
                          
 ### References
@@ -77,7 +79,7 @@ location and click start. Once the status is "Started", open a browser on "http:
 
  #### For very large files
  
- To process very large files use the following options:
+ To process very large files use the following experimental options:
  
      java -jar stixtoneodb-1.0.jar --jsonx stix_file.json db_dir
      or
