@@ -21,7 +21,7 @@ an existing Neo4j graph database. The file types include files containing
       
 ### Tools  
        
-Once the Stix objects are in a Neo4j graph database you can use built-in tools to visualise and 
+Once the Stix objects are in a Neo4j graph database you can use the built-in tools to visualise and 
 analyse the data. Other tools such as the [Tinkerpop](http://tinkerpop.apache.org/) framework and [Spark GraphX](https://spark.apache.org/graphx/) 
 can easily link to the neo4j data for very large data sets processing. 
 You can also use these [export tools](https://github.com/jexp/neo4j-shell-tools) to export the data into GraphML, Cypher statements, CSV and binary formats. See also 
