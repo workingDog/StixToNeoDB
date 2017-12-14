@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+### changes in 2.0
+
+* use stixtoneolib library for processing 
+
 
 ### changes in 1.0
 

@@ -8,8 +8,7 @@ version := (version in ThisBuild).value
 scalaVersion := "2.12.4"
 
 libraryDependencies ++= Seq(
-  "org.neo4j" % "neo4j" % "3.2.1",
-  "com.github.workingDog" %% "scalastix" % "0.7"
+  "com.github.workingDog" %% "stixtoneolib" % "0.1"
 )
 
 assemblyMergeStrategy in assembly := {
@@ -30,4 +29,4 @@ mainClass in(Compile, run) := Some("com.kodekutters.StixToNeoDB")
 
 mainClass in assembly := Some("com.kodekutters.StixToNeoDB")
 
-assemblyJarName in assembly := "stixtoneodb-1.0.jar"
+assemblyJarName in assembly := "stixtoneodb-2.0.jar"
