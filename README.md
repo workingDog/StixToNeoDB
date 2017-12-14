@@ -51,7 +51,7 @@ Java 8 is required and Neo4j Community should be installed to process the result
 
 ### Installation and packaging
 
-To assemble the application and all its dependencies into a single fat jar file, use [SBT](http://www.scala-sbt.org/) and type:
+To compile from source and assemble the application and all its dependencies into a single fat jar file, use [SBT](http://www.scala-sbt.org/) and type:
 
     sbt assembly
 
