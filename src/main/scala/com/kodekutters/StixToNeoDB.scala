@@ -3,6 +3,9 @@ package com.kodekutters
 import com.kodekutters.neo4j.Neo4jFileLoader
 import java.io.File
 
+import com.typesafe.scalalogging.Logger
+import org.slf4j.helpers.NOPLogger
+
 import scala.language.implicitConversions
 import scala.language.postfixOps
 
@@ -32,6 +35,9 @@ object StixToNeoDB {
     if (args.length < 2)
       println(usage)
     else {
+      // example of using a null logger
+      //  implicit val logger = Logger(NOPLogger.NOP_LOGGER)
+      implicit val logger = Logger("StixToNeoDB")
       // the input file
       val infile = new File(args(1))
       // the Neo4j db directory
@@ -39,6 +45,7 @@ object StixToNeoDB {
       // if nothing default is to create a new db in
       // the current directory with name stixdb
       val dbFile = if (dbDir.isEmpty) new java.io.File(".").getCanonicalPath + "/stixdb" else dbDir
+      // Neo4jLoader and Neo4jFileLoader require an implicit logger
       val neoLoader = new Neo4jFileLoader(dbFile)
       args(0) match {
         case "--json" => neoLoader.loadBundleFile(infile)
