@@ -1,10 +1,15 @@
 Change Log
 ==========
 
+### changes in 3.0
+
+
 ### changes in 2.0
 
-* use stixtoneolib library for processing 
-
+* use stixtoneolib-0.2 library for processing 
+* change the usage options with:
+*** -f for file of json format, catering for both text and zip files 
+*** -x for the large files, catering for both text and zip files 
 
 ### changes in 1.0
 

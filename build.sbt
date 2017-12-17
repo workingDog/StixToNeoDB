@@ -8,7 +8,7 @@ version := (version in ThisBuild).value
 scalaVersion := "2.12.4"
 
 libraryDependencies ++= Seq(
-  "com.github.workingDog" %% "stixtoneolib" % "0.1"
+  "com.github.workingDog" %% "stixtoneolib" % "0.2"
 )
 
 assemblyMergeStrategy in assembly := {

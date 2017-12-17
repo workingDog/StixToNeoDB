@@ -20,11 +20,9 @@ object StixToNeoDB {
 
   val usage =
     """Usage:
-       java -jar stixtoneodb-2.0.jar --json stix_file.json db_dir
-        or
-       java -jar stixtoneodb-2.0.jar --zip stix_file.zip db_dir
-
-       the options --jsonx and --zipx can also be used for large files""".stripMargin
+       java -jar stixtoneodb-2.0.jar -f stix_file db_dir
+       or
+       java -jar stixtoneodb-2.0.jar -x stix_file db_dir""".stripMargin
 
   /**
     * loads a file containing STIX-2 objects, or
@@ -35,8 +33,7 @@ object StixToNeoDB {
     if (args.length < 2)
       println(usage)
     else {
-      // example of using a null logger
-      //  implicit val logger = Logger(NOPLogger.NOP_LOGGER)
+      // to log the progress, comment this line if you don't want any logging at all
       implicit val logger = Logger("StixToNeoDB")
       // the input file
       val infile = new File(args(1))
@@ -45,13 +42,15 @@ object StixToNeoDB {
       // if nothing default is to create a new db in
       // the current directory with name stixdb
       val dbFile = if (dbDir.isEmpty) new java.io.File(".").getCanonicalPath + "/stixdb" else dbDir
-      // Neo4jLoader and Neo4jFileLoader require an implicit logger
+      // Neo4jLoader and Neo4jFileLoader can take an implicit logger, default NOPLogger
       val neoLoader = new Neo4jFileLoader(dbFile)
       args(0) match {
-        case "--json" => neoLoader.loadBundleFile(infile)
-        case "--zip" => neoLoader.loadBundleZipFile(infile)
-        case "--jsonx" => neoLoader.loadLargeTextFile(infile)
-        case "--zipx" => neoLoader.loadLargeZipTextFile(infile)
+        case "-f" =>
+          if (infile.getName.endsWith(".zip")) neoLoader.loadBundleZipFile(infile)
+          else neoLoader.loadBundleFile(infile)
+        case "-x" =>
+          if (infile.getName.endsWith(".zip")) neoLoader.loadLargeZipTextFile(infile)
+          else neoLoader.loadLargeTextFile(infile)
         case x => println("unknown option: " + x + "\n" + usage)
       }
     }
