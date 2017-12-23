@@ -1,7 +1,10 @@
 ## Loads STIX-2 to a Neo4j graph database
 
-This application **StixToNeoDB**, loads [STIX-2](https://oasis-open.github.io/cti-documentation/) 
+This command prompt application **StixToNeoDB**, loads [STIX-2](https://oasis-open.github.io/cti-documentation/) 
 objects and relations from json and zip files into a [Neo4j](https://neo4j.com/) graph database. 
+
+See also [StixLoader](https://github.com/workingDog/stixloader) for a prototype graphical user interface 
+to convert STIX-2 data.
 
 The [OASIS](https://www.oasis-open.org/) open standard Structured Threat Information Expression [STIX-2](https://oasis-open.github.io/cti-documentation/) 
 is a language for expressing cyber threat and observable information.
