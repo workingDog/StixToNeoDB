@@ -34,16 +34,16 @@ You can also use these [export tools](https://github.com/jexp/neo4j-shell-tools)
 
 To load your Stix objects data into a Neo4j graph database, simply type at the prompt:
  
-    java -jar stixtoneodb-2.0.jar -f stix_file db_dir
+    java -jar stixtoneodb-3.0.jar -f stix_file db_dir
     or
-    java -jar stixtoneodb-2.0.jar -x stix_file db_dir
+    java -jar stixtoneodb-3.0.jar -x stix_file db_dir
  
-A **stixtoneodb-2.0.jar** file is in the *distrib* directory ready for use.
+A **stixtoneodb-3.0.jar** file is in the *distrib* directory ready for use.
 
 With the option **-f** the input file *stix_file* must be a file containing the Stix objects data that you want to convert, 
 and *db_dir* is the location path to the Neo4j database directory.
 The input file can be a text file containing a single bundle in json format or a zip file containing one or more 
-bundle files. 
+bundle files. Only *.json* and *.stix* zip entry files are processed.
 
 If *db_dir* is absent, the default output directory will be in the current directory with the name *stixdb*. 
 If the database already exists, the data will be added to it, otherwise a new neo4j database will be created. 
@@ -67,7 +67,7 @@ To compile from source and assemble the application and all its dependencies int
 
     sbt assembly
 
-This will produce *stixtoneodb-3.0.jar* in the *./target/scala-2.12* directory.
+This will produce *stixtoneodb-4.0.jar* in the *./target/scala-2.12* directory.
      
 ### Dependencies and requirements
 

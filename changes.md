@@ -1,8 +1,12 @@
 Change Log
 ==========
 
+### changes in 4.0
+
+
 ### changes in 3.0
 
+* update stixtoneolib to 0.3 version
 
 ### changes in 2.0
 

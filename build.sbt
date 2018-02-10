@@ -8,7 +8,7 @@ version := (version in ThisBuild).value
 scalaVersion := "2.12.4"
 
 libraryDependencies ++= Seq(
-  "com.github.workingDog" %% "stixtoneolib" % "0.2"
+  "com.github.workingDog" %% "stixtoneolib" % "0.3"
 )
 
 assemblyMergeStrategy in assembly := {
@@ -29,4 +29,4 @@ mainClass in(Compile, run) := Some("com.kodekutters.StixToNeoDB")
 
 mainClass in assembly := Some("com.kodekutters.StixToNeoDB")
 
-assemblyJarName in assembly := "stixtoneodb-2.0.jar"
+assemblyJarName in assembly := "stixtoneodb-3.0.jar"
