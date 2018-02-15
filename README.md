@@ -93,9 +93,7 @@ Java 8 is required and Neo4j Community should be installed to process the result
 
 ### Status
 
-work in progress.
-
-only tested on the small ./stix-files/testfull.json
+tested only on the small ./stix-files/testfull.json
 
 
 

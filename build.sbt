@@ -12,6 +12,7 @@ libraryDependencies ++= Seq(
 )
 
 assemblyMergeStrategy in assembly := {
+  case PathList(xs @_*) if xs.last.toLowerCase endsWith ".rsa" => MergeStrategy.discard
   case PathList(xs @_*) if xs.last.toLowerCase endsWith ".dsa" => MergeStrategy.discard
   case PathList(xs @_*) if xs.last.toLowerCase endsWith ".sf" => MergeStrategy.discard
   case PathList(xs @_*) if xs.last.toLowerCase endsWith ".des" => MergeStrategy.discard
