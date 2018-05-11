@@ -3,7 +3,7 @@ Change Log
 
 ### changes in 4.0
 
-* update sbt to 1.1.0
+* update to scala and sbt to 1.1.5
 
 ### changes in 3.0
 

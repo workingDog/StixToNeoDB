@@ -43,7 +43,7 @@ A **stixtoneodb-3.0.jar** file is in the *distrib* directory ready for use.
 With the option **-f** the input file *stix_file* must be a file containing the Stix objects data that you want to convert, 
 and *db_dir* is the location path to the Neo4j database directory.
 The input file can be a text file containing a single bundle in json format or a zip file containing one or more 
-bundle files. Only *.json* and *.stix* zip entry files are processed.
+bundle files (.zip). Only *.json* and *.stix* files in the zip file are processed.
 
 If *db_dir* is absent, the default output directory will be in the current directory with the name *stixdb*. 
 If the database already exists, the data will be added to it, otherwise a new neo4j database will be created. 
