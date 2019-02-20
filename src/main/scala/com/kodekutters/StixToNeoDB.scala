@@ -4,7 +4,7 @@ import com.kodekutters.neo4j.Neo4jFileLoader
 import java.io.File
 
 import com.typesafe.scalalogging.Logger
-import org.slf4j.helpers.NOPLogger
+//import org.slf4j.helpers.NOPLogger
 
 import scala.language.implicitConversions
 import scala.language.postfixOps
@@ -20,9 +20,9 @@ object StixToNeoDB {
 
   val usage =
     """Usage:
-       java -jar stixtoneodb-2.0.jar -f stix_file db_dir
+       java -jar stixtoneodb-4.0.jar -f stix_file db_dir
        or
-       java -jar stixtoneodb-2.0.jar -x stix_file db_dir""".stripMargin
+       java -jar stixtoneodb-4.0.jar -x stix_file db_dir""".stripMargin
 
   /**
     * loads a file containing STIX-2 objects, or

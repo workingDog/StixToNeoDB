@@ -5,10 +5,10 @@ name := "stixtoneodb"
 
 version := (version in ThisBuild).value
 
-scalaVersion := "2.12.6"
+scalaVersion := "2.12.8"
 
 libraryDependencies ++= Seq(
-  "com.github.workingDog" %% "stixtoneolib" % "0.3"
+  "com.github.workingDog" %% "stixtoneolib" % "0.4"
 )
 
 assemblyMergeStrategy in assembly := {

@@ -1,9 +1,12 @@
 Change Log
 ==========
 
+### changes in 5.0
+
+
 ### changes in 4.0
 
-* update to scala and sbt to 1.1.5
+* update scala, sbt and stixtoneolib
 
 ### changes in 3.0
 
