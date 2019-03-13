@@ -4,7 +4,7 @@ import com.kodekutters.neo4j.Neo4jFileLoader
 import java.io.File
 
 import com.typesafe.scalalogging.Logger
-//import org.slf4j.helpers.NOPLogger
+import org.slf4j.helpers.NOPLogger
 
 import scala.language.implicitConversions
 import scala.language.postfixOps

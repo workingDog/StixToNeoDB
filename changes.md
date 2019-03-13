@@ -3,6 +3,8 @@ Change Log
 
 ### changes in 5.0
 
+* added the dependency: "org.slf4j" % "slf4j-nop" % "1.8.0-beta4" % Test
+
 
 ### changes in 4.0
 
