@@ -7,17 +7,16 @@ version := (version in ThisBuild).value
 
 scalaVersion := "2.12.8"
 
-libraryDependencies ++= Seq(
-  "com.github.workingDog" %% "stixtoneolib" % "0.4",
-  "org.slf4j" % "slf4j-nop" % "1.8.0-beta4" % Test
-)
+libraryDependencies ++= Seq("com.github.workingDog" %% "stixtoneolib" % "0.5")
+
+test in assembly := {}
 
 assemblyMergeStrategy in assembly := {
   case PathList(xs @_*) if xs.last.toLowerCase endsWith ".rsa" => MergeStrategy.discard
-  case PathList(xs @_*) if xs.last.toLowerCase endsWith ".dsa" => MergeStrategy.discard
-  case PathList(xs @_*) if xs.last.toLowerCase endsWith ".sf" => MergeStrategy.discard
-  case PathList(xs @_*) if xs.last.toLowerCase endsWith ".des" => MergeStrategy.discard
-  case PathList(xs @_*) if xs.last endsWith "LICENSES.txt"=> MergeStrategy.discard
+  case PathList(xs@_*) if xs.last.toLowerCase endsWith ".dsa" => MergeStrategy.discard
+  case PathList(xs@_*) if xs.last.toLowerCase endsWith ".sf" => MergeStrategy.discard
+  case PathList(xs@_*) if xs.last.toLowerCase endsWith ".des" => MergeStrategy.discard
+  case PathList(xs@_*) if xs.last endsWith "LICENSES.txt" => MergeStrategy.discard
   case x =>
     val oldStrategy = (assemblyMergeStrategy in assembly).value
     oldStrategy(x)

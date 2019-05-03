@@ -20,9 +20,9 @@ object StixToNeoDB {
 
   val usage =
     """Usage:
-       java -jar stixtoneodb-4.0.jar -f stix_file db_dir
+       java -jar stixtoneodb-5.0.jar -f stix_file db_dir
        or
-       java -jar stixtoneodb-4.0.jar -x stix_file db_dir""".stripMargin
+       java -jar stixtoneodb-5.0.jar -x stix_file db_dir""".stripMargin
 
   /**
     * loads a file containing STIX-2 objects, or

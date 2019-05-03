@@ -34,11 +34,9 @@ You can also use these [export tools](https://github.com/jexp/neo4j-shell-tools)
 
 To load your Stix objects data into a Neo4j graph database, simply type at the prompt:
  
-    java -jar stixtoneodb-4.0.jar -f stix_file db_dir
+    java -jar stixtoneodb-5.0.jar -f stix_file db_dir
     or
-    java -jar stixtoneodb-4.0.jar -x stix_file db_dir
- 
-A **stixtoneodb-4.0.jar** file is in the *distrib* directory ready for use (uncompress the file first).
+    java -jar stixtoneodb-5.0.jar -x stix_file db_dir
 
 With the option **-f** the input file *stix_file* must be a file containing the Stix objects data that you want to convert, 
 and *db_dir* is the location path to the Neo4j database directory.
@@ -94,6 +92,4 @@ Java 8 is required and Neo4j Community should be installed to process the result
 ### Status
 
 work in progress
-
-
 

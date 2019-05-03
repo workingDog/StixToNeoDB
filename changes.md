@@ -1,10 +1,17 @@
 Change Log
 ==========
 
+
+### changes in 6.0
+
+
+
 ### changes in 5.0
 
-* added the dependency: "org.slf4j" % "slf4j-nop" % "1.8.0-beta4" % Test
+* update to "stixtoneolib-0.5" which uses "scalastix-1.0"
 
+---> no longer providing a ready to use jar file. 
+    Use "sbt assembly" to generate a self contained jar file "stixtoneo-5.0.jar".
 
 ### changes in 4.0
 
