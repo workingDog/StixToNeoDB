@@ -29,3 +29,6 @@ publishTo := Some(
 sonatypeProfileName := "com.github.workingDog"
 releasePublishArtifactsAction := PgpKeys.publishSigned.value
 releaseTagName := (version in ThisBuild).value
+
+credentials += Credentials(Path.userHome / ".ivy2" / ".my-credentials")
+

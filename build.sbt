@@ -5,13 +5,14 @@ name := "stixtoneodb"
 
 version := (version in ThisBuild).value
 
-scalaVersion := "2.12.8"
+scalaVersion := "2.13.3"
 
-libraryDependencies ++= Seq("com.github.workingDog" %% "stixtoneolib" % "0.5")
+libraryDependencies ++= Seq("com.github.workingDog" %% "stixtoneolib" % "0.6")
 
 test in assembly := {}
 
 assemblyMergeStrategy in assembly := {
+  case "module-info.class" => MergeStrategy.discard
   case PathList(xs @_*) if xs.last.toLowerCase endsWith ".rsa" => MergeStrategy.discard
   case PathList(xs@_*) if xs.last.toLowerCase endsWith ".dsa" => MergeStrategy.discard
   case PathList(xs@_*) if xs.last.toLowerCase endsWith ".sf" => MergeStrategy.discard

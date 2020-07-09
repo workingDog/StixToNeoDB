@@ -21,7 +21,7 @@ This makes the [neo4j-shell-tools](https://github.com/jexp/neo4j-shell-tools) av
 
 Now generate a neo4j graph database from your Stix objects file using [StixToNeoDB](https://github.com/workingDog/StixToNeoDB)
 
-    java -jar stixtoneodb-1.0.jar --json stix_file.json stixdb
+    java -jar stixtoneodb-6.0.jar --json stix_file.json stixdb
 
 This will produce a neo4j database in the "stixdb" directory.
 

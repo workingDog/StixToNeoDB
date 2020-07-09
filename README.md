@@ -29,14 +29,24 @@ analyse the data. Other tools such as the [Tinkerpop](http://tinkerpop.apache.or
 can easily link to the neo4j data for very large data sets processing. 
 You can also use these [export tools](https://github.com/jexp/neo4j-shell-tools) to export the data into GraphML, Cypher statements, CSV and binary formats. See also 
 [how-2-convert](how-2-convert.md) for some explanations on how to convert Stix objects into those formats.         
-     
+   
+   
+### Installation and packaging
+   
+To compile from source and assemble the application and all its dependencies into a single fat **jar** file, use [SBT](http://www.scala-sbt.org/) and type:
+   
+    sbt assembly
+   
+This will produce *stixtoneodb-6.0.jar* in the *./target/scala-2.13* directory.
+Use this *stixtoneodb-6.0.jar* to load Stix objects into a Neo4j, as described below.
+    
 ### Usage
 
 To load your Stix objects data into a Neo4j graph database, simply type at the prompt:
  
-    java -jar stixtoneodb-5.0.jar -f stix_file db_dir
+    java -jar stixtoneodb-6.0.jar -f stix_file db_dir
     or
-    java -jar stixtoneodb-5.0.jar -x stix_file db_dir
+    java -jar stixtoneodb-6.0.jar -x stix_file db_dir
 
 With the option **-f** the input file *stix_file* must be a file containing the Stix objects data that you want to convert, 
 and *db_dir* is the location path to the Neo4j database directory.
@@ -59,14 +69,7 @@ in the *logs* directory.
 To view the data in Neo4j, launch the Neo4j Community Edition application, select your *db_dir* as the database 
 location and click start. Once the status is "Started", open a browser on *http://localhost:7474*. 
 
-### Installation and packaging
-
-To compile from source and assemble the application and all its dependencies into a single fat jar file, use [SBT](http://www.scala-sbt.org/) and type:
-
-    sbt assembly
-
-This will produce *stixtoneodb-5.0.jar* in the *./target/scala-2.12* directory.
-     
+    
 ### Dependencies and requirements
 
 Depends on [ScalaStix](https://github.com/workingDog/scalastix), [StixToNeoLib](https://github.com/workingDog/StixToNeoLib) and 
@@ -74,7 +77,7 @@ the associated [Neo4j Community](https://mvnrepository.com/artifact/org.neo4j/ne
 
 See also the *build.sbt* file.
 
-Java 8 is required and Neo4j Community should be installed to process the results.
+Neo4j Community should be installed to process the results.
                
 ### References
  

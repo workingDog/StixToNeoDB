@@ -1,10 +1,12 @@
 Change Log
 ==========
 
+### changes in "7.0-SNAPSHOT"
 
-### changes in 6.0
 
+### changes in "6.0"
 
+* update to "stixtoneolib-0.6" which uses "scalastix-1.1"
 
 ### changes in 5.0
 
