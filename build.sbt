@@ -13,6 +13,7 @@ test in assembly := {}
 
 assemblyMergeStrategy in assembly := {
   case "module-info.class" => MergeStrategy.discard
+  case "META-INF/versions/9/module-info.class" => MergeStrategy.discard
   case PathList(xs @_*) if xs.last.toLowerCase endsWith ".rsa" => MergeStrategy.discard
   case PathList(xs@_*) if xs.last.toLowerCase endsWith ".dsa" => MergeStrategy.discard
   case PathList(xs@_*) if xs.last.toLowerCase endsWith ".sf" => MergeStrategy.discard

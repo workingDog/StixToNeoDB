@@ -27,23 +27,44 @@ can easily link to the neo4j data for very large data sets processing.
 You can also use these [export tools](https://github.com/jexp/neo4j-shell-tools) to export the data into GraphML, Cypher statements, CSV and binary formats. See also 
 [how-2-convert](how-2-convert.md) for some explanations on how to convert Stix objects into those formats.         
    
-   
-### Installation and packaging
-   
-To compile from source and assemble the application and all its dependencies into a single fat **jar** file, use [SBT](http://www.scala-sbt.org/) and type:
+### Installation and usage
+
+Ensure you have Java 11 installed and the latest [SBT](http://www.scala-sbt.org/) on your system.
+Clone or download the **StixToNeoDB** files from this repository.
+
+### Usage
+
+#### Preferred method using SBT 
+
+In the StixToNeoDB directory type:
+
+    sbt "run -f localhost:7687 stix_file db_dir" 
+
+This will compile and run **StixToNeoDB** with the given parameters.
+See below for the parameters description.
+ 
+#### Making a large java **jar** file 
+
+If you really need a single java file to run **StixToNeoDB**, then first 
+compile from source code and assemble the application and all its dependencies 
+into a single fat **jar** file. Use [SBT](http://www.scala-sbt.org/) and type:
    
     sbt assembly
    
-This will produce *stixtoneodb-6.0.jar* in the *./target/scala-2.13* directory.
-Use this *stixtoneodb-6.0.jar* to load Stix objects into a Neo4j, as described below.
-    
-### Usage
+This will produce *stixtoneodb-6.0.jar* in the *./target/scala-2.13* directory 
+that you can use to load Stix objects into a Neo4j. 
 
-To load your Stix objects data into a Neo4j graph database, simply type at the prompt:
+To load your Stix objects data into a Neo4j graph database, type at the prompt where 
+you have put the *stixtoneodb-6.0.jar*:
  
-    java -jar stixtoneodb-6.0.jar -f stix_file db_dir
+    java -jar stixtoneodb-6.0.jar -f hostAddress stix_file db_dir
     or
-    java -jar stixtoneodb-6.0.jar -x stix_file db_dir
+    java -jar stixtoneodb-6.0.jar -x hostAddress stix_file db_dir
+
+#### Parameters 
+
+**hostAddress** is of the form **localhost:7687** and specifies the address 
+of the local database service to listen to.
 
 With the option **-f** the input file *stix_file* must be a file containing the Stix objects data that you want to convert, 
 and *db_dir* is the location path to the Neo4j database directory.
@@ -54,20 +75,21 @@ If *db_dir* is absent, the default output directory will be in the current direc
 If the database already exists, the data will be added to it, otherwise a new neo4j database will be created. 
 An existing database must not be "opened" by another process during processing. 
 
-The **-x** option is for the experimental processing of large file one line at a time.
+The **-x** option is for the **experimental** processing of large file one line at a time.
 The input file must contain a Stix object on one line 
-ending with a new line. Similarly if the input file is a zip file, each zip file entry must 
+ending with a new line. Similarly, if the input file is a zip file, each zip file entry must 
 contain Stix objects on one line ending with a new line. 
 
 Note that **StixToNeoDB** will try to "skip" errors in the objects and relations of the input file, 
-e.g. references to non existent objects. The log of the processing can be found in *application.log* 
+e.g. references to non-existent objects. The log of the processing can be found in *application.log* 
 in the *logs* directory.
 
-To view the data in Neo4j, launch the Neo4j Community Edition application, select your *db_dir* as the database 
-location and click start. Once the status is "Started", open a browser on *http://localhost:7474*. 
+To view the data in Neo4j, launch the Neo4j Community Edition server, 
+then open a browser on *http://localhost:7474*, select your *db_dir* as the database to view.
 
-    
 ### Dependencies and requirements
+
+Requires Java 11 or greater.
 
 Depends on [ScalaStix](https://github.com/workingDog/scalastix), [StixToNeoLib](https://github.com/workingDog/StixToNeoLib) and 
 the associated [Neo4j Community](https://mvnrepository.com/artifact/org.neo4j/neo4j) jar file.

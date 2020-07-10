@@ -6,7 +6,8 @@ Change Log
 
 ### changes in "6.0"
 
-* update to "stixtoneolib-0.6" which uses "scalastix-1.1"
+* update to scala 2.13.3
+* update to "stixtoneolib-0.6" which uses "scalastix-1.1" all using scala 2.13.3
 
 ### changes in 5.0
 
