@@ -91,13 +91,14 @@ then open a browser on *http://localhost:7474*, select your *db_dir* as the data
 
 Requires Java 11 or greater.
 
-Depends on [ScalaStix](https://github.com/workingDog/scalastix), [StixToNeoLib](https://github.com/workingDog/StixToNeoLib) and 
-the associated [Neo4j Community](https://mvnrepository.com/artifact/org.neo4j/neo4j) jar file.
+Depends on [StixToNeoLib](https://github.com/workingDog/StixToNeoLib) which depends on 
+[ScalaStix](https://github.com/workingDog/scalastix), and 
+the associated [Neo4j Community 3.3.9](https://mvnrepository.com/artifact/org.neo4j/neo4j) jar file.
 
-See also the *build.sbt* file.
-
-Neo4j Community should be installed to process the results.
-               
+Since **StixToNeoDB** relies on the **neo4j-3.3.9** jar file, use 
+Neo4j Community (3.5.19) server with the **dbms.allow_upgrade=true** in 
+the **neo4j.conf** to process the results.
+          
 ### References
  
 1) [Neo4j](https://neo4j.com/)
